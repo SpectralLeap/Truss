@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Truss.Core;
+namespace Truss.Configuration;
 
 public sealed class TrussConfig
 {

@@ -1,3 +1,3 @@
-namespace Truss.Dsl.Tests;
+namespace Truss.Tests;
 
 public sealed class ApplyNameResult;

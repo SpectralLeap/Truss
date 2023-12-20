@@ -1,12 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Dsl", "Truss.Dsl\Truss.Dsl.csproj", "{F12EACA4-384C-484F-8565-9F07D7F2795F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss", "Truss\Truss.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Dsl.Tests", "Truss.Dsl.Tests\Truss.Dsl.Tests.csproj", "{122A28E1-4F9F-4EE9-8A14-769DC86F04D2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Core", "Truss.Core\Truss.Core.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Core.Tests", "Truss.Core.Tests\Truss.Core.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests", "Truss.Tests\Truss.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,14 +10,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F12EACA4-384C-484F-8565-9F07D7F2795F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F12EACA4-384C-484F-8565-9F07D7F2795F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F12EACA4-384C-484F-8565-9F07D7F2795F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F12EACA4-384C-484F-8565-9F07D7F2795F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{122A28E1-4F9F-4EE9-8A14-769DC86F04D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{122A28E1-4F9F-4EE9-8A14-769DC86F04D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{122A28E1-4F9F-4EE9-8A14-769DC86F04D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{122A28E1-4F9F-4EE9-8A14-769DC86F04D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11317FC8-6709-491C-8FF9-C0B4503222BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11317FC8-6709-491C-8FF9-C0B4503222BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11317FC8-6709-491C-8FF9-C0B4503222BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
