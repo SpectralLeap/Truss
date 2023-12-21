@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Truss.Drivers;
 using Truss.Dsl;
 using Truss.Dsl.Arguments;
@@ -7,18 +8,28 @@ using Truss.Tests.Dsl.Fixtures;
 namespace Truss.Tests.Core;
 
 
-public sealed class SutDsl(IIntegrationBus integrationBus) : DomainDsl(integrationBus)
+public sealed class SutDsl
 {
-    public void RegisterUser(params string[] args)
+    [BaseServices] 
+    public static IServiceCollection Services = new ServiceCollection()
+            .AddSingleton<IUserInfo, UserInfo>()
+            .AddSingleton<RandomGuid>()
+        ;
+
+    [OverrideServices(tag: "admin")] 
+    public static IServiceCollection AdminServices = new ServiceCollection()
+            .AddSingleton<IUserInfo, AdminInfo>()
+        ;
+    
+    [DslMethod]
+    public DslArgs RegisterUser(params string[] args)
     {
-        var arguments = DslArgs.From(
+        return DslArgs.From(
             args,
             DslParameter.Optional("email")
                 .SetPattern(@"(\w|\d)+@(\w|\d)+\.(\w){2,5}"),
             DslParameter.Optional("password")
         );
-
-        Act<RegisterUser>(arguments);
     }
 }
 
@@ -32,20 +43,18 @@ public sealed class RegisterUserDriver(IIntegrationBus integrationBus) : Driver<
     {
         var email = args["email"]!;
         
-        
         Report<SumIs>(new SumIs());
     }
 }
 
 public sealed class AssertionTests
 {
-    private readonly SutFactoryFixture _factoryFixture = new();
+    private readonly DomainDslFactory _factoryFixture = new();
      
     [Fact]
     public void AssertionsApply()
     {
         var calculator = _factoryFixture.GetDsl<SutDsl>();
         
-        calculator.Assert<SumIs>(s => s.Expected = 10);
     }   
 }

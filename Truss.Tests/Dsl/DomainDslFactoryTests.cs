@@ -3,9 +3,9 @@ using Truss.Tests.Dsl.Fixtures;
 
 namespace Truss.Tests.Dsl;
 
-public sealed class DslFactoryTests
+public sealed class DomainDslFactoryTests
 {
-    private readonly SutFactoryFixture _factoryFixture = new();
+    private readonly DomainDslFactory _factoryFixture = new();
 
     [Fact]
     public void ThrowsWhenTagNotFound()

@@ -77,7 +77,7 @@ public abstract class DslParameter(string name)
     private string[] Split(string value)
     {
         return _isList ?
-                value.Split(",", StringSplitOptions.RemoveEmptyEntries)
+                value.Split([','], StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => v.Trim())
                     .ToArray()
                 : [value]

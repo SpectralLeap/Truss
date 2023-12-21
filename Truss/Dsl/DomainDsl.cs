@@ -1,9 +1,24 @@
-using Microsoft.Extensions.DependencyInjection;
 using Truss.Dsl.Arguments;
 
 namespace Truss.Dsl;
 
-public abstract class DomainDslOverrideSet<TDsl>(string tag, IServiceCollection overrideCollection) where TDsl : DomainDsl;
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public sealed class BaseServicesAttribute : Attribute
+{
+    
+}
+
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+public sealed class OverrideServicesAttribute(string tag) : Attribute
+{
+    public string Tag { get; } = tag;
+}
+
+[AttributeUsage(AttributeTargets.Method)]
+public sealed class DslMethodAttribute : Attribute
+{
+    
+}
 
 public abstract class DomainDsl(IIntegrationBus integrationBus)
 {

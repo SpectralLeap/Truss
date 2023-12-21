@@ -25,5 +25,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Truss\Truss.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Analyzer Include="../Truss.Analyzers/bin/Debug/netstandard2.0/Truss.Analyzers.dll"/>
+    </ItemGroup>
 
 </Project>

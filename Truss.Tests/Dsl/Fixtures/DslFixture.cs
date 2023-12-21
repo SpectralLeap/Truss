@@ -84,7 +84,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture AcceptsIntegersByPatternInList(params string[] args)
+    public void AcceptsIntegersByPatternInList(params string[] args)
     {
         var parameters = DslArgs.From(
             args,
@@ -95,6 +95,5 @@ public sealed class DslFixture
                 
         Value = parameters["numbers"];
                         
-        return this;
     }
 }

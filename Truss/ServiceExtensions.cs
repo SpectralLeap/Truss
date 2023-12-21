@@ -8,6 +8,19 @@ namespace Truss;
 // ReSharper disable once CheckNamespace
 internal static class ServiceExtensions
 {
+    private static List<Type>? _domainDslDeclarations;
+    private static List<Type>? _driverDeclarations;
+    
+    public static IServiceCollection Load(this IServiceCollection services, IServiceCollection otherServices)
+    {
+        foreach (var serviceDescriptor in otherServices)
+        {
+            services.Add(serviceDescriptor);
+        }
+
+        return services;
+    }
+    
     public static IServiceCollection AddTruss(
         this IServiceCollection services,
         Action<TrussConfig> config)
@@ -32,11 +45,11 @@ internal static class ServiceExtensions
     {
         var dslType = typeof(DomainDsl);
         
-        var declarations = types
+        _domainDslDeclarations ??= types
             .Where(type => dslType.IsAssignableFrom(type) && !type.IsAbstract)
             .ToList();
   
-        foreach (var declaration in declarations)
+        foreach (var declaration in _domainDslDeclarations)
         {
             services.AddSingleton(declaration);
         }
@@ -49,12 +62,13 @@ internal static class ServiceExtensions
         List<Type> types)
     {
         var driverType = typeof(Driver<>);
-        var declarations = types
+        
+        _driverDeclarations ??= types
             .Where(type => type.GetInterfaces()
                 .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == driverType))
             .ToList();
  
-        foreach (var declaration in declarations)
+        foreach (var declaration in _driverDeclarations)
         {
             var interfaceType = declaration.GetInterfaces()
                 .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == driverType);
