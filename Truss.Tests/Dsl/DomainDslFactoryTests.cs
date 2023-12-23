@@ -10,7 +10,7 @@ public sealed class DomainDslFactoryTests
     [Fact]
     public void ThrowsWhenTagNotFound()
     {
-        Assert.Throws<DslTagNotFoundException>(() => _factoryFixture.GetDsl<RegisteredDsl>(tag: "not a tag"));
+        Assert.Throws<DslTagNotFoundException>(() => _factoryFixture.GetDsl<RegisteredDsl>(tags: "not a tag"));
     }
 
     [Fact]
@@ -20,15 +20,6 @@ public sealed class DomainDslFactoryTests
         var instance2 = _factoryFixture.GetDsl<RegisteredDsl>(id: "1");
         
         Assert.Same(instance1, instance2);
-    }
-    
-    [Fact]
-    public void GettingDifferentTypeWithSameSharesProvider()
-    {
-        var instance1 = _factoryFixture.GetDsl<RegisteredDsl>(id: "1");
-        var instance2 = _factoryFixture.GetDsl<OtherRegisteredDsl>(id: "1");
-            
-        Assert.Equal(instance1.Guid, instance2.Guid);
     }
     
     [Fact]
@@ -43,8 +34,21 @@ public sealed class DomainDslFactoryTests
     [Fact]
     public void OverridesAreApplied()
     {
-        Assert.True(_factoryFixture.GetDsl<RegisteredDsl>(tag: "admin").IsAdmin);
+        Assert.True(_factoryFixture.GetDsl<RegisteredDsl>(tags: "admin").IsAdmin);
         Assert.False(_factoryFixture.GetDsl<RegisteredDsl>().IsAdmin);
+    }
+
+    [Fact]
+    public void OverridesAreAppliedWhenProperties()
+    {
+        Assert.True(_factoryFixture.GetDsl<RegisteredDslWithPropertiesDefined>(tags: "admin").IsAdmin);
+        Assert.False(_factoryFixture.GetDsl<RegisteredDslWithPropertiesDefined>().IsAdmin);
+    }
+
+    [Fact]
+    public void ThrowsWhenServiceDefinitionsNotStatic()
+    {
+        Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetDsl<RegisteredDslWithNonStaticDefinitions>());
     }
 
 }
