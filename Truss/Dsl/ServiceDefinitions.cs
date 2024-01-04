@@ -68,7 +68,7 @@ internal sealed class ServiceDefinitions
 
         var collection = (IServiceCollection)fieldInfo.GetValue(null);
 
-        if (fieldInfo.GetCustomAttribute<OverrideServicesAttribute>() is { } overrideServicesAttribute)
+        if (fieldInfo.GetCustomAttribute<ServiceOverride>() is { } overrideServicesAttribute)
             return new ServiceDefinition(collection, overrideServicesAttribute.Tag);
 
         return new ServiceDefinition(collection);
@@ -81,7 +81,7 @@ internal sealed class ServiceDefinitions
 
         var collection = (IServiceCollection)propertyInfo.GetValue(null);
         
-        if (propertyInfo.GetCustomAttribute<OverrideServicesAttribute>() is { } overrideServicesAttribute)
+        if (propertyInfo.GetCustomAttribute<ServiceOverride>() is { } overrideServicesAttribute)
             return new ServiceDefinition(collection, overrideServicesAttribute.Tag);
 
         return new ServiceDefinition(collection);
@@ -90,7 +90,7 @@ internal sealed class ServiceDefinitions
     private static bool IsServiceDefinition(MemberInfo info)
     {
         var attributes = info.GetCustomAttributes()
-                .Where(attribute => attribute is BaseServicesAttribute or OverrideServicesAttribute)
+                .Where(attribute => attribute is BaseServicesAttribute or ServiceOverride)
                 .ToList()
             ;
     

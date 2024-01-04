@@ -4,9 +4,9 @@ using Truss.Dsl.Arguments;
 
 namespace Truss;
 
-public interface IIntegrationBus
+internal interface IIntegrationBus
 {
-    public void Act<TAction>(DslArgs args);
+    public void Act(DslArgs args);
 }
 
 
@@ -16,13 +16,17 @@ internal sealed class ActionDriverNotFoundException(Type type)
 
 internal sealed class IntegrationBus(IServiceProvider serviceProvider) : IIntegrationBus
 {
-    public void Act<TAction>(DslArgs args)
+    public void Act(DslArgs args)
     {
-        var driver = serviceProvider.GetService<Driver<TAction>>()!;
+        var driverType = typeof(Driver<>).MakeGenericType(args.ActionType);
+                        
+        var driver = serviceProvider.GetService(driverType);
 
-        if (driver is null) throw new ActionDriverNotFoundException(typeof(TAction));
+        if (driver is null) throw new ActionDriverNotFoundException(args.ActionType);
+
+        var driveMethod = driverType.GetMethod("Drive");
         
-        driver.Drive(args);
+        driveMethod?.Invoke(driver, new object[] {args});
     }
 
 }

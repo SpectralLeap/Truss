@@ -1,4 +1,5 @@
 using System.Reflection;
+using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Drivers;
 
@@ -33,6 +34,8 @@ public sealed class DslServicesNotStaticException()
 /// </summary>
 public sealed class DomainDslFactory : IDisposable
 {
+    private static readonly ProxyGenerator ProxyGenerator = new();
+    
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
 
     /// <summary>
@@ -41,61 +44,75 @@ public sealed class DomainDslFactory : IDisposable
     /// </summary>
     /// <typeparam name="TDsl">The type of the DSL to retrieve.</typeparam>
     /// <param name="id">Optional. The ID of the DSL instance to retrieve. If not provided, a new GUID will be generated.</param>
-    /// <param name="tags">Optional. An array of tags to filter the available DSL instances.</param>
+    /// <param name="tags">Optional. An array of tags to apply DSL service overrides.</param>
     /// <returns>An instance of the specified DSL type.</returns>
     public TDsl GetDsl<TDsl>(string? id = null, params string[] tags) where TDsl : class
     {
         id ??= Guid.NewGuid().Take(5);
+
+        var provider = _activeProviders.TryGetValue(id, out var activeProvider) ? activeProvider : Activate(GetServices<TDsl>(tags), id);
+
+
+        var interceptor = provider.GetService<DslInterceptor>()!;
         
-        if (_activeProviders.TryGetValue(id, out var provider)) return provider.GetService<TDsl>()!;
+        var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
         
-        return Activate<TDsl>(GetServices<TDsl>(tags), id);
+        var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
+        
+        return (TDsl)ProxyGenerator.CreateClassProxyWithTarget(typeof(TDsl), instance, constructorArguments, interceptor);
+    } 
+
+    private object[] ResolveConstructorArgumentsFor<T>(IServiceProvider provider) where T : class
+    {
+        var constructorInfo = typeof(T).GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
+        if (constructorInfo == null)
+        {
+            return Array.Empty<object>();
+        }
+
+        return constructorInfo.GetParameters().Select(p => provider.GetService(p.ParameterType)).ToArray();
     }
 
     private IServiceCollection GetServices<TDsl>(params string[] tags) where TDsl : class
     {
         var collectionCopy = new ServiceCollection()
                 .AddSingleton<IIntegrationBus, IntegrationBus>()
-                .AddSingleton<TDsl>()
+                .AddSingleton<DslInterceptor>()
             ;
 
+        collectionCopy.AddSingleton<TDsl>();
+        
         var serviceDefinitions = ServiceDefinitions.For<TDsl>();
 
         collectionCopy.Load(serviceDefinitions.GetBaseServices());
         collectionCopy.Load(serviceDefinitions.GetOverrideServices(tags));
 
         var driverType = typeof(Driver<>);
-                
-        var driverDeclarations = Assembly
-            .GetExecutingAssembly()
+
+        var driverImplementations = typeof(TDsl).Assembly
             .GetTypes()
-            .Where(type => type.GetInterfaces()
-                .Any(i => i.IsGenericType 
-                          && i.GetGenericTypeDefinition() == driverType))
+            .Where(type => type.BaseType is not null && type.BaseType.IsGenericType)
+            .Where(type => type.BaseType!.GetGenericTypeDefinition() == driverType)
             .ToList();
-         
-        foreach (var declaration in driverDeclarations)
+
+        foreach (var implementation in driverImplementations)
         {
-            var interfaceType = declaration.GetInterfaces()
-                .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == driverType);
-                     
-            collectionCopy.AddTransient(interfaceType, declaration);
+            var type = implementation.BaseType;
+                                 
+            collectionCopy.AddTransient(type, implementation);
         }
-        
+
+       
         return collectionCopy;
     }
 
-    private TDsl Activate<TDsl>(IServiceCollection serviceCollection, string id)
+    private IServiceProvider Activate(IServiceCollection serviceCollection, string id)
     {
         var provider = serviceCollection.BuildServiceProvider();
         
         _activeProviders.Add(id, provider);
-        
-        var service = provider.GetService<TDsl>();
 
-        if (service is null) throw new DslNotRegisteredException(typeof(TDsl));
-
-        return service;
+        return provider;
     }
 
     private bool _disposing;

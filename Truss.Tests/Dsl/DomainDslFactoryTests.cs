@@ -12,23 +12,14 @@ public sealed class DomainDslFactoryTests
     {
         Assert.Throws<DslTagNotFoundException>(() => _factoryFixture.GetDsl<RegisteredDsl>(tags: "not a tag"));
     }
-
-    [Fact]
-    public void UsesSameInstanceWhenSameId()
-    {
-        var instance1 = _factoryFixture.GetDsl<RegisteredDsl>(id: "1");
-        var instance2 = _factoryFixture.GetDsl<RegisteredDsl>(id: "1");
-        
-        Assert.Same(instance1, instance2);
-    }
-    
+   
     [Fact]
     public void GettingDifferentIdDoesNotShareProvider()
     {
         var instance1 = _factoryFixture.GetDsl<RegisteredDsl>(id: "1");
         var instance2 = _factoryFixture.GetDsl<RegisteredDsl>(id: "2");
                 
-        Assert.NotEqual(instance1.Guid, instance2.Guid);
+        Assert.NotEqual(instance1.ProviderGuid, instance2.ProviderGuid);
     }
 
     [Fact]

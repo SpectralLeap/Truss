@@ -1,5 +1,6 @@
 using Truss.Dsl.Arguments;
 using Truss.Dsl.Parameters;
+using Truss.Tests.Core;
 
 namespace Truss.Tests.Dsl.Fixtures;
 
@@ -9,7 +10,9 @@ public sealed class DslFixture
     
     public DslFixture AcceptOnlyNameAndValue(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<Attribute>()
+            .From(
             args,
             parameters: DslParameter.Optional("name")
                 .SetAvailableValues("value")
@@ -22,7 +25,9 @@ public sealed class DslFixture
 
     public DslFixture AcceptsNamesAndList(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Optional("names")
                 .AsList()
@@ -36,7 +41,9 @@ public sealed class DslFixture
 
     public DslFixture UsesDefaultValueOfValue(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Optional("name")
                 .SetDefault("value")
@@ -49,7 +56,9 @@ public sealed class DslFixture
 
     public DslFixture OptionalDefaultingToNull(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Optional("name")
         );
@@ -61,7 +70,9 @@ public sealed class DslFixture
 
     public DslFixture RequiredParameter(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Required("name")
         );
@@ -73,7 +84,9 @@ public sealed class DslFixture
 
     public DslFixture AcceptsIntegersByPattern(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Required("number")
                 .SetPattern(@"\d+")
@@ -86,7 +99,9 @@ public sealed class DslFixture
 
     public void AcceptsIntegersByPatternInList(params string[] args)
     {
-        var parameters = DslArgs.From(
+        var parameters = DslArgs
+            .ForAction<RegisterUser>()
+            .From(
             args,
             parameters: DslParameter.Required("numbers")
                 .AsList()

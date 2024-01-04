@@ -3,62 +3,56 @@ using Truss.Dsl;
 
 namespace Truss.Tests.Dsl.Fixtures;
 
-public sealed class RegisteredDsl(
-    RandomGuid randomGuid,
-    IUserInfo userInfo
-)
+public class RegisteredDsl(IServiceProvider provider)
 {
+    
     [BaseServices]
-     private static readonly IServiceCollection BaseServices = new ServiceCollection()
+    private static readonly IServiceCollection BaseServices = new ServiceCollection()
             .AddSingleton<IUserInfo, UserInfo>()
             .AddSingleton<RandomGuid>()
-         ;
+        ;
         
-    [OverrideServices("admin")]
+    [ServiceOverride("admin")]
     private static readonly IServiceCollection AdminServices = new ServiceCollection()
         .AddSingleton<IUserInfo, AdminInfo>();
     
-    public Guid Guid => randomGuid.Guid;
+    public Guid ProviderGuid => provider.GetService<RandomGuid>()!.Guid;
 
-    public bool IsAdmin => userInfo.IsAdmin;
+    public Guid TypeGuid => Guid.NewGuid();
+    
+    public bool IsAdmin => provider.GetService<IUserInfo>()!.IsAdmin;
 }
 
-public sealed class RegisteredDslWithPropertiesDefined(
-    RandomGuid randomGuid,
-    IUserInfo userInfo
-)
+public class RegisteredDslWithPropertiesDefined(IServiceProvider provider)
 {
     [BaseServices]
-     private static IServiceCollection BaseServices => new ServiceCollection()
-            .AddSingleton<IUserInfo, UserInfo>()
-            .AddSingleton<RandomGuid>()
-         ;
+    private static IServiceCollection BaseServices => new ServiceCollection()
+        .AddSingleton<IUserInfo, UserInfo>()
+        .AddSingleton<RandomGuid>()
+    ;
         
-    [OverrideServices("admin")]
+    [ServiceOverride("admin")]
     private static IServiceCollection AdminServices => new ServiceCollection()
         .AddSingleton<IUserInfo, AdminInfo>();
     
-    public Guid Guid => randomGuid.Guid;
+    public Guid Guid => provider.GetService<RandomGuid>()!.Guid;
 
-    public bool IsAdmin => userInfo.IsAdmin;
+    public bool IsAdmin => provider.GetService<IUserInfo>()!.IsAdmin;
 }
 
-public sealed class RegisteredDslWithNonStaticDefinitions(
-    RandomGuid randomGuid,
-    IUserInfo userInfo
-)
+public class RegisteredDslWithNonStaticDefinitions(IServiceProvider provider)
 {
     [BaseServices]
-     private IServiceCollection BaseServices => new ServiceCollection()
-            .AddSingleton<IUserInfo, UserInfo>()
-            .AddSingleton<RandomGuid>()
-         ;
+    private IServiceCollection BaseServices => new ServiceCollection()
+        .AddSingleton<IUserInfo, UserInfo>()
+        .AddSingleton<RandomGuid>()
+    ;
         
-    [OverrideServices("admin")]
+    [ServiceOverride("admin")]
     private IServiceCollection AdminServices => new ServiceCollection()
         .AddSingleton<IUserInfo, AdminInfo>();
     
-    public Guid Guid => randomGuid.Guid;
+    public Guid Guid => provider.GetService<RandomGuid>()!.Guid;
 
-    public bool IsAdmin => userInfo.IsAdmin;
+    public bool IsAdmin => provider.GetService<IUserInfo>()!.IsAdmin;
 }

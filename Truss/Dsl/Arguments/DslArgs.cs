@@ -12,11 +12,12 @@ public sealed class DslArgumentNotInParameterSetException(string name, string[] 
 
 public sealed class DslArgs
 {
-    private readonly Dictionary<string, DslParameter> _parameterSet;
+    internal readonly Type ActionType;
+    private Dictionary<string, DslParameter> _parameterSet;
 
-    private DslArgs(Dictionary<string, DslParameter> parameterSet)
+    private DslArgs(Type actionType)
     {
-        _parameterSet = parameterSet;
+        ActionType = actionType;
     }
  
     public string? this[string name]
@@ -29,7 +30,7 @@ public sealed class DslArgs
         }
     }
     
-    public static DslArgs From(string[] args, params DslParameter[] parameters)
+    public DslArgs From(string[] args, params DslParameter[] parameters)
     {
         var parameterSet = parameters.ToDictionary(p => p.Name);
         
@@ -61,7 +62,14 @@ public sealed class DslArgs
         if (unsetRequiredParams.Any())
             throw new DslRequiredParameterNotSetException(unsetRequiredParams.Select(p => p.Name).ToArray());
         
-        return new DslArgs(parameterSet);
+        _parameterSet = parameterSet;
+        
+        return this;
+    }
+
+    public static DslArgs ForAction<TAction>()
+    {
+        return new DslArgs(typeof(TAction));
     }
    
 }

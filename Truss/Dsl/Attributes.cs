@@ -10,7 +10,7 @@ public sealed class BaseServicesAttribute : Attribute;
 /// Represents an attribute that is used to mark a field or property for overriding services with a specific tag.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class OverrideServicesAttribute(string tag) : Attribute
+public sealed class ServiceOverride(string tag) : Attribute
 {
     /// <summary>
     /// Gets the tag of the property.
