@@ -36,7 +36,7 @@ public sealed class DslArgs
         
         foreach (var arg in args)
         {
-            var argParts = arg.Split([':'], StringSplitOptions.RemoveEmptyEntries)
+            var argParts = arg.Split(new char[]{':'}, StringSplitOptions.RemoveEmptyEntries)
                 .Where(a => !string.IsNullOrWhiteSpace(a))
                 .ToList()
                 ;

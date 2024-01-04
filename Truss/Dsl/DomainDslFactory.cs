@@ -1,4 +1,3 @@
-using System.Reflection;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Drivers;
@@ -51,7 +50,6 @@ public sealed class DomainDslFactory : IDisposable
         id ??= Guid.NewGuid().Take(5);
 
         var provider = _activeProviders.TryGetValue(id, out var activeProvider) ? activeProvider : Activate(GetServices<TDsl>(tags), id);
-
 
         var interceptor = provider.GetService<DslInterceptor>()!;
         

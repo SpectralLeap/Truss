@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests", "Truss.Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Analyzers", "Truss.Analyzers\Truss.Analyzers.csproj", "{C33D671A-3F9D-44F1-B522-DBEA46E707F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.Applications.Protobufs", "Truss.Tests.Applications.Protobufs\Truss.Tests.Applications.Protobufs.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.GrpcService", "Truss.Tests.GrpcService\Truss.Tests.GrpcService.csproj", "{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

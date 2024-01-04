@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Authentication.Grpc";
+
+package authentication;
+
+
+service AuthenticationService {
+  rpc UnaryCall(Message) returns (Message) {}
+
+  rpc ServerStreamingCall(Message) returns (stream Message) {}
+
+  rpc ClientStreamingCall(stream Message) returns (Message) {}
+
+  rpc BidirectionalStreamingCall(stream Message) returns (stream Message) {}
+}
+
+message Message {
+  string content = 1;
+}
