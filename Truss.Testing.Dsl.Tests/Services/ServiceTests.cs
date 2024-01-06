@@ -1,6 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Truss.Testing.Dsl.Services;
-using Truss.Testing.Dsl.Tests.Core;
 using Truss.Testing.Dsl.Tests.Drivers;
 
 namespace Truss.Testing.Dsl.Tests.Services;
@@ -75,9 +72,4 @@ public sealed class ServiceTests
 
         Assert.Contains("IncorrectType", msg);
     }
-}
-
-public class DslWithWrongCollectionType : Dsl
-{
-    [BaseServices] public static IServiceProvider IncorrectType = new ServiceCollection().BuildServiceProvider();
 }

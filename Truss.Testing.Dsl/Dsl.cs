@@ -8,7 +8,7 @@ namespace Truss.Testing.Dsl;
 public abstract class Dsl
 {
     /// <summary>
-    /// Override to 
+    /// Override to perform actions before the driver
     /// </summary>
     /// <param name="args"></param>
     [DslMethod]

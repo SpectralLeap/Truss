@@ -1,8 +1,6 @@
-using Truss.Testing.Dsl.Tests.Drivers;
+namespace Truss.Testing.Dsl.Tests.Drivers;
 
-namespace Truss.Testing.Dsl.Tests.Core;
-
-public sealed class AssertionTests
+public sealed class DriverTests
 {
     private readonly DslFactory _factoryFixture = new();
      
@@ -11,7 +9,6 @@ public sealed class AssertionTests
     {
         var system = _factoryFixture.GetDsl<SutDsl>();
         
-        await system.RegisterUser();
         await system.RegisterUser();
         
         system.AssertRegistered();

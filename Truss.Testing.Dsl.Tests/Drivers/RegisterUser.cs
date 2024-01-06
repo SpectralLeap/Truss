@@ -1,6 +1,6 @@
 using Truss.Testing.Dsl.Drivers;
 
-namespace Truss.Testing.Dsl.Tests.Core;
+namespace Truss.Testing.Dsl.Tests.Drivers;
 
 public class RegisterUser;
 

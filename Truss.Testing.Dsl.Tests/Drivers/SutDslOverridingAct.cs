@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Testing.Dsl.Services;
-using Truss.Testing.Dsl.Tests.Core;
 
 namespace Truss.Testing.Dsl.Tests.Drivers;
 
@@ -35,8 +34,8 @@ public class SutDslOverridingAct(RegistrationStore store) : Dsl
 
     public void AssertBothActionsHappened()
     {
-        store.Has(DrivenEmail);
-        store.Has(LocalEmail);
+        Assert.True(store.Has(DrivenEmail));
+        Assert.True(store.Has(LocalEmail));
     }
 
 }

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Testing.Dsl.Services;
-using Truss.Testing.Dsl.Tests.Core;
+using Truss.Testing.Dsl.Tests.Drivers;
 using Truss.Testing.Dsl.Tests.Fixtures;
 
 namespace Truss.Testing.Dsl.Tests.Services;

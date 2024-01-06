@@ -1,4 +1,4 @@
-using Truss.Testing.Dsl.Tests.Core;
+using Truss.Testing.Dsl.Tests.Drivers;
 
 namespace Truss.Testing.Dsl.Tests.Services;
 
