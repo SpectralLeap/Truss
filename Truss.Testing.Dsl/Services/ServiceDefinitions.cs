@@ -52,20 +52,20 @@ internal sealed class ServiceDefinitions
     private static bool AssertStatic(PropertyInfo propertyInfo)
     {
         if (propertyInfo.GetMethod.IsStatic) return true;
-        throw new DslServicesNotStaticException();
+        throw new DslServicesNotStaticException(propertyInfo);
     }
 
     private static bool AssertStatic(FieldInfo fieldInfo)
     {
         if (fieldInfo.IsStatic) return true;
         
-        throw new DslServicesNotStaticException();
+        throw new DslServicesNotStaticException(fieldInfo);
     }
 
     private static ServiceDefinition ParseDefinition(FieldInfo fieldInfo)
     {
         if (fieldInfo.FieldType != typeof(IServiceCollection))
-            throw new DslServiceCollectionNotServiceCollectionException();
+            throw new DslServiceDefinitionIsNotIServiceCollectionException(fieldInfo);
 
         var collection = (IServiceCollection)fieldInfo.GetValue(null);
 
@@ -78,7 +78,7 @@ internal sealed class ServiceDefinitions
     private static ServiceDefinition ParseDefinition(PropertyInfo propertyInfo)
     {
         if (propertyInfo.GetMethod.ReturnType != typeof(IServiceCollection))
-            throw new DslServiceCollectionNotServiceCollectionException();
+            throw new DslServiceDefinitionIsNotIServiceCollectionException(propertyInfo);
 
         var collection = (IServiceCollection)propertyInfo.GetValue(null);
         

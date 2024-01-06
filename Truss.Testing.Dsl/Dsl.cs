@@ -8,13 +8,14 @@ namespace Truss.Testing.Dsl;
 public abstract class Dsl
 {
     /// <summary>
-    /// Do not override
+    /// Override to 
     /// </summary>
     /// <param name="args"></param>
     [DslMethod]
     // ReSharper disable once VirtualMemberNeverOverridden.Global
     // This is used for the proxy interceptor
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    protected virtual async Task Act(DslArgs args) { }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    protected virtual Task Act(DslArgs args)
+    {
+        return Task.CompletedTask;
+    }
 }

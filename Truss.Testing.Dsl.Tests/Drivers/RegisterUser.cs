@@ -9,6 +9,6 @@ public class RegisterUserDriver(RegistrationStore registrationStore) : Driver<Re
     public override async Task Drive(DslArgs args)
     {
         registrationStore.AddData(args["email"]!);
-        await Task.Delay(10);
+        await Task.Delay(1);
     }
 }

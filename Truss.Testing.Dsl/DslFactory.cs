@@ -1,3 +1,4 @@
+using System.Reflection;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,14 +16,20 @@ public sealed class DslTagNotFoundException(string tag, IEnumerable<string> avai
 /// <summary>
 /// Represents an exception that is thrown when a DSL Collection is not of type IServiceCollection.
 /// </summary>
-public sealed class DslServiceCollectionNotServiceCollectionException() 
-    : Exception("All Base Collections must be defined as IServiceCollection");
+public sealed class DslServiceDefinitionIsNotIServiceCollectionException(MemberInfo info) 
+    : Exception($"{info.Name} is not an IServiceCollection. All service definitions must be defined as IServiceCollection");
 
 /// <summary>
 /// Represents an exception that is thrown when a Dsl service is not defined as Static
 /// </summary>
-public sealed class DslServicesNotStaticException() 
-    : Exception("Dsl Services must be defined as Static");
+public sealed class DslServicesNotStaticException(MemberInfo info) 
+    : Exception($"The service definition {info.Name} is not static. Dsl Services must be a static field or property");
+
+/// <summary>
+/// The exception that is thrown when services requested by a specific type were not registered.
+/// </summary>
+public sealed class DslServicesNotRegisteredException(Type type) : Exception($"Services requested by {type.Name} were not registered on the type." 
+                                                                             + $" Assure all types requested for are registered in a {nameof(BaseServicesAttribute)}");
 
 /// <summary>
 /// Represents a factory for creating DSL (Domain-Specific Language) instances.
@@ -54,10 +61,18 @@ public sealed class DslFactory : IDisposable
         var interceptor = provider.GetService<DslInterceptor>()!;
         
         var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
-        
-        var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
-        
-        return (TDsl)ProxyGenerator.CreateClassProxyWithTarget(typeof(TDsl), instance, constructorArguments, interceptor);
+
+        try
+        {
+            var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
+            return (TDsl)ProxyGenerator.CreateClassProxyWithTarget(typeof(TDsl), instance, constructorArguments, interceptor);
+        }
+        catch (InvalidOperationException ex)
+        {
+            if (ex.Message.ToLower().StartsWith("unable to resolve service")) throw new DslServicesNotRegisteredException(typeof(TDsl));
+
+            throw;
+        }
     } 
 
     private object[] ResolveConstructorArgumentsFor<T>(IServiceProvider provider) where T : class
@@ -130,3 +145,4 @@ public sealed class DslFactory : IDisposable
         }
     }
 }
+
