@@ -1,14 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss", "Truss\Truss.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl", "Truss.Testing.Dsl\Truss.Testing.Dsl.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests", "Truss.Tests\Truss.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.Tests", "Truss.Testing.Dsl.Tests\Truss.Testing.Dsl.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Analyzers", "Truss.Analyzers\Truss.Analyzers.csproj", "{C33D671A-3F9D-44F1-B522-DBEA46E707F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.Protobufs", "ExampleApplication.Protobufs\ExampleApplication.Protobufs.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.Applications.Protobufs", "Truss.Tests.Applications.Protobufs\Truss.Tests.Applications.Protobufs.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.WebApi", "ExampleApplication.WebApi\ExampleApplication.WebApi.csproj", "{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.GrpcService", "Truss.Tests.GrpcService\Truss.Tests.GrpcService.csproj", "{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.AcceptanceTests", "ExampleApplication.AcceptanceTests\ExampleApplication.AcceptanceTests.csproj", "{80B7AA57-422C-44F7-B23D-04C0EF20AF74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{217B9A39-EF8E-41CB-AEB9-7F334D763F45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.AspNetCore", "Truss.Testing.Dsl.AspNetCore\Truss.Testing.Dsl.AspNetCore.csproj", "{D5F1B9D2-404E-43FF-8723-11F6C6A17115}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +28,6 @@ Global
 		{4EF46403-F0B0-45DE-8483-006B90EBEE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EF46403-F0B0-45DE-8483-006B90EBEE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EF46403-F0B0-45DE-8483-006B90EBEE41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C33D671A-3F9D-44F1-B522-DBEA46E707F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA21927-037D-4385-98AA-B522FFB0F3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,5 +36,18 @@ Global
 		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B7AA57-422C-44F7-B23D-04C0EF20AF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B7AA57-422C-44F7-B23D-04C0EF20AF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B7AA57-422C-44F7-B23D-04C0EF20AF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B7AA57-422C-44F7-B23D-04C0EF20AF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
+		{ADA21927-037D-4385-98AA-B522FFB0F3E3} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
+		{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
 	EndGlobalSection
 EndGlobal
