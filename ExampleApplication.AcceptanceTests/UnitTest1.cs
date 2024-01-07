@@ -12,13 +12,25 @@ namespace ExampleApplication.AcceptanceTests;
 public sealed class Login;
 public sealed class Heartbeat;
 
-public sealed class HeartbeatDriver(HttpClient client) : Driver<Heartbeat>
+public sealed class RequestContext
+{
+    private readonly List<string?> _requests = new();
+
+    public void Add(string? value)
+    {
+        _requests.Add(value);
+    }
+}
+
+public sealed class HeartbeatDriver(HttpClient client, RequestContext requestContext) : Driver<Heartbeat>
 {
     public override async Task Drive(DslArgs args)
     {
         var c = new RestClient(client.BaseAddress!);
         var request = new RestRequest("/heartbeat");
-        var content = await c.ExecuteAsync(request);
+        var response = await c.ExecuteAsync(request);
+
+        requestContext.Add(response.Content);
     }
 }
 
@@ -30,7 +42,7 @@ public sealed class LoginDriver() : Driver<Login>
     }
 }
 
-public class ExampleServiceDsl : Dsl
+public class ExampleServiceDsl(RequestContext requestContext) : Dsl
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()
@@ -43,7 +55,6 @@ public class ExampleServiceDsl : Dsl
 
     public void AssertHeartbeat()
     {
-        
     }
 }
 

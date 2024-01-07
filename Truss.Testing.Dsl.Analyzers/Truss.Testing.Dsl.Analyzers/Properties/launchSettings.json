@@ -1,9 +1,0 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
-  "profiles": {
-    "DebugRoslynAnalyzers": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "../Truss.Testing.Dsl.Analyzers.Sample/Truss.Testing.Dsl.Analyzers.Sample.csproj"
-    }
-  }
-}

@@ -20,7 +20,6 @@ internal sealed class DriverDispatcher(IServiceProvider serviceProvider, ILogger
         
         var driverType = typeof(Driver<>).MakeGenericType(args.ActionType);
 
-        if (serviceProvider is null) throw new ApplicationException();
         var driver = serviceProvider.GetService(driverType);
 
         if (driver is null) throw new DriverNotFoundException(args.ActionType);
