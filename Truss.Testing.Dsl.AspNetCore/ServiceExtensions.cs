@@ -16,7 +16,7 @@ public static class ServiceExtensions
                                  service.ServiceType != typeof(WebApplicationFactory<T>) 
                                  && service.ServiceType  != typeof(HttpClient)))
                     {
-                        var serviceInstance = provider.GetService(serviceDescriptor.ServiceType);
+                        var serviceInstance = provider.GetService(serviceDescriptor.ServiceType)!;
 
                         // Check the lifetime of the service and add it accordingly
                         switch (serviceDescriptor.Lifetime)

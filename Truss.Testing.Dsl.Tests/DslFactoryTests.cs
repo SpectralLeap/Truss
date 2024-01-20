@@ -20,7 +20,7 @@ public sealed class DslFactoryTests
                 
         Assert.NotEqual(instance1.ProviderGuid, instance2.ProviderGuid);
     }
-
+    
     [Fact]
     public void OverridesAreApplied()
     {

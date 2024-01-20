@@ -8,7 +8,8 @@ public class SutDslOverridingAct(RegistrationStore store) : Dsl
     private const string LocalEmail = "local@local.com";
     private const string DrivenEmail = "driver@driver.com";
 
-    [BaseServices] private static IServiceCollection BaseServices = new ServiceCollection().AddSingleton<RegistrationStore>();
+    [BaseServices] 
+    private static IServiceCollection BaseServices = new ServiceCollection().AddSingleton<RegistrationStore>();
     
     public async Task RegisterUser(params string[] args)
     {

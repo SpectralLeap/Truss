@@ -46,7 +46,9 @@ public class ExampleServiceDsl(RequestContext requestContext) : Dsl
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()
-        .AddWebServer<Program>();
+        .AddWebServer<Program>()
+        .AddSingleton<RequestContext>()
+    ;
 
     public async Task Login(params string[] args)
     {

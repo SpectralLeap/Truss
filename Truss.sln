@@ -14,6 +14,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{21
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.AspNetCore", "Truss.Testing.Dsl.AspNetCore\Truss.Testing.Dsl.AspNetCore.csproj", "{D5F1B9D2-404E-43FF-8723-11F6C6A17115}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results", "Truss.Results\Truss.Results.csproj", "{ED2C02C9-96F0-4813-AAD4-48EF73997855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests", "Truss.Results.Tests\Truss.Results.Tests.csproj", "{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Functional", "Truss.Results.Functional\Truss.Results.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +50,18 @@ Global
 		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5F1B9D2-404E-43FF-8723-11F6C6A17115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
