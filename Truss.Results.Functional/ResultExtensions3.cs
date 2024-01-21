@@ -19,7 +19,7 @@ public static class ResultExtensions3
         this Result<(T1, T2, T3)> result,
         Func<T1, T2, T3, Result<TAppend>> mapping)
     {
-        if (result.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -29,9 +29,9 @@ public static class ResultExtensions3
                 result.SuccessValue.Item3
             );
 
-            if (nextResult.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(nextResult.FailureDetails);
+            if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
             
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
                 result.SuccessValue.Item3,
@@ -40,7 +40,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -58,7 +58,7 @@ public static class ResultExtensions3
         this Result<(T1, T2, T3)> result,
         Func<T1, T2, T3, TAppend> mapping)
     {
-        if (result.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -68,7 +68,7 @@ public static class ResultExtensions3
                 result.SuccessValue.Item3
             );
 
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
                 result.SuccessValue.Item3,
@@ -77,7 +77,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -96,7 +96,7 @@ public static class ResultExtensions3
         Func<T1, T2, T3, Task<TAppend>> mapping)
     {
         var awaitedResult = await result.ConfigureAwait(false);
-        if (awaitedResult.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(awaitedResult.FailureDetails);
+        if (awaitedResult.Failed) return Result.Fail(awaitedResult.FailureDetails);
 
         try
         {
@@ -106,7 +106,7 @@ public static class ResultExtensions3
                 awaitedResult.SuccessValue.Item3
             ).ConfigureAwait(false);
 
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                     awaitedResult.SuccessValue.Item1,
                     awaitedResult.SuccessValue.Item2,
                     awaitedResult.SuccessValue.Item3,
@@ -116,7 +116,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -135,7 +135,7 @@ public static class ResultExtensions3
         Func<T1, T2, T3, Task<Result<TAppend>>> mapping)
     {
         var awaitedResult = await result.ConfigureAwait(false);
-        if (awaitedResult.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(awaitedResult.FailureDetails);
+        if (awaitedResult.Failed) return Result.Fail(awaitedResult.FailureDetails);
 
         try
         {
@@ -145,9 +145,9 @@ public static class ResultExtensions3
                 awaitedResult.SuccessValue.Item3
             ).ConfigureAwait(false);
 
-            if (nextResult.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(nextResult.FailureDetails);
+            if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
 
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                     awaitedResult.SuccessValue.Item1,
                     awaitedResult.SuccessValue.Item2,
                     awaitedResult.SuccessValue.Item3,
@@ -157,7 +157,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -175,7 +175,7 @@ public static class ResultExtensions3
         this Result<(T1, T2, T3)> result,
         Func<T1, T2, T3, Task<Result<TAppend>>> mapping)
     {
-        if (result.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -185,9 +185,9 @@ public static class ResultExtensions3
                 result.SuccessValue.Item3
             ).ConfigureAwait(false);
 
-            if (nextResult.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(nextResult.FailureDetails);
+            if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
 
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
                 result.SuccessValue.Item3,
@@ -196,7 +196,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -214,7 +214,7 @@ public static class ResultExtensions3
         this Result<(T1, T2, T3)> result,
         Func<T1, T2, T3, Task<TAppend>> mapping)
     {
-        if (result.Failed) return Result<(T1, T2, T3, TAppend)>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -224,7 +224,7 @@ public static class ResultExtensions3
                 result.SuccessValue.Item3
             ).ConfigureAwait(false);
 
-            return Result<(T1, T2, T3, TAppend)>.Success((
+            return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
                 result.SuccessValue.Item3,
@@ -233,7 +233,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<(T1, T2, T3, TAppend)>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -253,7 +253,7 @@ public static class ResultExtensions3
         Func<T1, T2, T3, T4, Result<TOut>> mapping
     )
     {
-        if (result.Failed) return Result<TOut>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -267,7 +267,7 @@ public static class ResultExtensions3
         }
         catch (Exception ex)
         {
-            return Result<TOut>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -287,7 +287,7 @@ public static class ResultExtensions3
         Func<T1, T2, T3, T4, TOut> mapping
     )
     {
-        if (result.Failed) return Result<TOut>.Fail(result.FailureDetails);
+        if (result.Failed) return Result.Fail(result.FailureDetails);
 
         try
         {
@@ -297,11 +297,11 @@ public static class ResultExtensions3
                 result.SuccessValue.Item3, result.SuccessValue.Item4
             );
 
-            return Result<TOut>.Success(nextResult);
+            return Result.Success(nextResult);
         }
         catch (Exception ex)
         {
-            return Result<TOut>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 
@@ -323,7 +323,7 @@ public static class ResultExtensions3
     {
         var awaitedResult = await result.ConfigureAwait(false);
 
-        if (awaitedResult.Failed) return Result<TOut>.Fail(awaitedResult.FailureDetails);
+        if (awaitedResult.Failed) return Result.Fail(awaitedResult.FailureDetails);
 
         try
         {
@@ -334,11 +334,11 @@ public static class ResultExtensions3
                 awaitedResult.SuccessValue.Item4
             );
 
-            return Result<TOut>.Success(nextResult);
+            return Result.Success(nextResult);
         }
         catch (Exception ex)
         {
-            return Result<TOut>.Fail(ex);
+            return Result.Fail(ex);
         }
     }
 }

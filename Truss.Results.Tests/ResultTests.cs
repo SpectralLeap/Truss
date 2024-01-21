@@ -23,7 +23,7 @@ public sealed class ResultTests
     [Fact]
     public void PassesFailure()
     {
-        var x = Result.Fail("some")
+        var x = ((Result<string>)Result.Fail("some"))
             .Then(s => Result.Success(s.Length))
             .Then(i => i == 4 ? Result.Success() : Result.Fail("No bueno"))
             .Then(_ => Result.Success())
@@ -78,7 +78,7 @@ public sealed class ResultTests
     [Fact]
     public void FailsThroughManyResults()
     {
-        var x = Result.Fail("bad")
+        var x = ((Result<int>) Result.Fail("bad"))
             .Then(i => Result.Success(i + 2));
                     
         x.AssertFailure();
@@ -134,7 +134,7 @@ public sealed class ResultTests
     public void NullForSuccessThrowsAnInvalidState()
     {
         Assert.Throws<InvalidResultStateException>((Action)(() => 
-            Result.Success(null)
+            Result.Success((string)null)
                 .Then(_ => Result.Success(1))));
     }
      
@@ -156,31 +156,20 @@ public sealed class ResultTests
     public void MatchingOnNullThrows()
     {
         Assert.Throws<InvalidResultStateException>((Action)(() =>
-                Result.Success(null)
+                Result.Success((string)null)
                     .Resolve(
                         forSuccess: _ => Result.Success("["),
                         forFailure: _ => Result.Fail("bad bad not good"))))
             ;
     }
         
-    [Fact]
-    public async Task CanDoAsyncMatch()
-    {
-        var x = await Result.Success("1")
-                .Resolve(
-                    forSuccess: async s => await Task.Run(() => Task.FromResult(Result.Success(s))),
-                    forFailure: async _ => await Task.Run(() => Task.FromResult(Result.Fail("bad bad not good"))))
-            ;
-
-        x.AssertSuccessful();
-    }
     
     [Fact]
     public async Task CanDoAsyncMap()
     {
         var x = await Result.Success("1")
-                .Then(s => Task.FromResult(Result.Success(s)))
-                .Then(async s => await Task.Run(() => Task.FromResult(Result.Success(s))))
+                .ThenAsync(s => Task.FromResult(Result.Success(s)))
+                .ThenAsync(async s => await Task.Run(() => Task.FromResult(Result.Success(s))))
             ;
     
         x.AssertSuccessful();
@@ -190,9 +179,9 @@ public sealed class ResultTests
     public async Task CanDoAsyncMapFromResultTResult()
     {
         var x = await Result.Success("1")
-                .Then(s => Task.FromResult(Result.Success(s)))
-                .Then(async s => await Task.Run(() => Task.FromResult(Result.Success(s))))
-                .Then(_ => Task.FromResult(Result.Success("yay")))
+                .ThenAsync(s => Task.FromResult(Result.Success(s)))
+                .ThenAsync(async s => await Task.Run(() => Task.FromResult(Result.Success(s))))
+                .ThenAsync(_ => Task.FromResult(Result.Success("yay")))
             ;
         
         x.AssertSuccessful();
@@ -201,8 +190,8 @@ public sealed class ResultTests
     [Fact]
     public async Task FailureWorksWithAsyncStuff()
     {
-        var x = await Result.Fail("nope")
-                .Then(_ => Task.FromResult(Result.Success(2)))
+        var x = ((Task<Result<string>>) await Task.FromResult(Result.Fail("nope")))
+                .ThenAsync(_ => Task.FromResult(Result.Success(2)))
                 .Then(async i => await Task.Run(() => Task.FromResult(Result.Success($"{i}"))))
                 .Then(_ => Task.FromResult(Result.Success("yay")))
             ;
@@ -275,10 +264,10 @@ public sealed class ResultTests
     public async Task CanDoAsyncMapFromResultToResult()
     {
         var x = await Result.Success("1")
-                .Then(_ => Task.FromResult(Result.Success()))
+                .ThenAsync(_ => Task.FromResult(Result.Success()))
             ;
 
-        var y = await x.Then(_ => Task.FromResult(Result.Success()));
+        var y = await x.ThenAsync(_ => Task.FromResult(Result.Success()));
         
             
         x.AssertSuccessful();
@@ -338,13 +327,13 @@ public sealed class ResultTests
     {
         // This should compile in this structure
         var x = await (await DoThing())
-                .Then(async _ => await DoThing())
-                .Then(async _ => await DoThing())
-                .Then(async _ => await DoOtherThing())
-                .Then(async _ => await DoThing())
-                .Then(DoStringThing)
-                .Then(async _ => await DoOtherThing())
-                .Then(DoThing)
+                .ThenAsync(async _ => await DoThing())
+                .ThenAsync(async _ => await DoThing())
+                .ThenAsync(async _ => await DoOtherThing())
+                .ThenAsync(async _ => await DoThing())
+                .ThenAsync(DoStringThing)
+                .ThenAsync(async _ => await DoOtherThing())
+                .ThenAsync(DoThing)
             ;
     
         x.AssertSuccessful();
@@ -453,7 +442,7 @@ public sealed class ResultTests
         var list = new List<string>();
         // This should compile in this structure
         var x = await DoThing()
-                .Then(s => Result.Success($"Good {s}"))
+                .ThenAsync(s => Result.Success($"Good {s}"))
                 .Then(s => list.Add(s))
             ;
                 

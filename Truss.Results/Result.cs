@@ -11,7 +11,7 @@ public static class Result
     /// Create success
     /// </summary>
     /// <returns></returns>
-    public static Result<Unit> Success() => new(Unit.Value);
+    public static Result<None> Success() => new(None.Value);
 
     /// <summary>
     /// Create success
@@ -25,14 +25,14 @@ public static class Result
     /// </summary>
     /// <param name="reasons"></param>
     /// <returns></returns>
-    public static Result<Unit> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
+    public static Result<None> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
 
     /// <summary>
     /// Create failure from exception
     /// </summary>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<Unit> Fail(Exception ex) => new(FailureDetails.From(ex));
+    public static Result<None> Fail(Exception ex) => new(FailureDetails.From(ex));
 
     /// <summary>
     /// Create failure from exception with a message
@@ -40,14 +40,14 @@ public static class Result
     /// <param name="message"></param>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<Unit> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
+    public static Result<None> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
 
     /// <summary>
     /// Create failure from details
     /// </summary>
     /// <param name="details"></param>
     /// <returns></returns>
-    public static Result<Unit> Fail(FailureDetails details) => new(details);
+    public static Result<None> Fail(FailureDetails details) => new(details);
 }
 
 /// <summary>
@@ -106,7 +106,7 @@ public sealed record Result<TResult> : IResult
 
     public static implicit operator Result<TResult>(TResult value) => new(value);
     
-    public static implicit operator Result<TResult>(Result<Unit> unit) => new(unit.FailureDetails);
+    public static implicit operator Result<TResult>(Result<None> unit) => new(unit.FailureDetails);
     
     /// <summary>
     /// Without an operation it is safe to implicitly cast

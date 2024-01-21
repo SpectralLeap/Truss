@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests", "Trus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Functional", "Truss.Results.Functional\Truss.Results.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Contextual", "Truss.Results.Contextual\Truss.Results.Contextual.csproj", "{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests.Contextual", "Truss.Results.Tests.Contextual\Truss.Results.Tests.Contextual.csproj", "{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,14 @@ Global
 		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
