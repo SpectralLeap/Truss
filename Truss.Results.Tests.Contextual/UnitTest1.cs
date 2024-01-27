@@ -12,16 +12,22 @@ internal sealed class NumberProvider
     private readonly int _value = Random.Shared.Next();
     private readonly int _delay = Random.Shared.Next(1, 100);
     
-    public async Task<Number> GetNumber(int i = 0)
+    public Number GetNumberSync(int i = 0)
     {
-        await Task.Delay(_delay);
+        return new Number(_value + i);
+    }
+        
+
+    public async Task<Number> GetNumberAsync(int i = 0)
+    {
+        await Task.Delay(_delay).ConfigureAwait(false);
         
         return new Number(_value + i);
     }
 
-    public async Task<Result<Number>> GetNumberResult()
+    public async Task<Result<Number>> GetNumberResultAsync()
     {
-        return await GetNumber();
+        return await GetNumberAsync().ConfigureAwait(false);
     }
 }
 
@@ -30,26 +36,26 @@ internal sealed class StringProvider
     private readonly string _value = Guid.NewGuid().ToString();
     private readonly int _delay = Random.Shared.Next(10, 100);
 
-    public String GetString()
+    public String GetStringSync()
     {
         return new String(_value);
     }
 
     public Result<String> GetStringResult()
     {
-        return Result.Success(GetString());
+        return Result.Success(GetStringSync());
     }
     
     public async Task<String> GetStringAsync(String? s = null)
     {
-        await Task.Delay(_delay);
+        await Task.Delay(_delay).ConfigureAwait(false);
 
         return new String(s?.Value ?? _value);
     }
     
     public async Task<Result<String>> GetStringResultAsync()
     {
-        return await GetStringAsync();
+        return await GetStringAsync().ConfigureAwait(false);
     }
 }
 
@@ -72,13 +78,20 @@ public sealed class UnitTest1
         var strings = _provider.GetService<StringProvider>()!;
         
         var result = await contextFactory
-                .From(await strings.GetStringResultAsync())
-                .DoAsync(_ => numbers.GetNumber())
-                .ThenAsync(async s => await strings.GetStringAsync(s))
+                .From(await strings.GetStringResultAsync().ConfigureAwait(false))
+                .DoAsync(_ => numbers.GetNumberAsync())
+                .DoAsync(_ => strings.GetStringSync())
+                .ThenAsync(async s => await strings.GetStringAsync(s).ConfigureAwait(false))
+                .ThenAsync(async _ => await numbers.GetNumberResultAsync().ConfigureAwait(false))
+                .ThenAsync(_ => strings.GetStringSync())
                 .ThenAsync(s => s)
+                .DoAsync(s => Console.WriteLine(s.Value))
+                .Resolve()
+                .ConfigureAwait(false)
             ;
 
-        Assert.Equal("x", result.Resolve().SuccessValue.Value);
+        Assert.True(result.Succeeded);
+        Assert.True(Guid.TryParse(result.SuccessValue.Value, out _));
     }
     
     [Fact]
@@ -89,14 +102,14 @@ public sealed class UnitTest1
                 .Then(i => Result.Success(i / 2.0))
                 .Then(b => Result.Success(3))
                 .Do(i => i * 2)
-                .Do(i => (Result<int>)Result.Fail("bad"))
+                .Do(_ => (Result<int>)Result.Fail("bad"))
                 .Do(i => new List<int>().Add(i))
                 .Do(() => Console.WriteLine("Here"))
                 .Then(_ => Result.Success())
                 .Resolve()
             ;
             
-        Assert.False(result.Succeeded);
+        Assert.True(result.Failed);
     }
 
     [Fact]
@@ -104,10 +117,10 @@ public sealed class UnitTest1
     {
         string rVal = "";
         var result = contextFactory.From("23")
-            .And(s => "a" + s)
-            .DoWith(
-                f1: s => rVal = s,
-                f2: s => rVal = s)
+                .And(s => "a" + s)
+                .DoWith(
+                    f1: s => rVal = s,
+                    f2: s => rVal = s)
             ;
         
         Assert.Equal("a23", rVal);
