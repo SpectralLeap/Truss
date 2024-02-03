@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Results.Contextual\Truss.Results.Contextual.csproj" />
+      <ProjectReference Include="..\Truss.Results.Extensions.Contextual\Truss.Results.Extensions.Contextual.csproj" />
       <ProjectReference Include="..\Truss.Results\Truss.Results.csproj" />
     </ItemGroup>
 

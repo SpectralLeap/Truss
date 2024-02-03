@@ -16,13 +16,17 @@ internal sealed class DriverDispatcher(IServiceProvider serviceProvider, ILogger
 {
     public async Task CallDriver(DslArgs args)
     {
-        logger.LogInformation("WTF");
+        logger.LogDebug("Calling driver for action {ActionType}", args.ActionType);
         
         var driverType = typeof(Driver<>).MakeGenericType(args.ActionType);
 
         var driver = serviceProvider.GetService(driverType);
 
-        if (driver is null) throw new DriverNotFoundException(args.ActionType);
+        if (driver is null)
+        {
+            logger.LogError("Could not find driver for action {ActionType}", args.ActionType);
+            throw new DriverNotFoundException(args.ActionType);
+        }
 
         // this should never happen
         if (driver is not IDriver driverImplementation) throw new DriverInterfaceNotFoundException(driver.GetType());

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Testing.Dsl.Attributes;
 using Truss.Testing.Dsl.Services;
 
 namespace Truss.Testing.Dsl.Tests.Fixtures;

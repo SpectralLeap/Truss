@@ -1,4 +1,4 @@
-﻿namespace Truss.Results.Functional;
+﻿namespace Truss.Results.Extensions.Functional;
 
 public sealed class ResolutionContext
 {

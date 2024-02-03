@@ -22,7 +22,8 @@ public sealed class RequestContext
     }
 }
 
-public sealed class HeartbeatDriver(HttpClient client, RequestContext requestContext) : Driver<Heartbeat>
+public sealed class HeartbeatDriver(HttpClient client, RequestContext requestContext) 
+    : Driver<Heartbeat>
 {
     public override async Task Drive(DslArgs args)
     {

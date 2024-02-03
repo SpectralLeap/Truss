@@ -1,9 +1,9 @@
-﻿namespace Truss.Results.Functional;
+﻿namespace Truss.Results.Extensions.Functional;
 
 /// <summary>
-/// Result extension for arity of 3
+/// Result extension for arity of 2
 /// </summary>
-public static class ResultExtensions3
+public static class ResultExtensions2
 {
     /// <summary>
     /// Append resolved execution context
@@ -13,11 +13,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static Result<(T1, T2, T3, TAppend)> And<T1, T2, T3, TAppend>(
-        this Result<(T1, T2, T3)> result,
-        Func<T1, T2, T3, Result<TAppend>> mapping)
+    public static Result<(T1, T2, TAppend)> And<T1, T2, TAppend>(
+        this Result<(T1, T2)> result,
+        Func<T1, T2, Result<TAppend>> mapping)
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
 
@@ -25,8 +24,7 @@ public static class ResultExtensions3
         {
             var nextResult = mapping(
                 result.SuccessValue.Item1,
-                result.SuccessValue.Item2,
-                result.SuccessValue.Item3
+                result.SuccessValue.Item2
             );
 
             if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
@@ -34,7 +32,6 @@ public static class ResultExtensions3
             return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3,
                 nextResult.SuccessValue
             ));
         }
@@ -52,11 +49,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static Result<(T1, T2, T3, TAppend)> And<T1, T2, T3, TAppend>(
-        this Result<(T1, T2, T3)> result,
-        Func<T1, T2, T3, TAppend> mapping)
+    public static Result<(T1, T2, TAppend)> And<T1, T2, TAppend>(
+        this Result<(T1, T2)> result,
+        Func<T1, T2, TAppend> mapping)
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
 
@@ -64,16 +60,14 @@ public static class ResultExtensions3
         {
             var nextResult = mapping(
                 result.SuccessValue.Item1,
-                result.SuccessValue.Item2,
-                result.SuccessValue.Item3
+                result.SuccessValue.Item2
             );
 
             return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3,
                 nextResult
-            ));
+                ));
         }
         catch (Exception ex)
         {
@@ -89,11 +83,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static async Task<Result<(T1, T2, T3, TAppend)>> And<T1, T2, T3, TAppend>(
-        this Task<Result<(T1, T2, T3)>> result,
-        Func<T1, T2, T3, Task<TAppend>> mapping)
+    public static async Task<Result<(T1, T2, TAppend)>> And<T1, T2, TAppend>(
+        this Task<Result<(T1, T2)>> result,
+        Func<T1, T2, Task<TAppend>> mapping)
     {
         var awaitedResult = await result.ConfigureAwait(false);
         if (awaitedResult.Failed) return Result.Fail(awaitedResult.FailureDetails);
@@ -102,16 +95,14 @@ public static class ResultExtensions3
         {
             var nextResult = await mapping(
                 awaitedResult.SuccessValue.Item1,
-                awaitedResult.SuccessValue.Item2,
-                awaitedResult.SuccessValue.Item3
+                awaitedResult.SuccessValue.Item2
             ).ConfigureAwait(false);
 
             return Result.Success((
                     awaitedResult.SuccessValue.Item1,
                     awaitedResult.SuccessValue.Item2,
-                    awaitedResult.SuccessValue.Item3,
                     nextResult
-                )
+                    )
             );
         }
         catch (Exception ex)
@@ -128,11 +119,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static async Task<Result<(T1, T2, T3, TAppend)>> And<T1, T2, T3, TAppend>(
-        this Task<Result<(T1, T2, T3)>> result,
-        Func<T1, T2, T3, Task<Result<TAppend>>> mapping)
+    public static async Task<Result<(T1, T2, TAppend)>> And<T1, T2, TAppend>(
+        this Task<Result<(T1, T2)>> result,
+        Func<T1, T2, Task<Result<TAppend>>> mapping)
     {
         var awaitedResult = await result.ConfigureAwait(false);
         if (awaitedResult.Failed) return Result.Fail(awaitedResult.FailureDetails);
@@ -141,8 +131,7 @@ public static class ResultExtensions3
         {
             var nextResult = await mapping(
                 awaitedResult.SuccessValue.Item1,
-                awaitedResult.SuccessValue.Item2,
-                awaitedResult.SuccessValue.Item3
+                awaitedResult.SuccessValue.Item2
             ).ConfigureAwait(false);
 
             if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
@@ -150,9 +139,8 @@ public static class ResultExtensions3
             return Result.Success((
                     awaitedResult.SuccessValue.Item1,
                     awaitedResult.SuccessValue.Item2,
-                    awaitedResult.SuccessValue.Item3,
                     nextResult.SuccessValue
-                )
+                    )
             );
         }
         catch (Exception ex)
@@ -169,11 +157,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static async Task<Result<(T1, T2, T3, TAppend)>> And<T1, T2, T3, TAppend>(
-        this Result<(T1, T2, T3)> result,
-        Func<T1, T2, T3, Task<Result<TAppend>>> mapping)
+    public static async Task<Result<(T1, T2, TAppend)>> And<T1, T2, TAppend>(
+        this Result<(T1, T2)> result,
+        Func<T1, T2, Task<Result<TAppend>>> mapping)
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
 
@@ -181,8 +168,7 @@ public static class ResultExtensions3
         {
             var nextResult = await mapping(
                 result.SuccessValue.Item1,
-                result.SuccessValue.Item2,
-                result.SuccessValue.Item3
+                result.SuccessValue.Item2
             ).ConfigureAwait(false);
 
             if (nextResult.Failed) return Result.Fail(nextResult.FailureDetails);
@@ -190,7 +176,6 @@ public static class ResultExtensions3
             return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3,
                 nextResult.SuccessValue
             ));
         }
@@ -208,11 +193,10 @@ public static class ResultExtensions3
     /// <typeparam name="TAppend"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
-    /// <typeparam name="T3"></typeparam>
     /// <returns></returns>
-    public static async Task<Result<(T1, T2, T3, TAppend)>> And<T1, T2, T3, TAppend>(
-        this Result<(T1, T2, T3)> result,
-        Func<T1, T2, T3, Task<TAppend>> mapping)
+    public static async Task<Result<(T1, T2, TAppend)>> And<T1, T2, TAppend>(
+        this Result<(T1, T2)> result,
+        Func<T1, T2, Task<TAppend>> mapping)
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
 
@@ -220,16 +204,14 @@ public static class ResultExtensions3
         {
             var nextResult = await mapping(
                 result.SuccessValue.Item1,
-                result.SuccessValue.Item2,
-                result.SuccessValue.Item3
+                result.SuccessValue.Item2
             ).ConfigureAwait(false);
 
             return Result.Success((
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3,
                 nextResult
-            ));
+                ));
         }
         catch (Exception ex)
         {
@@ -242,15 +224,14 @@ public static class ResultExtensions3
     /// </summary>
     /// <param name="result"></param>
     /// <param name="mapping"></param>
-    /// <typeparam name="TOut"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
     /// <typeparam name="T3"></typeparam>
-    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="TOut"></typeparam>
     /// <returns></returns>
-    public static Result<TOut> Then<T1, T2, T3, T4, TOut>(
-        this Result<(T1, T2, T3, T4)> result,
-        Func<T1, T2, T3, T4, Result<TOut>> mapping
+    public static Result<TOut> Then<T1, T2, T3, TOut>(
+        this Result<(T1, T2, T3)> result,
+        Func<T1, T2, T3, Result<TOut>> mapping
     )
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
@@ -260,7 +241,7 @@ public static class ResultExtensions3
             var nextResult = mapping(
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3, result.SuccessValue.Item4
+                result.SuccessValue.Item3
             );
 
             return nextResult;
@@ -276,15 +257,14 @@ public static class ResultExtensions3
     /// </summary>
     /// <param name="result"></param>
     /// <param name="mapping"></param>
-    /// <typeparam name="TOut"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
     /// <typeparam name="T3"></typeparam>
-    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="TOut"></typeparam>
     /// <returns></returns>
-    public static Result<TOut> Then<T1, T2, T3, T4, TOut>(
-        this Result<(T1, T2, T3, T4)> result,
-        Func<T1, T2, T3, T4, TOut> mapping
+    public static Result<TOut> Then<T1, T2, T3, TOut>(
+        this Result<(T1, T2, T3)> result,
+        Func<T1, T2, T3, TOut> mapping
     )
     {
         if (result.Failed) return Result.Fail(result.FailureDetails);
@@ -294,7 +274,7 @@ public static class ResultExtensions3
             var nextResult = mapping(
                 result.SuccessValue.Item1,
                 result.SuccessValue.Item2,
-                result.SuccessValue.Item3, result.SuccessValue.Item4
+                result.SuccessValue.Item3
             );
 
             return Result.Success(nextResult);
@@ -310,15 +290,14 @@ public static class ResultExtensions3
     /// </summary>
     /// <param name="result"></param>
     /// <param name="mapping"></param>
-    /// <typeparam name="TOut"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
     /// <typeparam name="T3"></typeparam>
-    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="TOut"></typeparam>
     /// <returns></returns>
-    public static async Task<Result<TOut>> Then<T1, T2, T3, T4, TOut>(
-        this Task<Result<(T1, T2, T3, T4)>> result,
-        Func<T1, T2, T3, T4, TOut> mapping
+    public static async Task<Result<TOut>> Then<T1, T2, T3, TOut>(
+        this Task<Result<(T1, T2, T3)>> result,
+        Func<T1, T2, T3, TOut> mapping
     )
     {
         var awaitedResult = await result.ConfigureAwait(false);
@@ -330,8 +309,7 @@ public static class ResultExtensions3
             var nextResult = mapping(
                 awaitedResult.SuccessValue.Item1,
                 awaitedResult.SuccessValue.Item2,
-                awaitedResult.SuccessValue.Item3, 
-                awaitedResult.SuccessValue.Item4
+                awaitedResult.SuccessValue.Item3
             );
 
             return Result.Success(nextResult);

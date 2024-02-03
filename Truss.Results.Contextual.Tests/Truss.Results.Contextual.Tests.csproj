@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Results.Contextual\Truss.Results.Contextual.csproj" />
+      <ProjectReference Include="..\Truss.Results.Extensions.Contextual\Truss.Results.Extensions.Contextual.csproj" />
     </ItemGroup>
 
 </Project>

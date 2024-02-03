@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace Truss.Results.Contextual;
+namespace Truss.Results.Extensions.Contextual;
 
 public sealed class ResolutionContextFactory
 {
@@ -10,7 +10,7 @@ public sealed class ResolutionContextFactory
     {
         _logger = logger;
     }
-
+    
     public ResolutionStep<T> From<T>(T result)
     {
         return From(Result.Success(result));
@@ -19,14 +19,14 @@ public sealed class ResolutionContextFactory
     public ResolutionStep<T> From<T>(Result<T> result)
     {
         if (result is null) throw new ArgumentNullException(nameof(result));
-
+        
         return new ResolutionStep<T>(_logger, result);
     }
 
-    public ResolutionStepRef<T> FromRef<T>(Result<T> result)
+    public ValueResolutionStep<T> FromValue<T>(Result<T> result)
     {
          if (result is null) throw new ArgumentNullException(nameof(result));
- 
-         return new ResolutionStepRef<T>(_logger, result);       
+         
+         return new ValueResolutionStep<T>(_logger, result);       
     }
 }

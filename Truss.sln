@@ -18,11 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results", "Truss.Resu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests", "Truss.Results.Tests\Truss.Results.Tests.csproj", "{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Functional", "Truss.Results.Functional\Truss.Results.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Functional", "Truss.Results.Extensions.Functional\Truss.Results.Extensions.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Contextual", "Truss.Results.Contextual\Truss.Results.Contextual.csproj", "{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Contextual", "Truss.Results.Extensions.Contextual\Truss.Results.Extensions.Contextual.csproj", "{28804EA1-3C87-49D9-BA24-0FEBE2EE72A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests.Contextual", "Truss.Results.Tests.Contextual\Truss.Results.Tests.Contextual.csproj", "{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Contextual.Tests", "Truss.Results.Contextual.Tests\Truss.Results.Contextual.Tests.csproj", "{F5CA7602-799E-4B8B-8480-C1BD4F1B2EEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Benchmarks", "Truss.Results.Benchmarks\Truss.Results.Benchmarks.csproj", "{102ADF58-6EC9-44C2-A225-D5753FBA5336}"
 EndProject

@@ -120,5 +120,5 @@ public interface IResult
 {
     public bool Succeeded { get; }
     public bool Failed { get; }
-    public FailureDetails FailureDetails { get; }
+    public FailureDetails? FailureDetails { get; }
 }

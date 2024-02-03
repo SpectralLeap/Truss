@@ -1,5 +1,3 @@
-using Truss.Testing.Dsl.Attributes;
-
 namespace Truss.Testing.Dsl;
 
 /// <summary>

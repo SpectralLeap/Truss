@@ -1,4 +1,4 @@
-namespace Truss.Testing.Dsl.Attributes;
+namespace Truss.Testing.Dsl;
 
 /// <summary>
 /// Represents an attribute that can be used to mark a method as a DSL method.

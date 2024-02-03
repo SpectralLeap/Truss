@@ -52,7 +52,8 @@ public sealed class DslFactory : IDisposable
     {
         id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
 
-        var provider = _activeProviders.TryGetValue(id, out var activeProvider) ? activeProvider : Activate(GetServices<TDsl>(tags), id);
+        var provider = _activeProviders.TryGetValue(id, out var activeProvider) 
+            ? activeProvider : Activate(GetServices<TDsl>(tags), id);
 
         var logger = provider.GetService<ILogger<TDsl>>()!;
         
