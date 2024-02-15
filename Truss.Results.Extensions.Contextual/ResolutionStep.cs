@@ -12,86 +12,55 @@ public abstract class ResolutionStep
         _logger = logger;
         _results = results;
     }
-    
-    protected Result<TNext> Continuation<T, TNext>(Func<IResult[], T> select, Func<T, Result<TNext>> execute)
+
+    private Func<Result<TOut>> UnlessFailedDo<TOut>(Func<Result<TOut>> f)
     {
         var failedResult = _results.FirstOrDefault(result => result.Failed);
-        if (failedResult is not null) return Result.Fail(failedResult.FailureDetails!);
-            
-        try
-        {
-            return execute(select(_results));
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail(ex);
-        }
-    }
-     
-}
-
-public sealed class ResolutionStep<T> : ResolutionStep
-{
-    private readonly ILogger? _logger;
-    
-    private readonly Result<T> _result;
-    
-    public ResolutionStep(ILogger? logger, Result<T> result) : base(logger, result)
-    {
-        _logger = logger;
-        _result = result ?? throw new ArgumentNullException(nameof(result));
-    }
-
-    private ResolutionStep<TNext> Next<TNext>(Result<TNext> next)
-    {
-        return new ResolutionStep<TNext>(_logger, next);
-    }
-    
-    private Result<TNext> Continuation<TNext>(Func<T, Result<TNext>> f)
-    {
-        if (_result.Failed) return Result.Fail(_result.FailureDetails!);
         
-        try
-        {
-            return f(_result.SuccessValue);
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail(ex);
-        }
+        if (failedResult is not null) return () => Result.Fail(failedResult.FailureDetails!);
+        
+        return f;
     }
-   
-    private async Task<Result<TNext>> ContinuationAsync<TNext>(Func<T, Task<Result<TNext>>> f)
-    {
-        if (_result.Failed) return Result.Fail(_result.FailureDetails!);
 
-        try
-        {
-            return await f(_result.SuccessValue).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail(ex);
-        }
+    private Result<TOut> TrappingExceptions<TOut>(Func<Result<TOut>> f)
+    {
+         try
+         {
+             return f();
+         }
+         catch (Exception ex)
+         {
+             return Result.Fail(ex);
+         }       
     }
     
-    private ResolutionStep<T> SideEffect(Action<T> f)
+    protected Result<TOut> Continuation<TOut>(Func<object[], Result<TOut>> execute)
     {
-        if (_result.Failed) Next(_result);
- 
-        try
+        var f = () => 
+            (Result<TOut>) execute.DynamicInvoke(
+                _results.Select(result => result.SuccessObject)
+            );
+        
+        return TrappingExceptions(UnlessFailedDo(f));
+    }
+    
+    protected async Task<Result<TNext>> ContinuationAsync<TNext>(Func<object[], Task<Result<TNext>>> execute)
+    {
+        var f = () => (Task<Result<TNext>>)execute
+            .DynamicInvoke(_results.Select(result => result.SuccessObject));
+        
+        return TrappingExceptions(UnlessFailedDo<TNext>(() => f().Wait()));
+    }
+    
+    protected ResolutionStep<T> SideEffect<T>(Action<object[]> f)
+    {
+        return TrappingExceptions(UnlessFailedDo(() =>
         {
-            f(_result.SuccessValue);
- 
-            return Next(_result);
-        }
-        catch (Exception ex)
-        {
-            return Next<T>(Result.Fail(ex));
-        }
+            f(_results);
+        }));
     }
      
-    private async Task<ResolutionStep<T>> SideEffectAsync(Func<T, Task> f)
+    protected async Task<ResolutionStep<T>> SideEffectAsync<T>(Func<T, Task> f)
     {
         if (_result.Failed) return Next(_result);
  
@@ -107,14 +76,33 @@ public sealed class ResolutionStep<T> : ResolutionStep
         }
     }
      
+    protected ResolutionStep<TNext> Next<TNext>(Result<TNext> next)
+    {
+        return new ResolutionStep<TNext>(_logger, next);
+    }
+}
+
+public sealed class ResolutionStep<T> : ResolutionStep
+{
+    private readonly ILogger? _logger;
+    
+    private readonly Result<T> _result;
+    
+    public ResolutionStep(ILogger? logger, Result<T> result) : base(logger, result)
+    {
+        _logger = logger;
+        _result = result ?? throw new ArgumentNullException(nameof(result));
+    }
+    
+    
     public ResolutionStep<TNext> Then<TNext>(Func<T, Result<TNext>> f)
     {
-        return Next(Continuation(f));
+        return Next(Continuation(args => f((T)args[0])));
     }
     
     public ResolutionStep<TNext> Then<TNext>(Func<T, TNext> f)
     {
-        return Next(Continuation<TNext>(r => f(r)));
+        return Next(Continuation(r => f(r)));
     }
      
     public async Task<ResolutionStep<TNext>> ThenAsync<TNext>(Func<T, Task<Result<TNext>>> f)
@@ -124,12 +112,12 @@ public sealed class ResolutionStep<T> : ResolutionStep
     
     public async Task<ResolutionStep<TNext>> ThenAsync<TNext>(Func<T, Task<TNext>> f)
     {
-        return Next(await ContinuationAsync<TNext>(async r => await f(r)));
+        return Next(await ContinuationAsync<TNext>(async r => await f((T)r[0])));
     }
 
     public ResolutionStep<T> Perform<TOut>(Func<T, TOut> f)
     {
-        var result = Continuation<TOut>(r => f(r));
+        var result = Continuation<TOut>(r => f((T)r[0]));
 
         if (result.Failed) return Next<T>(Result.Fail(result.FailureDetails));
         
@@ -139,12 +127,11 @@ public sealed class ResolutionStep<T> : ResolutionStep
     public ResolutionStep<T> Perform(Action<T> f)
     {
         return SideEffect(f);
-                   
     }
     
     public ResolutionStep<T> Perform(Action f)
     {
-        return SideEffect(_ => f());
+        return SideEffect<T>(_ => f());
     }
     
     public ResolutionStep<T> Perform<TOut>(Func<T, Result<TOut>> f)
@@ -158,7 +145,7 @@ public sealed class ResolutionStep<T> : ResolutionStep
  
     public ResolutionStep<T, TOther> And<TOther>(Func<T, TOther> f)
     {
-        var next = Continuation<TOther>(r => f(r));
+        var next = Continuation<TOther>(r => f((T)r[0]));
 
         if (next.Failed) return new ResolutionStep<T, TOther>(_logger, Result.Fail(next.FailureDetails));
         

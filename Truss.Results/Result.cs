@@ -54,36 +54,47 @@ public static class Result
 /// A basic result that returns a value
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
-public sealed record Result<TResult> : IResult
+public readonly struct Result<TResult> : IResult
 {
-    
-    private readonly TResult? _success;
-    private readonly FailureDetails? _failure;
+    private readonly TResult? _successValue;
+    private readonly FailureDetails? _failureDetails;
 
     /// <summary>
     /// True if the operation succeeded
     /// </summary>
-    public bool Succeeded => _success is not null;
-    
+    public bool Succeeded { get; }
+
     /// <summary>
     /// True if the operation failed
     /// </summary>
-    public bool Failed => _failure is not null;
+    public bool Failed => !Succeeded;
 
     /// <summary>
     /// Get the success value if succeeded
     /// </summary>
     /// <exception cref="InvalidOperationException">If retrieving success value on a failed operation</exception>
     public TResult SuccessValue =>
-        _success ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
+        _successValue ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
     
     /// <summary>
-    /// Get the failure details if failed
+    /// Get the success value as object if succeeded
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If retrieving success value on a failed operation</exception>
+    public object SuccessObject =>
+        _successValue ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
+     
+    /// <summary>
+    /// Get the failure details if failed else throws
     /// </summary>
     /// <exception cref="InvalidOperationException">If retrieving failure value on a successful operation</exception>
     public FailureDetails FailureDetails => 
-        _failure ?? throw new InvalidOperationException($"Tried to get failure value on successful operation");
-    
+        _failureDetails ?? throw new InvalidOperationException($"Tried to get failure value on successful operation");
+
+    /// <summary>
+    /// Get the failure message if failed else throws
+    /// </summary>
+    public string FailureMessage => FailureDetails.GetMessage();
+
     /// <summary>
     /// Create success
     /// </summary>
@@ -91,7 +102,8 @@ public sealed record Result<TResult> : IResult
     internal Result(TResult success)
     {
         // ReSharper disable once NotResolvedInText
-        _success = success ?? throw new ArgumentNullException("Success value was null"); 
+        Succeeded = true;
+        _successValue = success ?? throw new ArgumentNullException(nameof(success)); 
     }
     
     /// <summary>
@@ -101,16 +113,43 @@ public sealed record Result<TResult> : IResult
     internal Result(FailureDetails failure)
     {
         // ReSharper disable once NotResolvedInText
-        _failure = failure ?? throw new ArgumentNullException("Failure details were null");
+        Succeeded = false;
+        _failureDetails = failure ?? throw new ArgumentNullException(nameof(failure));
     }
-
-    public static implicit operator Result<TResult>(TResult value) => new(value);
-    
-    public static implicit operator Result<TResult>(Result<None> unit) => new(unit.FailureDetails);
     
     /// <summary>
-    /// Without an operation it is safe to implicitly cast
-    /// this for readability
+    /// Returns the success value or a default value
+    /// </summary>
+    /// <param name="result"></param>
+    /// <param name="defaultValue"></param>
+    /// <returns></returns>
+    public static TResult? operator |(in Result<TResult> result, TResult? defaultValue)
+    {
+        if (result.Succeeded) return result.SuccessValue;
+        
+        return defaultValue;
+    }
+
+
+    /// <summary>
+    /// Cast for readability
+    /// </summary>
+    /// <returns></returns>   
+    public static implicit operator Result<TResult>(Result<None> value)
+    {
+        if (value.Succeeded) throw new InvalidCastException($"Cannot cast {nameof(None)} to {nameof(TResult)}");
+
+        return new Result<TResult>(value.FailureDetails);
+    }
+ 
+    /// <summary>
+    /// Cast for readability
+    /// </summary>
+    /// <returns></returns>   
+    public static implicit operator Result<TResult>(TResult value) => new(value); 
+    
+    /// <summary>
+    /// Cast for readability
     /// </summary>
     /// <returns></returns>
     public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
@@ -119,6 +158,7 @@ public sealed record Result<TResult> : IResult
 public interface IResult
 {
     public bool Succeeded { get; }
+    public object SuccessObject { get; }
     public bool Failed { get; }
     public FailureDetails? FailureDetails { get; }
 }

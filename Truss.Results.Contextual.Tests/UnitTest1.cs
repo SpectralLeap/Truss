@@ -12,7 +12,7 @@ public sealed class UnitTest1
             .AddLogging()
             .BuildServiceProvider()
         ;
-
+    
     private ResolutionContextFactory contextFactory => _provider.GetService<ResolutionContextFactory>()!;
     
     [Fact]
@@ -26,13 +26,16 @@ public sealed class UnitTest1
                 .Then(a => a)
                 .DoAsync(_ => numbers.GetNumberAsync())
                 .PerformAsync(_ => strings.GetStringSync())
-                .ThenAsync(async s => await strings.GetStringAsync(s))
-                .ThenAsync(async _ => await numbers.GetNumberResultAsync())
+                .ThenAsync(s => strings.GetStringAsync(s))
+                .ThenAsync(_ => numbers.GetNumberResultAsync())
                 .ThenAsync(_ => strings.GetStringSync())
                 .ThenAsync(s => s)
                 .PerformAsync(s => Console.WriteLine(s.Value))
                 .Resolve()
             ;
+
+        var y = result | new String("y");
+
 
         var x = strings.GetStringAsync();
 
@@ -49,12 +52,13 @@ public sealed class UnitTest1
                 .Then(b => Result.Success(3))
                 .Perform(i => i * 2)
                 .Perform(_ => (Result<int>)Result.Fail("bad"))
+                .Perform(_ => (Result<int>)Result.Success())
                 .Perform(i => new List<int>().Add(i))
                 .Perform(() => Console.WriteLine("Here"))
                 .Then(_ => Result.Success())
                 .Resolve()
             ;
-            
+
         Assert.True(result.Failed);
     }
 
