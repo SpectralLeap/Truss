@@ -18,15 +18,11 @@ public sealed class ResolutionContextFactory
     
     public ResolutionStep<T> From<T>(Result<T> result)
     {
-        if (result is null) throw new ArgumentNullException(nameof(result));
-        
         return new ResolutionStep<T>(_logger, result);
     }
 
     public ValueResolutionStep<T> FromValue<T>(Result<T> result)
     {
-         if (result is null) throw new ArgumentNullException(nameof(result));
-         
          return new ValueResolutionStep<T>(_logger, result);       
     }
 }

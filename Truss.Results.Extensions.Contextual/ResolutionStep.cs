@@ -91,7 +91,6 @@ public sealed class ResolutionStep<T> : ResolutionStep
     public ResolutionStep(ILogger? logger, Result<T> result) : base(logger, result)
     {
         _logger = logger;
-        _result = result ?? throw new ArgumentNullException(nameof(result));
     }
     
     

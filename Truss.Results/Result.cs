@@ -77,11 +77,11 @@ public readonly struct Result<TResult> : IResult
         _successValue ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
     
     /// <summary>
-    /// Get the success value as object if succeeded
+    /// Get the success value as an object if succeeded
     /// </summary>
     /// <exception cref="InvalidOperationException">If retrieving success value on a failed operation</exception>
     public object SuccessObject =>
-        _successValue ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
+        _successValue ?? throw new InvalidOperationException($"Tried to get success object on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
      
     /// <summary>
     /// Get the failure details if failed else throws
@@ -99,11 +99,11 @@ public readonly struct Result<TResult> : IResult
     /// Create success
     /// </summary>
     /// <param name="success"></param>
+    /// <exception cref="ArgumentNullException">If the success object is null</exception>
     internal Result(TResult success)
     {
-        // ReSharper disable once NotResolvedInText
-        Succeeded = true;
         _successValue = success ?? throw new ArgumentNullException(nameof(success)); 
+        Succeeded = true;
     }
     
     /// <summary>
@@ -132,7 +132,7 @@ public readonly struct Result<TResult> : IResult
 
 
     /// <summary>
-    /// Cast for readability
+    /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>   
     public static implicit operator Result<TResult>(Result<None> value)
@@ -143,13 +143,13 @@ public readonly struct Result<TResult> : IResult
     }
  
     /// <summary>
-    /// Cast for readability
+    /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>   
     public static implicit operator Result<TResult>(TResult value) => new(value); 
     
     /// <summary>
-    /// Cast for readability
+    /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>
     public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
