@@ -1,4 +1,4 @@
-﻿using Truss.Results.Functional;
+﻿using Truss.Results.Extensions.Functional;
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 #pragma warning disable CS0162 // Unreachable code detected

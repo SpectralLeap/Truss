@@ -123,7 +123,7 @@ public readonly struct Result<TResult> : IResult
     /// <param name="result"></param>
     /// <param name="defaultValue"></param>
     /// <returns></returns>
-    public static TResult? operator |(in Result<TResult> result, TResult? defaultValue)
+    public static TResult? operator | (in Result<TResult> result, TResult? defaultValue)
     {
         if (result.Succeeded) return result.SuccessValue;
         

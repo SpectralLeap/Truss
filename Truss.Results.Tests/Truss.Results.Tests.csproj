@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Results.Functional\Truss.Results.Functional.csproj" />
+      <ProjectReference Include="..\Truss.Results.Extensions.Functional\Truss.Results.Extensions.Functional.csproj" />
       <ProjectReference Include="..\Truss.Results\Truss.Results.csproj" />
     </ItemGroup>
 

@@ -1,4 +1,4 @@
-using Truss.Results.Functional;
+using Truss.Results.Extensions.Functional;
 
 namespace Truss.Results.Tests;
 
