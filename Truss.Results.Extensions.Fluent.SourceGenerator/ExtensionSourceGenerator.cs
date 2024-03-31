@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Formatting;
+using Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
 
 namespace Truss.Results.Extensions.Fluent.SourceGenerator;
 
@@ -9,7 +8,7 @@ public sealed class ExtensionSourceGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
-        // Not generating
+        // Not initialization needed
     }
 
     public void Execute(GeneratorExecutionContext context)
@@ -45,15 +44,6 @@ public sealed class ExtensionSourceGenerator : ISourceGenerator
                        }
                        """;
 
-        var formattedCode = Format(source);
-        
-        context.AddSource($"ResultExtensions{size}.g.cs", formattedCode);
-    }
-
-    private string Format(string source)
-    {
-        var syntaxTree = CSharpSyntaxTree.ParseText(source);
-        var formattedRoot = Formatter.Format(syntaxTree.GetRoot(), new AdhocWorkspace());
-        return formattedRoot.ToFullString();
+        context.AddSource($"ResultExtensions{size}.g.cs", source);
     }
 }

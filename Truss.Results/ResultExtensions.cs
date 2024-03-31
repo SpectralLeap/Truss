@@ -1,4 +1,4 @@
-namespace Truss.Results.Extensions.Fluent;
+namespace Truss.Results;
 
 public static class ResultExtensions
 {

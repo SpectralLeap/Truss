@@ -20,11 +20,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests", "Trus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Functional", "Truss.Results.Extensions.Functional\Truss.Results.Extensions.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.SourceGenerator", "Truss.Results.Extensions.SourceGenerator\Truss.Results.Extensions.Fluent.SourceGenerator\Truss.Results.Extensions.Fluent.SourceGenerator.csproj", "{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.SourceGenerator", "Truss.Results.Extensions.Fluent.SourceGenerator\Truss.Results.Extensions.Fluent.SourceGenerator.csproj", "{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent", "Truss.Results.Extensions.SourceGenerator\Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj", "{6C067595-6559-445B-A1E8-5A0593F5246C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent", "Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj", "{6C067595-6559-445B-A1E8-5A0593F5246C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests", "Truss.Results.Extensions.SourceGenerator\Truss.Results.Extensions.Fluent.Tests\Truss.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests", "Truss.Results.Extensions.Fluent.Tests\Truss.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
 EndProject
