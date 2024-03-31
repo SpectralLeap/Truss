@@ -2,6 +2,12 @@ namespace Truss.Results.Extensions.Fluent.SourceGenerator;
 
 public sealed class DoExtensionGenerator : ExtensionGeneratorBase
 {
+    protected override string FunctionName => "Do";
+    protected override string ReturnResultType => $"Result<{InTuple}>";
+    protected override string ArgumentResultType => $"Result<{InTuple}>";
+    protected override string SyncGeneratorType => $"Action<{InTuple}>";
+    protected override string AsyncGeneratorType => $"Func<{InTuple}, Task>";
+    
     public DoExtensionGenerator(int size) : base(size)
     {
         RegisterGeneratorFunction(DoAction);
@@ -9,98 +15,74 @@ public sealed class DoExtensionGenerator : ExtensionGeneratorBase
         RegisterGeneratorFunction(TaskOfResultDoAction);
         RegisterGeneratorFunction(TaskOfResultDoTask);
     }
-    
+
     private string DoAction()
     {
-        return  $$"""
-                    public static Result<None> Do<{{InTypes}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Action<{{InArgs}}> {{MappingFunctionName}}
-                    )
-                    {
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            {{MappingFunctionName}}({{PriorResultName}}.SuccessValue);
+        return $$"""
+                   public static Result<{{InTuple}}> Do<{{InTypes}}>(
+                       this Result<{{InTuple}}> {{PriorResultName}},
+                       Action<{{InTuple}}> {{GeneratorFunctionName}}
+                   )
+                   {
+                       {{FromResult(
+                           $"""
+                            {GeneratorFunctionName}({PriorResultName}.SuccessValue);
                             return Result.Success();
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
+                            """
+                       )}}
+                   }
+                 """;
     }
     private string TaskOfResultDoAction()
     {
-        return  $$"""
-                    public static async Task<Result<None>> DoAsync<{{InTypes}}>(
-                        this Task<Result<{{InArgs}}>> {{PriorResultName}}Task,
-                        Action<{{InArgs}}> {{MappingFunctionName}}
-                    )
-                    {
-                        var {{PriorResultName}} = await {{PriorResultName}}Task.ConfigureAwait(false);
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            {{MappingFunctionName}}({{PriorResultName}}.SuccessValue);
+        return $$"""
+                   public static async Task<Result<{{InTuple}}>> DoAsync<{{InTypes}}>(
+                       this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                       Action<{{InTuple}}> {{GeneratorFunctionName}}
+                   )
+                   {
+                       {{FromAsyncResult(
+                           $"""
+                            {GeneratorFunctionName}({PriorResultName}.SuccessValue);
                             return Result.Success();
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
+                            """
+                       )}}
+                   }
+                 """;
     }
-    
+
     private string TaskOfResultDoTask()
     {
-        return  $$"""
-                    public static async Task<Result<None>> DoAsync<{{InTypes}}>(
-                        this Task<Result<{{InArgs}}>> {{PriorResultName}}Task,
-                        Func<{{InArgs}}, Task> {{MappingFunctionName}}
-                    )
-                    {
-                        var {{PriorResultName}} = await {{PriorResultName}}Task.ConfigureAwait(false);
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false);
+        return $$"""
+                   public static async Task<Result<{{InTuple}}>> DoAsync<{{InTypes}}>(
+                       this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                       Func<{{InTuple}}, Task> {{GeneratorFunctionName}}
+                   )
+                   {
+                       {{FromAsyncResult(
+                           $"""
+                            await {GeneratorFunctionName}({PriorResultName}.SuccessValue).ConfigureAwait(false);
                             return Result.Success();
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
+                            """)}}
+                   }
+                 """;
     }
-        
-     
+
     private string DoTask()
     {
-        return  $$"""
-                    public static async Task<Result<None>> DoAsync<{{InTypes}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Func<{{InArgs}}, Task> {{MappingFunctionName}}
-                    )
-                    {
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false);
+        return $$"""
+                   public static async Task<Result<{{InTuple}}>> DoAsync<{{InTypes}}>(
+                       this Result<{{InTuple}}> {{PriorResultName}},
+                       Func<{{InTuple}}, Task> {{GeneratorFunctionName}}
+                   )
+                   {
+                       {{FromResult(
+                           $"""
+                            await {GeneratorFunctionName}({PriorResultName}.SuccessValue).ConfigureAwait(false);
                             return Result.Success();
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
-    }    
+                            """
+                       )}}
+                   }
+                 """;
+    }
 }

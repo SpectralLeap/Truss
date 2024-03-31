@@ -2,180 +2,198 @@ namespace Truss.Results.Extensions.Fluent.SourceGenerator;
 
 public sealed class ThenExtensionGenerator : ExtensionGeneratorBase
 {
+    protected override string FunctionName => "Then";
+    protected override string ReturnResultType => $"Result<{OutTypeName}>";
+    protected override string ArgumentResultType => $"Result<{InTuple}>";
+    protected override string SyncGeneratorType => $"Action<{InTuple}>";
+    protected override string AsyncGeneratorType => $"Func<{InTuple}, Task>";
+     
     public ThenExtensionGenerator(int size) : base(size)
     {
         RegisterGeneratorFunction(ThenFuncOfType);
         RegisterGeneratorFunction(ThenFuncOfResultOfType);
-        RegisterGeneratorFunction(ThenTaskOfType);
-        RegisterGeneratorFunction(ThenFuncOfTaskOfResult);
+        
+        RegisterGeneratorFunction(ThenFuncOfTaskOfType);
+        RegisterGeneratorFunction(ThenFuncOfTaskOfResultOfType);
+        
         RegisterGeneratorFunction(TaskOfResultThenFuncOfType);
-        RegisterGeneratorFunction(TaskOfResultThenTaskOfType);
-        RegisterGeneratorFunction(TaskOfResultThenFuncOfTaskOfResult);
+        RegisterGeneratorFunction(TaskOfResultThenFuncOfResultOfType);
+        
+        RegisterGeneratorFunction(TaskOfResultThenFuncOfTaskOfType);
+        RegisterGeneratorFunction(TaskOfResultThenFuncOfTaskOfResultOfType);
     }
-     
+
+    private string FuncResult => 
+        $$""""
+          {{FromResult(
+              $"""
+               return Result.Success(
+                   {GeneratorFunctionName}({PriorResultName}.SuccessValue)
+               );
+               """
+          )}}
+          """";
+
+    private string AsyncFuncResult => 
+        $$""""
+          {{FromResult(
+              $"""
+               return Result.Success(
+                   await {GeneratorFunctionName}({PriorResultName}.SuccessValue)
+               );
+               """
+          )}}
+          """";
+
+    private string FuncOfResultResult => 
+        $$""""
+          {{FromResult(
+              $"""
+               var {NextResultName} = {GeneratorFunctionName}({PriorResultName}.SuccessValue);
+
+               {IfNextResultFailed}
+
+               return Result.Success(
+                   {NextResultName}.SuccessValue
+               );
+               """
+          )}}
+          """";
+
+    private string AsyncFuncOfResultResult => 
+        $$""""
+          {{FromResult(
+              $"""
+                        
+               var {NextResultName} = await {GeneratorFunctionName}({PriorResultName}.SuccessValue);
+
+               {IfNextResultFailed}
+
+               return Result.Success(
+                   {NextResultName}.SuccessValue
+               );
+               """
+          )}}
+          """";
+
     private string ThenFuncOfType()
     {
-        return  $$"""
+        return $$""""
                     public static Result<{{OutTypeName}}> Then<{{InTypes}}, {{OutTypeName}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Func<{{InArgs}}, {{OutTypeName}}> {{MappingFunctionName}}
-                    )
+                        this Result<{{InTuple}}> {{PriorResultName}},
+                        Func<{{InTypes}}, {{OutTypeName}}> {{GeneratorFunctionName}}
+                     )
                     {
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            return {{MappingFunctionName}}({{PriorResultName}}.SuccessValue);
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
+                        {{FuncResult}}
                     }
-                  """;
+                 """";
     }
-        
+
     private string ThenFuncOfResultOfType()
     {
-        return  $$"""
-                    public static Result<{{OutTypeName}}> Then<{{InTypes}}, {{OutTypeName}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Func<{{InArgs}}, Result<{{OutTypeName}}>> {{MappingFunctionName}}
-                    )
-                    {
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            return {{MappingFunctionName}}({{PriorResultName}}.SuccessValue);
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
+        return $$""""
+                     public static Result<{{OutTypeName}}> Then<{{InTypes}}, {{OutTypeName}}>(
+                         this Result<{{InTuple}}> {{PriorResultName}},
+                         Func<{{InTypes}}, Result<{{OutTypeName}}>> {{GeneratorFunctionName}}
+                     )
+                     {
+                         {{FuncOfResultResult}}
+                     }
+                 """";
     }
 
     private string TaskOfResultThenFuncOfType()
     {
-        return  $$"""
+        return $$""""
                     public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
-                        this Task<Result<{{InArgs}}>> {{PriorResultName}}Task,
-                        Func<{{InArgs}}, {{OutTypeName}}> {{MappingFunctionName}}
+                        this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                        Func<{{InTypes}}, {{OutTypeName}}> {{GeneratorFunctionName}}
                     )
                     {
-                        var {{PriorResultName}} = await {{PriorResultName}}Task.ConfigureAwait(false);
+                        var {{PriorResultName}} = await {{PriorResultTaskName}}.ConfigureAwait(false);
                         if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
                         
-                        try
-                        {
-                            return Result.Success(
-                                {{MappingFunctionName}}({{PriorResultName}}.SuccessValue)
-                            );
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
+                        {{FuncResult}}
                     }
-                  """;
+                 """";
     }
-
-    private string TaskOfResultThenTaskOfType()
-    {
-        return  $$"""
-                    public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
-                        this Task<Result<{{InArgs}}>> {{PriorResultName}}Task,
-                        Func<{{InArgs}}, Task<{{OutTypeName}}>> {{MappingFunctionName}}
-                    )
-                    {
-                        var {{PriorResultName}} = await {{PriorResultName}}Task.ConfigureAwait(false);
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            return Result.Success(
-                                await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false)
-                            );
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
-    }
-
-    private string TaskOfResultThenFuncOfTaskOfResult()
-    {
-        return  $$"""
-                    public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
-                        this Task<Result<{{InArgs}}>> {{PriorResultName}}Task,
-                        Func<{{InArgs}}, Task<Result<{{OutTypeName}}>>> {{MappingFunctionName}}
-                    )
-                    {
-                        var {{PriorResultName}} = await {{PriorResultName}}Task.ConfigureAwait(false);
-                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
-                        
-                        try
-                        {
-                            return await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false);
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
-                    }
-                  """;
-    }
-
     
-    private string ThenTaskOfType()
+    private string TaskOfResultThenFuncOfResultOfType()
     {
-        return  $$"""
+        return $$""""
                     public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Func<{{InArgs}}, Task<{{OutTypeName}}>> {{MappingFunctionName}}
+                        this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                        Func<{{InTypes}}, Result<{{OutTypeName}}>> {{GeneratorFunctionName}}
+                    )
+                    {
+                        var {{PriorResultName}} = await {{PriorResultTaskName}}.ConfigureAwait(false);
+                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
+                        
+                        {{FuncOfResultResult}}
+                    }
+                 """";
+    }
+
+    private string TaskOfResultThenFuncOfTaskOfType()
+    {
+        return $$""""
+                    public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
+                        this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                        Func<{{InTypes}}, Task<{{OutTypeName}}>> {{GeneratorFunctionName}}
+                    )
+                    {
+                        var {{PriorResultName}} = await {{PriorResultTaskName}}.ConfigureAwait(false);
+                        if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
+                        
+                        {{AsyncFuncResult}}
+                    }
+                 """";
+    }
+
+    private string TaskOfResultThenFuncOfTaskOfResultOfType()
+    {
+        return $$""""
+                     public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
+                         this Task<Result<{{InTuple}}>> {{PriorResultTaskName}},
+                         Func<{{InTypes}}, Task<Result<{{OutTypeName}}>>> {{GeneratorFunctionName}}
+                     )
+                     {
+                         var {{PriorResultName}} = await {{PriorResultTaskName}}.ConfigureAwait(false);
+                         if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
+                         
+                         {{AsyncFuncOfResultResult}}
+                     }
+                 """";
+    }
+
+
+    private string ThenFuncOfTaskOfType()
+    {
+        return $$""""
+                    public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
+                        this Result<{{InTuple}}> {{PriorResultName}},
+                        Func<{{InTypes}}, Task<{{OutTypeName}}>> {{GeneratorFunctionName}}
                     )
                     {
                         if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
                         
-                        try
-                        {
-                            return Result.Success(
-                                await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false)
-                            );
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
+                        {{AsyncFuncResult}}
                     }
-                  """;
+                 """";
     }
 
-    private string ThenFuncOfTaskOfResult()
+    private string ThenFuncOfTaskOfResultOfType()
     {
-        return  $$"""
+        return $$""""
                     public static async Task<Result<{{OutTypeName}}>> ThenAsync<{{InTypes}}, {{OutTypeName}}>(
-                        this Result<{{InArgs}}> {{PriorResultName}},
-                        Func<{{InArgs}}, Task<Result<{{OutTypeName}}>>> {{MappingFunctionName}}
+                        this Result<{{InTuple}}> {{PriorResultName}},
+                        Func<{{InTypes}}, Task<Result<{{OutTypeName}}>>> {{GeneratorFunctionName}}
                     )
                     {
                         if ({{PriorResultName}}.Failed) return Result.Fail({{PriorResultName}}.FailureDetails);
                         
-                        try
-                        {
-                            return await {{MappingFunctionName}}({{PriorResultName}}.SuccessValue).ConfigureAwait(false);
-                        }
-                        catch (Exception ex)
-                        {
-                            return Result.Fail(ex);
-                        }
+                        {{AsyncFuncOfResultResult}}
                     }
-                  """;
+                 """";
     }
-
-  
 }

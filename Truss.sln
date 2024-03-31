@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests", "Truss.Results.Extensions.SourceGenerator\Truss.Results.Extensions.Fluent.Tests\Truss.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
