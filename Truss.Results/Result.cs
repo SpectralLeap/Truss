@@ -142,11 +142,6 @@ public readonly struct Result<TResult> : IResult
         return new Result<TResult>(value.FailureDetails);
     }
  
-    /// <summary>
-    /// Implicit cast for readability
-    /// </summary>
-    /// <returns></returns>   
-    public static implicit operator Result<TResult>(TResult value) => new(value); 
     
     /// <summary>
     /// Implicit cast for readability

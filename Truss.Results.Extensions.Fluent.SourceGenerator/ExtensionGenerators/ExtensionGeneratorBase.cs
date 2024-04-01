@@ -7,8 +7,8 @@ public abstract class ExtensionGeneratorBase
     private readonly int _size;
     protected const string IfNextResultFailed = $"if({NextResultName}.Failed) return Result.Fail({NextResultName}.FailureDetails);";
     private const string PriorResultTaskName = "priorResultTask";
-    private const string PriorResultName = "priorResult";
-    protected const string OutTypeName = "TResult";
+    protected const string PriorResultName = "priorResult";
+    protected const string OutType = "TResult";
     protected const string GeneratorFunctionName = "generator";
     protected const string NextResultName = "nextResult";
     protected abstract string FunctionName { get; }
@@ -58,12 +58,13 @@ public abstract class ExtensionGeneratorBase
 
     protected void AddSyncGenerator(
         string generatorType,
-        string generatorBody,
+        string methodBody,
+        string? returnBody = null,
         string? disambiguator = null,
         string? typeParameterOverride = null
     )
     {
-        _syncGenerators.Add(generatorType, generatorBody);
+        _syncGenerators.Add(generatorType, methodBody);
         
         if (disambiguator is not null) _disambiguators.Add(generatorType, disambiguator);
         if (typeParameterOverride is not null) _typeParameterOverrides.Add(generatorType, typeParameterOverride);
@@ -109,7 +110,7 @@ public abstract class ExtensionGeneratorBase
     {
         _typeParameterOverrides.TryGetValue(generatorType, out var parameterOverride);
 
-        return parameterOverride ?? $"{InTypes}, {OutTypeName}";
+        return parameterOverride ?? $"{InTypes}, {OutType}";
     }
     
     private string FromSyncToSyncMethod(string generatorType, string generatorBody)

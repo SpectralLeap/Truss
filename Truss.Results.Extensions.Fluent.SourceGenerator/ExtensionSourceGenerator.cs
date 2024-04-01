@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
 
@@ -6,24 +7,53 @@ namespace Truss.Results.Extensions.Fluent.SourceGenerator;
 [Generator]
 public sealed class ExtensionSourceGenerator : ISourceGenerator
 {
+    private const int MaxSize = 7;
+    
     public void Initialize(GeneratorInitializationContext context)
     {
-        // Not initialization needed
+        // Nothing to see here
     }
 
     public void Execute(GeneratorExecutionContext context)
     {
-        int maxSize = 7;
-
-        for (var size = 1; size <= maxSize; size++)
+        for (var size = 1; size <= MaxSize; size++)
         {
-            GenerateFile(size, context);
+            foreach (var generator in GetGenerators(size))
+            {
+                var source = generator.Generate();
+                
+                context.AddSource($"{generator.Name}{size}.g.cs", source);
+            } 
         }
     }
 
-    private void GenerateFile(int size, GeneratorExecutionContext context)
+    private IGenerator[] GetGenerators(int size)
     {
-        var thenGenerator = new ThenExtensionGenerator(size);
+        var typingContext = new TypingContext(size);
+        var setList = new List<IMethodSet>();
+        setList.Add( new ThenMethodSet(typingContext));   
+        setList.Add( new DoMethodSet(typingContext));   
+        
+        if (size < MaxSize) setList.Add(new AndMethodSet(typingContext));
+
+        var sets = setList.ToArray();
+
+        var generators = new List<IGenerator>();
+        generators.Add(new ResolutionStepGenerator(typingContext, sets));
+        generators.Add(new ResolutionStepExtensionGenerator(typingContext, sets));
+        
+        if (size is 1) generators.Add(new ResultToResolutionStepExtensionBuilder(typingContext, sets));
+        
+        return generators.ToArray();
+    }
+
+}
+
+public sealed class ExtensionGenerator
+{
+    public void GenerateFile(int size, GeneratorExecutionContext context)
+    {
+        var thenGenerator = new ThenMethodExtensionGenerator(size);
         var doGenerator = new DoExtensionGenerator(size);
         var andGenerator = new AndExtensionGenerator(size);
 
@@ -45,5 +75,5 @@ public sealed class ExtensionSourceGenerator : ISourceGenerator
                        """;
 
         context.AddSource($"ResultExtensions{size}.g.cs", source);
-    }
+    }   
 }

@@ -1,42 +1,35 @@
+using System;
+
 namespace Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
 
 public sealed class AndExtensionGenerator : ExtensionGeneratorBase
 {
     protected override string FunctionName => "And";
-    protected override string ReturnResultType => $"Result<({InTypes}, {OutTypeName})>";
+    protected override string ReturnResultType => $"Result<({InTypes}, {OutType})>";
  
     public AndExtensionGenerator(int size) : base(size)
     {
         AddSyncGenerator(
-            generatorType: $"Func<{InTypes}, {OutTypeName}>", 
-            generatorBody: $"""
-                            var {NextResultName} = {GeneratorFunctionName}(
-                                {PriorSuccessValues()});
-                                
-                            return Result.Success((
-                                {PriorSuccessValues()},
-                                {NextResultName}
-                            ));
-                            """
+            disambiguator: "AsResult",
+            generatorType: $"Func<{InTypes}, {OutType}>", 
+            methodBody: $"var {NextResultName} = {GeneratorFunctionName}({PriorSuccessValues()});",
+            returnBody: $"({PriorSuccessValues()},{NextResultName})"
         );
          
         AddSyncGenerator(
-            generatorType: $"Func<{InTypes}, Result<{OutTypeName}>>", 
-            generatorBody: $"""
+            generatorType: $"Func<{InTypes}, Result<{OutType}>>", 
+            methodBody: $"""
                             var {NextResultName} = {GeneratorFunctionName}(
                                  {PriorSuccessValues()});
                                  
                             {IfNextResultFailed}
-
-                            return Result.Success((
-                                {PriorSuccessValues()},
-                                {NextResultName}.SuccessValue
-                            ));
-                            """
+                            """,
+            returnBody: $"({PriorSuccessValues()},{NextResultName}).SuccessValue"
         );
         
         AddAsyncGenerator(
-            generatorType: $"Func<{InTypes}, Task<{OutTypeName}>>", 
+            disambiguator: "AsResult",
+            generatorType: $"Func<{InTypes}, Task<{OutType}>>", 
             generatorBody: $"""
                             var {NextResultName} = await {GeneratorFunctionName}(
                                     {PriorSuccessValues()}).ConfigureAwait(false);
@@ -49,7 +42,7 @@ public sealed class AndExtensionGenerator : ExtensionGeneratorBase
         );
         
         AddAsyncGenerator(
-            generatorType: $"Func<{InTypes}, Task<Result<{OutTypeName}>>>", 
+            generatorType: $"Func<{InTypes}, Task<Result<{OutType}>>>", 
             generatorBody: $"""
                             var {NextResultName} = await {GeneratorFunctionName}(
                                  {PriorSuccessValues()}).ConfigureAwait(false);

@@ -8,20 +8,47 @@ public sealed class Tests
 {
     
     [Fact]
-    public void DoesThing()
+    public async Task DoesThing()
     {
-        var x = 3.AsResult()
-            .Then(i => i + 1)
-            .ThenTaskAsync(x => Task.FromResult(x + 1))
-            .DoAsync(x => Console.WriteLine())
-            .AndAsync(x => x + 1)
-            .AndAsync((a, b) => a + 2)
-            .AndAsync(_ => 4 + 3)
-            .AndAsync(_ => Task.FromResult(4 + 3))
-            .ThenTaskAsync((x, y, z, r) =>
-            {
-                return Task.FromResult(x + y + z + r);
-            })
+        var x = await 3.AsResult()
+                .Then(i => i + 1)
+                .Then(x => Task.FromResult(x + 1))
+                .Then(x => Task.FromResult(x + 1))
+                .Then(x => x + 1)
+                .Then(x => Result.Success(2))
+                .Then(x => Task.FromResult(Result.Success(2))) 
+                .And(x => x + 1)
+                .Then((i, ii) => i + 1)
+                .And(x => x + 1)
+                .Do((a, x) =>
+                {
+                    var y =x + 1;
+                })
+                .Do((a, x) => Result.Success(2))
+                .Do((a, x) => Task.FromResult(Result.Success(2))) 
+                .Do((a, b) =>
+                {
+                    // ReSharper disable once Xunit.XunitTestWithConsoleOutput
+                    Console.WriteLine("");
+                }) 
+                .Then((a, b) => Task.FromResult(Result.Success(2)))
+                .And(x => x + 1)
+                .And(async (x, _) =>
+                {
+                    await Task.Delay(100);
+                    return x + 1;
+                })
+                .And((x, _, _) => x + 1)
+                .And((_, _, x, _) => x + 1)
+                .And((x, y, z, a, b) => x + 1)
+                .And((x, _, a, z, o, p) => x + 1)
+                .Then((_, _, _, _ ,_, _, a) => Task.FromResult(Result.Success(a)))
             ;
+    }
+
+
+    private Result<int> Return5()
+    {
+        return 5.AsResult();
     }
 }

@@ -9,7 +9,7 @@ public sealed class DoExtensionGenerator : ExtensionGeneratorBase
     {
         AddSyncGenerator(
             generatorType: $"Action<{InTypes}>",
-            generatorBody: $"""
+            methodBody: $"""
                             {GeneratorFunctionName}({PriorSuccessValues()});
                             return Result.Success();
                             """,
