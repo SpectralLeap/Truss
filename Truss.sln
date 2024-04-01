@@ -16,10 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.AspNetCor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results", "Truss.Results\Truss.Results.csproj", "{ED2C02C9-96F0-4813-AAD4-48EF73997855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Tests", "Truss.Results.Tests\Truss.Results.Tests.csproj", "{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Functional", "Truss.Results.Extensions.Functional\Truss.Results.Extensions.Functional.csproj", "{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.SourceGenerator", "Truss.Results.Extensions.Fluent.SourceGenerator\Truss.Results.Extensions.Fluent.SourceGenerator.csproj", "{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent", "Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj", "{6C067595-6559-445B-A1E8-5A0593F5246C}"
@@ -62,14 +58,6 @@ Global
 		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2C02C9-96F0-4813-AAD4-48EF73997855}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3BE0EE-652E-47C2-9CC9-E0493A1DA00D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D58CC4D6-A3D0-43DA-B261-ABEA5179BFA5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
