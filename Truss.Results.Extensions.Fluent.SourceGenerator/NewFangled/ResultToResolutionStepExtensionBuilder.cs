@@ -58,7 +58,7 @@ public sealed class ResultToResolutionStepExtensionBuilder : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     var resolutionStep = new ResolutionStep<{{_typingContext.InTypes}}>(result);
+                     var resolutionStep = new ResolutionStep<{{method.InTypes}}>(result);
                      return resolutionStep.{{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}({{method.MethodName}});
                  }
                  """;
@@ -73,7 +73,7 @@ public sealed class ResultToResolutionStepExtensionBuilder : IGenerator
                  )
                  {
                      var result = await resultTask.ConfigureAwait(false);
-                     var resolutionStep = new ResolutionStep<{{_typingContext.InTypes}}>(result);
+                     var resolutionStep = new ResolutionStep<{{method.InTypes}}>(result);
                      return await resolutionStep.{{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}({{method.MethodName}});
                  }
                  """;       

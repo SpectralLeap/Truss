@@ -6,7 +6,6 @@ public sealed class TypingContext
 {
     public readonly string OutType = "TOut";
     public readonly string PriorResultName = "result";
-    public string OperationTypes => $"{InTypes}, {OutType}";
     public string InTypes { get; } 
     public string InTuple { get; }
 
