@@ -1,4 +1,4 @@
-namespace Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
+namespace Truss.Results.Extensions.Fluent.SourceGenerator.MethodSets;
 
 public sealed class Method
 {

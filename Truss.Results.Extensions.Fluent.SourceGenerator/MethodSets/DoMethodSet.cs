@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
+namespace Truss.Results.Extensions.Fluent.SourceGenerator.MethodSets;
 
 public sealed class DoMethodSet : IMethodSet
 {

@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using Truss.Results.Extensions.Fluent.SourceGenerator.MethodSets;
 
-namespace Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
+namespace Truss.Results.Extensions.Fluent.SourceGenerator.Generators;
 
-public sealed class ResultToResolutionStepExtensionBuilder : IGenerator
+public sealed class ResultToResolutionStepExtensionGenerator : IGenerator
 {
     public string Name => "ResultToResolutionStepExtensions";
     private readonly TypingContext _typingContext;
     private readonly IMethodSet[] _methodSets;
  
-    public ResultToResolutionStepExtensionBuilder(
+    public ResultToResolutionStepExtensionGenerator(
         TypingContext typingContext,
         IMethodSet[] methodSets
     )

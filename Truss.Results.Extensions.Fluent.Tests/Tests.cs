@@ -24,7 +24,9 @@ public sealed class Tests
                 {
                     var y =x + 1;
                 })
+                .Do((a, x) => Result.Success())
                 .Do((a, x) => Result.Success(2))
+                .Do((a, x) => Result.Fail())
                 .Do((a, x) => Task.FromResult(Result.Success(2))) 
                 .Do((a, b) =>
                 {

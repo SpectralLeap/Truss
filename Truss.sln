@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests", "Truss.Results.Extensions.Fluent.Tests\Truss.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,13 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Truss.Results.Extensions.Fluent.SourceGenerator.MethodSets;
 
-namespace Truss.Results.Extensions.Fluent.SourceGenerator.ExtensionGenerators;
-
-public interface IGenerator
-{
-    string Name { get; }
-    public string Generate();
-}
+namespace Truss.Results.Extensions.Fluent.SourceGenerator.Generators;
 
 public sealed class ResolutionStepGenerator : IGenerator
 {

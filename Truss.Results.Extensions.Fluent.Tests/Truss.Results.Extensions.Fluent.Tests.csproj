@@ -20,6 +20,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="true"
+        />
         <ProjectReference Include="..\Truss.Results\Truss.Results.csproj" />
         <ProjectReference Include="..\Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj" />
     </ItemGroup>
