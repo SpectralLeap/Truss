@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Truss.Application.Abstractions.Domain;
 
 /// <summary>
@@ -9,7 +11,8 @@ public abstract record EntityId<TId>
     /// <summary>
     /// The Id Value
     /// </summary>
-    public TId Value { get; }
+    [JsonProperty]
+    public TId Value { get; private set; }
     
     /// <summary>
     /// Base object for ids used by entity types
@@ -20,5 +23,7 @@ public abstract record EntityId<TId>
     {
         this.Value = Value;
     }
+
+    public static implicit operator TId(EntityId<TId> id) => id.Value;
 }
 

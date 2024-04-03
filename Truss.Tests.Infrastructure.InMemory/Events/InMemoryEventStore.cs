@@ -9,13 +9,6 @@ public sealed class InMemoryEventStore : IEventStore
 {
     private readonly Dictionary<string, Dictionary<Guid, List<string>>> _eventStreams = new();
 
-    public IEnumerable<ChangeEventPayload> GetEvents(Guid aggregateId) =>
-        _eventStreams.Values.SelectMany(stream => 
-            stream.ContainsKey(aggregateId) ?
-                stream[aggregateId].Select(JsonConvert.DeserializeObject<ChangeEventPayload>).ToList()! :
-                new List<ChangeEventPayload>());
-
-
     public Task<Result<None>> Write(ChangeEventPayload @event)
     {
         if (!_eventStreams.ContainsKey(@event.EventType))
@@ -35,8 +28,19 @@ public sealed class InMemoryEventStore : IEventStore
         return Task.FromResult(Result.Success());
     }
 
-    public Task<Result<IAsyncEnumerable<ChangeEventPayload>>> Read(AggregateRootId<Guid> id)
+    public async Task<Result<IAsyncEnumerable<ChangeEventPayload>>> Read(AggregateRootId<Guid> id)
     {
-        return Result.Success(GetEvents(id.Value).ToAsyncEnumerable());
+        var events = GetEvents(id.Value).ToAsyncEnumerable();
+
+        if (await events.IsEmptyAsync()) return Result.Fail("Empty");
+        return Result.Success(events);
     }
+    
+    private IEnumerable<ChangeEventPayload> GetEvents(Guid aggregateId) =>
+        _eventStreams.Values.SelectMany(stream => 
+            stream.ContainsKey(aggregateId) ?
+                stream[aggregateId].Select(JsonConvert.DeserializeObject<ChangeEventPayload>).ToList()! :
+                new List<ChangeEventPayload>());
+
+
 }
