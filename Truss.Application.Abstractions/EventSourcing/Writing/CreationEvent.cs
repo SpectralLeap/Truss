@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 using Truss.Application.Abstractions.Domain;
 
 namespace Truss.Application.Abstractions.EventSourcing.Writing;
@@ -6,16 +7,17 @@ namespace Truss.Application.Abstractions.EventSourcing.Writing;
 /// <summary>
 /// Represents an new aggregate entity has been created
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="TId"></typeparam>
 [ExcludeFromCodeCoverage]
-public abstract record CreationEvent<T> : ChangeEvent where T : AggregateRootId<Guid>
+public abstract record CreationEvent<TId> : ChangeEvent 
+    where TId : AggregateRootId<Guid>
 {
     /// <summary>
-    /// Represents an new aggregate entity has been created
+    /// Represents a new aggregate entity that has been created.
     /// </summary>
-    /// <param name="aggregateId">Aggregate Id</param>
-    /// <typeparam name="T"></typeparam>
-    protected CreationEvent(T aggregateId) : base(aggregateId.Value)
+    /// <typeparam name="TId">The type of the aggregate root ID.</typeparam>
+    protected CreationEvent(Guid aggregateId)
+        : base(aggregateId)
     {
     }
 }

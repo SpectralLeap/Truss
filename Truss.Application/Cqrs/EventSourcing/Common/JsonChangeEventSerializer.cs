@@ -26,6 +26,8 @@ internal sealed class JsonChangeEventSerializer : IChangeEventSerializer
     /// <returns></returns>
     public ChangeEvent Deserialize(Type eventType, string serializedEvent)
     {
-        return (ChangeEvent)JsonConvert.DeserializeObject(serializedEvent, eventType)!;
+        var deserializedEvent = JsonConvert.DeserializeObject(serializedEvent, eventType)!;
+        
+        return (ChangeEvent)deserializedEvent;
     }
 }

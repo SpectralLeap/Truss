@@ -5,12 +5,13 @@ namespace Truss.Application.Abstractions.EventSourcing.Writing;
 /// <summary>
 /// Represents an aggregate's state has changed
 /// </summary>
-public abstract record ChangeEvent : IChangeEvent
+public abstract record ChangeEvent 
+    : IChangeEvent
 {
     /// <summary>
     /// For general event versioning
     /// </summary>
-    public const int ChangeEventVersion = 1;
+    public int ChangeEventVersion { get; private set; } = 1;
             
     /// <summary>
     /// The unique id of the event
@@ -20,7 +21,7 @@ public abstract record ChangeEvent : IChangeEvent
     /// <summary>
     /// Represents the unique identifier of an aggregate.
     /// </summary>
-    public Guid AggregateId { get; }
+    public Guid AggregateId { get; private set; }
 
     /// <summary>
     /// When the event occured

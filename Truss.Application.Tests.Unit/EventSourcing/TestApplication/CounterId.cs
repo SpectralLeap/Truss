@@ -1,6 +1,6 @@
 using Truss.Application.Abstractions.Domain;
 
-namespace Truss.Application.Tests.EventSourcing.TestApplication;
+namespace Truss.Application.Tests.Unit.EventSourcing.TestApplication;
 
 public sealed record CounterId : AggregateRootId<Guid>
 {
