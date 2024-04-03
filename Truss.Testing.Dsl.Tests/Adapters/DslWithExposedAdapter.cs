@@ -1,5 +1,4 @@
 using Truss.Testing.Dsl.Adapters;
-using Truss.Testing.Dsl.Tests.Services;
 
 namespace Truss.Testing.Dsl.Tests.Adapters;
 

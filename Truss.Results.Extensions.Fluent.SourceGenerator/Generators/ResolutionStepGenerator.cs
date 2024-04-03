@@ -39,9 +39,13 @@ public sealed class ResolutionStepGenerator : IGenerator
                     }
                     
                     {{Methods()}}
+                    
+                    public static implicit operator Result<{{_typingContext.InTuple}}>(
+                        {{Name}}<{{_typingContext.InTypes}}> {{Name.ToLower()}})
+                            => {{Name.ToLower()}}.{{_typingContext.PriorResultName}};
                  }
                  """;
-    }
+}
 
     private string Methods()
     {

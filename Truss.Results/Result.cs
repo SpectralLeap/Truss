@@ -116,7 +116,29 @@ public readonly struct Result<TResult> : IResult
         Succeeded = false;
         _failureDetails = failure ?? throw new ArgumentNullException(nameof(failure));
     }
+
+    public TOut Resolve<TOut>(
+        Func<TResult, TOut> onSuccess,
+        Func<FailureDetails, TOut> onFailure
+    )
+    {
+        if (Succeeded) return onSuccess(SuccessValue);
+        return onFailure(FailureDetails);
+    }
     
+    public void Resolve(
+        Action<TResult> onSuccess,
+        Action<FailureDetails> onFailure
+    )
+    {
+        if (Succeeded)
+        {
+            onSuccess(SuccessValue);
+            return;
+        }
+        onFailure(FailureDetails);
+    }
+     
     /// <summary>
     /// Returns the success value or a default value
     /// </summary>
@@ -142,7 +164,6 @@ public readonly struct Result<TResult> : IResult
         return new Result<TResult>(value.FailureDetails);
     }
  
-    
     /// <summary>
     /// Implicit cast for readability
     /// </summary>

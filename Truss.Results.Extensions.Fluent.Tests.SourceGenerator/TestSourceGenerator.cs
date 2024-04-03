@@ -14,21 +14,25 @@ public sealed class TestSourceGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-        var source = 
-            $$""""
-              using Xunit;
-              
-              public class Tests
-              {
-                  [Fact]
-                  public void DoesThing()
-                  {
-                      Assert.True(true);
-                  }
-              }
-            """";
+        for (var size = 1; size <= 7; size++)
+        {
+            var testGenerator = new TestGenerator(size);
+            
+            var source = 
+                $$""""
+                    using Xunit;
+                    using Truss.Results;
+                    using Truss.Results.Extensions.Fluent;
+                    
+                    namespace Results.Extensions.Fluent.Tests;
+                    
+                    public class Tests{{size}}
+                    {
+                        {{testGenerator.Generate()}}
+                    }
+                  """";
         
-        context.AddSource("x.g.cs", source);
+            context.AddSource($"FluentExtensionsTests{size}.g.cs", source);
+        }
     }
-
 }

@@ -6,7 +6,6 @@ namespace Truss.Results.Extensions.Fluent.Tests;
 
 public sealed class Tests
 {
-    
     [Fact]
     public async Task DoesThing()
     {

@@ -39,6 +39,7 @@ public sealed class ResultToResolutionStepExtensionGenerator : IGenerator
         foreach (var method in _methodSets.SelectMany(m => m.GetMethods()))
         {
             output.Add(GenerateMethod(method));
+            output.Add(GenerateAsyncMethod(method));
         }
  
         return string.Join("\n", output);
@@ -51,10 +52,12 @@ public sealed class ResultToResolutionStepExtensionGenerator : IGenerator
      
     private string GenerateMethod(Method method)
     {
-        if (method.IsAsync) return GenerateAsyncMethod(method);
+        var returnSignature = method.IsAsync 
+            ? $"static Task<{ReturnSignature(method.ReturnType)}>"
+            : $"static {ReturnSignature(method.ReturnType)}";
         
         return $$"""
-                 public static {{ReturnSignature(method.ReturnType)}} {{method.SetName}}<{{method.OperationTypes}}>(
+                 public {{returnSignature}} {{method.SetName}}<{{method.OperationTypes}}>(
                      this Result<{{method.InTypes}}> result,
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
@@ -67,6 +70,10 @@ public sealed class ResultToResolutionStepExtensionGenerator : IGenerator
 
     private string GenerateAsyncMethod(Method method)
     {
+        var returnSignature = method.IsAsync
+            ? "return await"
+            : "return";
+        
         return $$"""
                  public static async Task<{{ReturnSignature(method.ReturnType)}}> {{method.SetName}}<{{method.OperationTypes}}>(
                      this Task<Result<{{method.InTypes}}>> resultTask,
@@ -75,7 +82,7 @@ public sealed class ResultToResolutionStepExtensionGenerator : IGenerator
                  {
                      var result = await resultTask.ConfigureAwait(false);
                      var resolutionStep = new ResolutionStep<{{method.InTypes}}>(result);
-                     return await resolutionStep.{{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}({{method.MethodName}});
+                     {{returnSignature}} resolutionStep.{{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}({{method.MethodName}});
                  }
                  """;       
     }

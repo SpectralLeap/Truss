@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.0.1</Version>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Truss.Application.Abstractions\Truss.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Truss.Application.csproj.DotSettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cqrs\" />
+  </ItemGroup>
+</Project>

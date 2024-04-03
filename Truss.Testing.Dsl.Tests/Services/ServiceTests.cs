@@ -1,5 +1,3 @@
-using Truss.Testing.Dsl.Tests.Drivers;
-
 namespace Truss.Testing.Dsl.Tests.Services;
 
 public sealed class ServiceTests
