@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Application;
 using Truss.Application.Abstractions.Commands;
 using Truss.Application.Tests.Unit.Commands.TestApplication;
 using Truss.Results;

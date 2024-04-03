@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Truss.Application.Abstractions.EventSourcing.Writing;
 
 namespace Truss.Application.Tests.Unit.EventSourcing.TestApplication;

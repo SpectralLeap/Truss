@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
 using Truss.Application.Abstractions.Domain;
 
 namespace Truss.Application.Abstractions.EventSourcing.Writing;
