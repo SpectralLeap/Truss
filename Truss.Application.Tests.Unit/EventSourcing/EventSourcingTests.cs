@@ -19,7 +19,7 @@ public sealed class EventSourcingTests
         var writer = AggregateEventStreamWriter;
         await writer.WriteToStream(counter);
 
-        var val = await EventStore.Read(counter.Id);
+        var val = await eventReadStore.Read(counter.Id);
         Assert.Equal(3, await val.SuccessValue.CountAsync());
     }
 
@@ -78,7 +78,7 @@ public sealed class EventSourcingTests
         var eventsAgain =
             await (await AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.ToListAsync();
 
-        Assert.Equal(eventsAgain.Count(), eventsAgain.DistinctBy(e => e.SequenceNumber).Count());
+        Assert.Equal(eventsAgain.Count(), eventsAgain.DistinctBy(e => e.EventSequenceNumber).Count());
     }
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
@@ -87,7 +87,7 @@ public sealed class EventSourcingTests
             .BuildServiceProvider()
         ;
 
-    private IEventStore EventStore => _serviceProvider.GetService<IEventStore>()!;
+    private IEventReadStore eventReadStore => _serviceProvider.GetService<IEventReadStore>()!;
     private IAggregateEventStreamWriter AggregateEventStreamWriter => _serviceProvider.GetService<IAggregateEventStreamWriter>()!;
     private IAggregateEventStreamReader AggregateEventStreamReader => _serviceProvider.GetService<IAggregateEventStreamReader>()!;
 }

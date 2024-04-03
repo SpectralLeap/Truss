@@ -34,7 +34,7 @@ public sealed class DslServicesNotRegisteredException(Type type) : Exception($"S
 /// <summary>
 /// Represents a factory for creating DSL (Domain-Specific Language) instances.
 /// </summary>
-public sealed class DslFactory : IDisposable
+public sealed class DslFactory : IAsyncDisposable
 {
     private static readonly ProxyGenerator ProxyGenerator = new();
     
@@ -144,6 +144,11 @@ public sealed class DslFactory : IDisposable
         {
             if (provider is IDisposable disposable) disposable.Dispose();
         }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();
     }
 }
 

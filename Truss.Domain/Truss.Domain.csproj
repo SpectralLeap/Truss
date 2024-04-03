@@ -9,17 +9,15 @@
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\..\.nuget\packages\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Truss.Application.Abstractions\Truss.Application.Abstractions.csproj" />
     <ProjectReference Include="..\Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventSourcing\Events\" />
   </ItemGroup>
 </Project>

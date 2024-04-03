@@ -35,7 +35,7 @@ internal sealed class DomainEventDispatcher : IDomainEventDispatcher
     /// </summary>
     /// <param name="rootsWithEvents"></param>
     /// <param name="cancellationToken"></param>
-    public async Task DispatchAndClearDomainEvents(IEnumerable<IAggregateRoot> rootsWithEvents, CancellationToken cancellationToken)
+    private async Task DispatchAndClearDomainEvents(IEnumerable<IAggregateRoot> rootsWithEvents, CancellationToken cancellationToken)
     {
         foreach (var root in rootsWithEvents)
         {

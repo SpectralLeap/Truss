@@ -5,7 +5,7 @@ using Truss.Results;
 
 namespace Truss.Tests.Infrastructure.InMemory.Events;
 
-public sealed class InMemoryEventStore : IEventStore
+public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
 {
     private readonly Dictionary<string, Dictionary<Guid, List<string>>> _eventStreams = new();
 

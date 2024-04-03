@@ -1,9 +1,8 @@
 using Truss.Application.Abstractions.Events;
-using Truss.Application.Cqrs.EventSourcing.Reading;
 
-namespace Truss.Application.Cqrs.EventSourcing.Common;
+namespace Truss.Application.Cqrs.EventSourcing.Events;
 
-internal sealed class ChangeEventMapper : IChangeEventTypeMap
+internal sealed class ChangeEventTypeMap
 {
     private readonly Dictionary<EventType, Type> _map = new();
     private readonly Dictionary<Type, EventType> _coMap = new();

@@ -5,6 +5,8 @@ using Truss.Results;
 
 namespace Truss.Domain.EventSourcing;
 
+public sealed class EventHandler : Attribute;
+
 /// <summary>
 /// Contains event sourcing logic for implementing event sourced aggregates
 /// </summary>
@@ -17,7 +19,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     where TId : AggregateRootId<Guid>
     where TRoot : EventSourcedAggregateRoot<TRoot, TId>
 {
-
+    
     /// <summary>
     /// Events that have not yet been stored
     /// </summary>
@@ -69,7 +71,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// </summary>
     /// <param name="event">The <see cref="ChangeEvent"/> that should be registered</param>
     /// <typeparam name="TChangeEvent">The <see cref="Type"/> of the <see cref="ChangeEvent"/></typeparam>
-    protected Result<TRoot> RegisterChangeEvent<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
+    protected Result<TRoot> Apply<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
     {
         if (_currentEventSequenceNumber.Value > 1 
             && typeof(CreationEvent<TId>).IsAssignableFrom(typeof(TChangeEvent)))
@@ -118,7 +120,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     protected static Result<T> Rehydrate<T>(Func<Guid, T> typeGenerator, IEnumerable<ChangeEvent> eventHistory)
         where T : EventSourcedAggregateRoot<TRoot, TId>
     {
-        var changeEvents = eventHistory.OrderBy(e => e.SequenceNumber).ToArray();
+        var changeEvents = eventHistory.OrderBy(e => e.EventSequenceNumber).ToArray();
 
         var sequenceAnalysis = ChangeEventSequenceAnalysis(changeEvents);
         if (!sequenceAnalysis.IsValid)
@@ -128,7 +130,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
         
         var entity = typeGenerator(sequenceAnalysis.CreationEvent!.AggregateId);
 
-        entity._currentEventSequenceNumber = changeEvents.Last().SequenceNumber!;
+        entity._currentEventSequenceNumber = changeEvents.Last().EventSequenceNumber!;
 
         foreach (var changeEvent in changeEvents)
         {
@@ -168,15 +170,15 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
         }
         
         if(possibleCreationEvent is not null &&
-           possibleCreationEvent.SequenceNumber is null)
+           possibleCreationEvent.EventSequenceNumber is null)
         {
             isValid = false;
             invalidationReasons.Add("The entity's creation event was not created with a valid sequence. Events must be created through aggregates");
         }
 
         if (possibleCreationEvent is not null &&
-            possibleCreationEvent.SequenceNumber is not null &&
-            possibleCreationEvent.SequenceNumber != 1)
+            possibleCreationEvent.EventSequenceNumber is not null &&
+            possibleCreationEvent.EventSequenceNumber != 1)
         {
             isValid = false;
             invalidationReasons.Add("The entity's creation event is not in sequence");           
@@ -191,7 +193,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
                 invalidationReasons.Add("The entity has multiple creation events");
             }
 
-            if (changeEvent.SequenceNumber != sequence + 1)
+            if (changeEvent.EventSequenceNumber != sequence + 1)
             {
                 isValid = false;
                 invalidationReasons.Add($"A change event is missing between sequence {sequence} and {changeEvent}");

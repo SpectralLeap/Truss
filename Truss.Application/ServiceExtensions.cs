@@ -8,6 +8,7 @@ using Truss.Application.Abstractions.EventSourcing.Writing;
 using Truss.Application.Abstractions.Queries;
 using Truss.Application.Cqrs.Commands;
 using Truss.Application.Cqrs.EventSourcing.Common;
+using Truss.Application.Cqrs.EventSourcing.Events;
 using Truss.Application.Cqrs.EventSourcing.Reading;
 using Truss.Application.Cqrs.EventSourcing.Writing;
 using Truss.Application.Cqrs.Queries;
@@ -17,7 +18,16 @@ namespace Truss.Application;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddDomainEvents(this IServiceCollection services)
+    private static readonly IEnumerable<TypeInfo> 
+        ChangeEventTypes = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(a => a.DefinedTypes)
+            .Where(t => !t.IsAbstract && t.GetInterfaces().Contains(typeof(IChangeEvent)))
+        ;
+    
+    public static IServiceCollection AddDomainEvents(
+        this IServiceCollection services
+    )
     {
         return services
                 .AddTransient<IDomainEventDispatcher, DomainEventDispatcher>()
@@ -25,7 +35,9 @@ public static class ServiceExtensions
             ;
     }
 
-    public static IServiceCollection AddCqrs(this IServiceCollection services)
+    public static IServiceCollection AddCqrs(
+        this IServiceCollection services
+    )
     {
         return services
                 .AddDomainEvents()
@@ -34,15 +46,11 @@ public static class ServiceExtensions
             ;
     }
 
-    private static readonly IEnumerable<TypeInfo> ChangeEventTypes = AppDomain.CurrentDomain
-            .GetAssemblies()
-            .SelectMany(a => a.DefinedTypes)
-            .Where(t => !t.IsAbstract && t.GetInterfaces().Contains(typeof(IChangeEvent)))
-        ;
-    
-    public static IServiceCollection AddEventSourcing(this IServiceCollection services)
+    public static IServiceCollection AddEventSourcing(
+        this IServiceCollection services
+    )
     {
-        var mapper = new ChangeEventMapper();
+        var mapper = new ChangeEventTypeMap();
         
         foreach (var type in ChangeEventTypes)
         {
@@ -50,12 +58,16 @@ public static class ServiceExtensions
         }
         
         services
-            .AddCqrs()
-            .AddSingleton<IChangeEventTypeMap>(mapper)
-            .TryAddTransient<IAggregateEventStreamWriter, AggregateEventStreamWriter>();
-
-        services.TryAddTransient<IAggregateEventStreamReader, AggregateEventStreamReader>();
-        services.TryAddTransient<IChangeEventSerializer, JsonChangeEventSerializer>();
+            .AddSingleton(mapper)
+            .AddSingleton<ChangeEventSerializer>()
+            .AddSingleton<ChangeEventDeserializer>()
+            ;
+        
+        services.TryAddTransient<
+            IAggregateEventStreamWriter,
+            AggregateEventStreamWriter>();
+        services.TryAddTransient<IAggregateEventStreamReader,
+            AggregateEventStreamReader>();
 
         return services;
     }

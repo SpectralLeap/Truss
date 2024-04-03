@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Truss.Domain.Entities;
 
 /// <summary>
@@ -12,8 +10,7 @@ public abstract class Entity<TId>
     /// <summary>
     /// The unique Id of the entity
     /// </summary>
-    [JsonProperty]
-    public TId Id { get;  }
+    public TId Id { get; }
 
     /// <summary>
     /// 

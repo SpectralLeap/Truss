@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Truss.Application.Abstractions.Domain;
 
 /// <summary>
@@ -11,7 +9,6 @@ public abstract record EntityId<TId>
     /// <summary>
     /// The Id Value
     /// </summary>
-    [JsonProperty]
     public TId Value { get; private set; }
     
     /// <summary>

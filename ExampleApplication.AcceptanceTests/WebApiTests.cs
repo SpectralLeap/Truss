@@ -61,7 +61,7 @@ public class ExampleServiceDsl(RequestContext requestContext) : Dsl
     }
 }
 
-public sealed class UnitTest1
+public sealed class WebApiTests
 {
     private readonly DslFactory _fixture = new();
     

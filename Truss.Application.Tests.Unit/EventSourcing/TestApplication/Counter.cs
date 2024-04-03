@@ -30,12 +30,12 @@ public sealed class Counter : EventSourcedAggregateRoot<Counter, CounterId>
 
     public Counter() : this(new CounterId(Guid.NewGuid()))
     {
-        RegisterChangeEvent(new CounterCreatedEvent(Id));
+        Apply(new CounterCreatedEvent(Id));
     }
 
     public Result<Counter> IncrementNumber()
     {
-        return RegisterChangeEvent(new NumberIncrementedEvent(Id));
+        return Apply(new NumberIncrementedEvent(Id));
     }
     
     private Result<Counter> NumberUpdatedChangeHandler(NumberIncrementedEvent arg)

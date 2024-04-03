@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Truss.Application.Abstractions\Truss.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Truss.Domain\Truss.Domain.csproj" />
     <ProjectReference Include="..\Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj" />
   </ItemGroup>
   <ItemGroup>

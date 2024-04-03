@@ -11,12 +11,12 @@ public sealed class Orchard : EventSourcedAggregateRoot<Orchard, OrchardId>
 
     private Orchard() : this(new OrchardId(Guid.NewGuid()))
     {
-        RegisterChangeEvent(new OrchardCreatedEvent(Id, ""));
+        Apply(new OrchardCreatedEvent(Id, ""));
     }
     
     public Orchard(OrchardId? id, string name) : this(id)
     {
-        RegisterChangeEvent(new OrchardCreatedEvent(id, name));
+        Apply(new OrchardCreatedEvent(id, name));
     }
 
     private Orchard(OrchardId? id) : base(id!) 
@@ -43,7 +43,7 @@ public sealed class Orchard : EventSourcedAggregateRoot<Orchard, OrchardId>
         
         var e = new TreeAddedEvent(Id, new TreeId(Guid.NewGuid()), treeType);
         
-        return RegisterChangeEvent(e);
+        return Apply(e);
     }
 
     public Result<Orchard> ThrowException()
@@ -54,7 +54,7 @@ public sealed class Orchard : EventSourcedAggregateRoot<Orchard, OrchardId>
     // This is bad to do
     public Result<Orchard> DoIncorrectCreation(string name)
     {
-        return RegisterChangeEvent(new OrchardCreatedEvent(Id, name));
+        return Apply(new OrchardCreatedEvent(Id, name));
     }
     
     private Result<Orchard> AddTree(TreeAddedEvent obj)

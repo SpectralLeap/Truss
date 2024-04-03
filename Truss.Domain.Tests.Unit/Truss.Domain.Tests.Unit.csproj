@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Application.Abstractions\Truss.Application.Abstractions.csproj" />
       <ProjectReference Include="..\Truss.Application\Truss.Application.csproj" />
       <ProjectReference Include="..\Truss.Domain\Truss.Domain.csproj" />
       <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />

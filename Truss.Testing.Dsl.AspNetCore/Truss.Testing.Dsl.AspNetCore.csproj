@@ -4,10 +4,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <Version>0.0.1</Version>
         <Title>Truss.Testing.Dsl.AspNetCore</Title>
         <Description>Support for testing AspNetCore web servers</Description>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

@@ -3,21 +3,8 @@ using Truss.Application.Abstractions.EventSourcing.Writing;
 
 namespace Truss.Application.Cqrs.EventSourcing.Common;
 
-/// <summary>
-/// Serialization for streaming change events
-/// </summary>
-internal sealed class JsonChangeEventSerializer : IChangeEventSerializer
+internal sealed class ChangeEventDeserializer
 {
-    /// <summary>
-    /// Serialize events into storable payloads
-    /// </summary>
-    /// <param name="e"></param>
-    /// <returns></returns>
-    public string Serialize(ChangeEvent e)
-    {
-        return JsonConvert.SerializeObject(e);
-    }
-
     /// <summary>
     /// Deserialize an event from a stored payload
     /// </summary>
@@ -29,5 +16,5 @@ internal sealed class JsonChangeEventSerializer : IChangeEventSerializer
         var deserializedEvent = JsonConvert.DeserializeObject(serializedEvent, eventType)!;
         
         return (ChangeEvent)deserializedEvent;
-    }
+    }   
 }
