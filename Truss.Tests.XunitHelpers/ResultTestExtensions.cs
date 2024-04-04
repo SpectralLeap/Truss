@@ -1,4 +1,4 @@
-﻿using Truss.Results;
+﻿using Truss.Monads.Results;
 using Xunit;
 using Xunit.Sdk;
 

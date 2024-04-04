@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
-using Truss.Application.Cqrs.EventSourcing.Events;
-using Truss.Application.Cqrs.EventSourcing.Reading;
-using Truss.Application.Cqrs.EventSourcing.Writing;
-using Truss.Domain.Entities;
-using Truss.Results;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
+using Truss.Modeling.Domain.Entities;
+using Truss.Monads.Results;
 
 namespace Truss.Tests.Infrastructure.InMemory.Events;
 

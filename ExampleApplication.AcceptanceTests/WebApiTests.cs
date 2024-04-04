@@ -1,11 +1,11 @@
 using ExampleApplication.WebApi;
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
-using Truss.Testing.Dsl;
-using Truss.Testing.Dsl.Drivers;
-using Truss.Testing.Dsl.AspNetCore;
-using Truss.Testing.Dsl.Language;
-using Truss.Testing.Dsl.Services;
+using Truss.Testing;
+using Truss.Testing.AspNetCore;
+using Truss.Testing.Drivers;
+using Truss.Testing.Language;
+using Truss.Testing.Services;
 
 namespace ExampleApplication.AcceptanceTests;
 
@@ -44,7 +44,7 @@ public sealed class LoginDriver() : Driver<Login>
     }
 }
 
-public class ExampleServiceDsl(RequestContext requestContext) : Dsl
+public class ExampleServiceFixture(RequestContext requestContext) : Fixture
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()
@@ -64,12 +64,12 @@ public class ExampleServiceDsl(RequestContext requestContext) : Dsl
 
 public sealed class WebApiTests
 {
-    private readonly DslFactory _fixture = new();
+    private readonly FixtureFactory _fixture = new();
     
     [Fact]
     public async Task UserCanLogin()
     {
-        var dsl = _fixture.GetDsl<ExampleServiceDsl>();
+        var dsl = _fixture.GetFixture<ExampleServiceFixture>();
         
         await dsl.Login();
     }

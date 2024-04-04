@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl", "Truss.Testing.Dsl\Truss.Testing.Dsl.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing", "Truss.Testing\Truss.Testing.csproj", "{11317FC8-6709-491C-8FF9-C0B4503222BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.Tests", "Truss.Testing.Dsl.Tests\Truss.Testing.Dsl.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Tests", "Truss.Testing.Tests\Truss.Testing.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.Protobufs", "ExampleApplication.Protobufs\ExampleApplication.Protobufs.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
 EndProject
@@ -12,25 +12,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.Acceptan
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{217B9A39-EF8E-41CB-AEB9-7F334D763F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Dsl.AspNetCore", "Truss.Testing.Dsl.AspNetCore\Truss.Testing.Dsl.AspNetCore.csproj", "{D5F1B9D2-404E-43FF-8723-11F6C6A17115}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.AspNetCore", "Truss.Testing.AspNetCore\Truss.Testing.AspNetCore.csproj", "{D5F1B9D2-404E-43FF-8723-11F6C6A17115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results", "Truss.Results\Truss.Results.csproj", "{ED2C02C9-96F0-4813-AAD4-48EF73997855}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results", "Truss.Monads.Results\Truss.Monads.Results.csproj", "{ED2C02C9-96F0-4813-AAD4-48EF73997855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.SourceGenerator", "Truss.Results.Extensions.Fluent.SourceGenerator\Truss.Results.Extensions.Fluent.SourceGenerator.csproj", "{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Extensions.Fluent.SourceGenerator", "Truss.Monads.Results.Extensions.Fluent.SourceGenerator\Truss.Monads.Results.Extensions.Fluent.SourceGenerator.csproj", "{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent", "Truss.Results.Extensions.Fluent\Truss.Results.Extensions.Fluent.csproj", "{6C067595-6559-445B-A1E8-5A0593F5246C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Extensions.Fluent", "Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj", "{6C067595-6559-445B-A1E8-5A0593F5246C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests", "Truss.Results.Extensions.Fluent.Tests\Truss.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Extensions.Fluent.Tests", "Truss.Monads.Results.Extensions.Fluent.Tests\Truss.Monads.Results.Extensions.Fluent.Tests.csproj", "{7A16424C-C2BC-4CFC-BD61-24A5F327D61B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Extensions.Fluent.Tests.SourceGenerator", "Truss.Monads.Results.Extensions.Fluent.Tests.SourceGenerator\Truss.Monads.Results.Extensions.Fluent.Tests.SourceGenerator.csproj", "{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Application", "Truss.Application\Truss.Application.csproj", "{9C3E20BB-3895-4A4C-804D-24EEC2375E5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application", "Truss.Modeling.Application\Truss.Modeling.Application.csproj", "{9C3E20BB-3895-4A4C-804D-24EEC2375E5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Application.Tests.Unit", "Truss.Application.Tests.Unit\Truss.Application.Tests.Unit.csproj", "{9C51E1E9-2840-4ED1-9D71-B29A5C27C76A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.Unit", "Truss.Modeling.Application.Tests.Unit\Truss.Modeling.Application.Tests.Unit.csproj", "{9C51E1E9-2840-4ED1-9D71-B29A5C27C76A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Domain", "Truss.Domain\Truss.Domain.csproj", "{91E077AE-A683-4952-B443-805AB0E55DF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Domain", "Truss.Modeling.Domain\Truss.Modeling.Domain.csproj", "{91E077AE-A683-4952-B443-805AB0E55DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Domain.Tests.Unit", "Truss.Domain.Tests.Unit\Truss.Domain.Tests.Unit.csproj", "{181BB16E-3B54-4823-ABEB-F112B11C2D2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Domain.Tests.Unit", "Truss.Modeling.Domain.Tests.Unit\Truss.Modeling.Domain.Tests.Unit.csproj", "{181BB16E-3B54-4823-ABEB-F112B11C2D2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.Infrastructure.InMemory", "Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj", "{DB301789-7300-46FB-BDF0-197891A447CC}"
 EndProject
@@ -38,7 +38,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.XunitHelpers", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modeling", "Modeling", "{47157AAD-7752-4754-89E1-BE970A1546D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Application.Tests.Integration", "Truss.Application.Tests.Integration\Truss.Application.Tests.Integration.csproj", "{5E987008-C6D6-45D3-88AB-E013C4B25CC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.Integration", "Truss.Modeling.Application.Tests.Integration\Truss.Modeling.Application.Tests.Integration.csproj", "{5E987008-C6D6-45D3-88AB-E013C4B25CC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monads", "Monads", "{FFB1F67E-8DB0-4D2C-8CF3-08A299597788}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{54ADBD45-2512-40D8-B9AD-A3D0A1DDD3B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,5 +132,13 @@ Global
 		{91E077AE-A683-4952-B443-805AB0E55DF6} = {47157AAD-7752-4754-89E1-BE970A1546D8}
 		{181BB16E-3B54-4823-ABEB-F112B11C2D2D} = {47157AAD-7752-4754-89E1-BE970A1546D8}
 		{5E987008-C6D6-45D3-88AB-E013C4B25CC4} = {47157AAD-7752-4754-89E1-BE970A1546D8}
+		{ED2C02C9-96F0-4813-AAD4-48EF73997855} = {FFB1F67E-8DB0-4D2C-8CF3-08A299597788}
+		{6C067595-6559-445B-A1E8-5A0593F5246C} = {FFB1F67E-8DB0-4D2C-8CF3-08A299597788}
+		{9EBDAD00-442F-48D3-A8CA-D52AFF8A47B5} = {FFB1F67E-8DB0-4D2C-8CF3-08A299597788}
+		{AD39F5EF-DE72-4A48-9E22-BDB47343B1F6} = {FFB1F67E-8DB0-4D2C-8CF3-08A299597788}
+		{7A16424C-C2BC-4CFC-BD61-24A5F327D61B} = {FFB1F67E-8DB0-4D2C-8CF3-08A299597788}
+		{11317FC8-6709-491C-8FF9-C0B4503222BC} = {54ADBD45-2512-40D8-B9AD-A3D0A1DDD3B2}
+		{D5F1B9D2-404E-43FF-8723-11F6C6A17115} = {54ADBD45-2512-40D8-B9AD-A3D0A1DDD3B2}
+		{4EF46403-F0B0-45DE-8483-006B90EBEE41} = {54ADBD45-2512-40D8-B9AD-A3D0A1DDD3B2}
 	EndGlobalSection
 EndGlobal

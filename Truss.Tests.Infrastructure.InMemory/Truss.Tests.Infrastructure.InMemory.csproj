@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Application\Truss.Application.csproj" />
+      <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
     </ItemGroup>
 
 </Project>
