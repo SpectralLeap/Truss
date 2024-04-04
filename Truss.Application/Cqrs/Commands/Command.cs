@@ -7,7 +7,7 @@ namespace Truss.Application.Cqrs.Commands;
 /// Command for CQRS that returns a <see cref="Result"/>
 /// </summary>
 public abstract record Command 
-    : IRequest<Result<None>>;
+    : IRequest<Result<Nil>>;
 
 /// <summary>
 /// Command for CQRS that returns a specific result type

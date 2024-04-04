@@ -23,7 +23,7 @@ internal sealed class AggregateEventStreamWriter
         _typeMap = typeMap;
     }
 
-    public async Task<Result<None>> WriteToStream<TId>(
+    public async Task<Result<Nil>> WriteToStream<TId>(
         IEventSourcedAggregateRoot<TId> aggregate
     )
         where TId : AggregateRootId<Guid>

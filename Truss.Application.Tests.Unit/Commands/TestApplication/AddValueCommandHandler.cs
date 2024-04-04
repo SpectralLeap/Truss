@@ -18,7 +18,7 @@ public class AddValueCommandHandler : ICommandHandler<AddValueCommand, AddValueR
 
 public class SubtractValueCommandHandler : ICommandHandler<SubtractValueCommand>
 {
-    public Task<Result<None>> Handle(SubtractValueCommand request, CancellationToken cancellationToken)
+    public Task<Result<Nil>> Handle(SubtractValueCommand request, CancellationToken cancellationToken)
     {
         if (request.Value % 2 == 0)
         {

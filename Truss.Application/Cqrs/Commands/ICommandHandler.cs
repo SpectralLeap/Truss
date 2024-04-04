@@ -10,7 +10,7 @@ namespace Truss.Application.Cqrs.Commands;
 /// </summary>
 /// <typeparam name="TCommand"></typeparam>
 public interface ICommandHandler<in TCommand> 
-    : IRequestHandler<TCommand, Result<None>>
+    : IRequestHandler<TCommand, Result<Nil>>
     where TCommand : Command;
 
 /// <summary>

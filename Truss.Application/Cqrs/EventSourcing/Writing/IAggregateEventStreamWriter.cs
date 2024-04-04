@@ -13,6 +13,6 @@ public interface IAggregateEventStreamWriter
     /// Append the events to a stream
     /// </summary>
     /// <returns></returns>
-    Task<Result<None>> WriteToStream<TId>(IEventSourcedAggregateRoot<TId> aggregate) 
+    Task<Result<Nil>> WriteToStream<TId>(IEventSourcedAggregateRoot<TId> aggregate) 
         where TId : AggregateRootId<Guid>;
 }

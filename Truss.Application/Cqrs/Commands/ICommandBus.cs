@@ -13,7 +13,7 @@ public interface ICommandBus
     /// <param name="command"></param>
     /// <typeparam name="TCommand"></typeparam>
     /// <returns><see cref="Result"/></returns>
-     public Task<Result<None>> SendCommand<TCommand>(TCommand command) where TCommand : Command;
+     public Task<Result<Nil>> SendCommand<TCommand>(TCommand command) where TCommand : Command;
 
     /// <summary>
     /// Dispatch a command to the bus

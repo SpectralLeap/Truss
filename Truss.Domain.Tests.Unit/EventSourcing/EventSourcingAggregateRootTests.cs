@@ -239,7 +239,7 @@ public sealed class EventSourcingAggregateRootTests
         exception_in_mapping_is_not_successful
         ()
     {
-        var result = (Result<None>)BindCreation()
+        var result = (Result<Nil>)BindCreation()
             .Then(_ =>
             {
                 throw new Exception();

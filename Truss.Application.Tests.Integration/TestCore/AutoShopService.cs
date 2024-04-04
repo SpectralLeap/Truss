@@ -13,7 +13,7 @@ public sealed class AutoShopService
         _context = context;
     }
     
-    public Result<None> AddAutoShop(AutoShop autoShop)
+    public Result<Nil> AddAutoShop(AutoShop autoShop)
     {
         _context.Add(autoShop);
         

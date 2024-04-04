@@ -22,12 +22,12 @@ public sealed class CommandTests
         _commandBus = serviceProvider.GetService<ICommandBus>()!;
     }
 
-    private async Task<Result<None>> SendSuccessfulCommandReturningBaseResult()
+    private async Task<Result<Nil>> SendSuccessfulCommandReturningBaseResult()
     {
         return await _commandBus.SendCommand(new SubtractValueCommand(2));
     }
     
-    private async Task<Result<None>> SendFailedCommandReturningBaseResult()
+    private async Task<Result<Nil>> SendFailedCommandReturningBaseResult()
     {
         return await _commandBus.SendCommand(new SubtractValueCommand(1));
     }

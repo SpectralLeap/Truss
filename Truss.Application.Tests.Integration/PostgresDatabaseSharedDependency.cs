@@ -1,6 +1,5 @@
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
-using Truss.Testing.Dsl;
 using Truss.Testing.Dsl.SharedDependencies;
 
 namespace Truss.Application.Tests.Integration;

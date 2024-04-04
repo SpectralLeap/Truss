@@ -11,7 +11,7 @@ public static class Result
     /// Create success
     /// </summary>
     /// <returns></returns>
-    public static Result<None> Success() => new(None.Value);
+    public static Result<Nil> Success() => new(Nil.Value);
 
     /// <summary>
     /// Create success
@@ -25,14 +25,14 @@ public static class Result
     /// </summary>
     /// <param name="reasons"></param>
     /// <returns></returns>
-    public static Result<None> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
+    public static Result<Nil> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
 
     /// <summary>
     /// Create failure from exception
     /// </summary>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<None> Fail(Exception ex) => new(FailureDetails.From(ex));
+    public static Result<Nil> Fail(Exception ex) => new(FailureDetails.From(ex));
 
     /// <summary>
     /// Create failure from exception with a message
@@ -40,14 +40,14 @@ public static class Result
     /// <param name="message"></param>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<None> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
+    public static Result<Nil> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
 
     /// <summary>
     /// Create failure from details
     /// </summary>
     /// <param name="details"></param>
     /// <returns></returns>
-    public static Result<None> Fail(FailureDetails details) => new(details);
+    public static Result<Nil> Fail(FailureDetails details) => new(details);
 }
 
 /// <summary>
@@ -157,9 +157,9 @@ public readonly struct Result<TResult> : IResult
     /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>   
-    public static implicit operator Result<TResult>(Result<None> value)
+    public static implicit operator Result<TResult>(Result<Nil> value)
     {
-        if (value.Succeeded) throw new InvalidCastException($"Cannot cast {nameof(None)} to {nameof(TResult)}");
+        if (value.Succeeded) throw new InvalidCastException($"Cannot cast {nameof(Nil)} to {nameof(TResult)}");
 
         return new Result<TResult>(value.FailureDetails);
     }

@@ -25,7 +25,7 @@ internal sealed class CommandBus : ICommandBus
     /// <param name="command"></param>
     /// <typeparam name="TCommand"></typeparam>
     /// <returns></returns>
-    public async Task<Result<None>> SendCommand<TCommand>(TCommand command) 
+    public async Task<Result<Nil>> SendCommand<TCommand>(TCommand command) 
         where TCommand : Command
     {
         return await _mediator.Send(command).ConfigureAwait(false);
