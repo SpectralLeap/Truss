@@ -1,5 +1,3 @@
-using Truss.Application.Abstractions.Domain;
-
 namespace Truss.Domain.Events;
 
 internal interface IDomainEventAggregator

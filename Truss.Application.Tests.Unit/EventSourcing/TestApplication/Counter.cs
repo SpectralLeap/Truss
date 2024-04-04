@@ -1,4 +1,3 @@
-using Truss.Application.Abstractions.EventSourcing.Writing;
 using Truss.Domain.EventSourcing;
 using Truss.Results;
 

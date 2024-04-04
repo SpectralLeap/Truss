@@ -1,3 +1,5 @@
+using Truss.Testing.Dsl.Language;
+
 namespace Truss.Testing.Dsl;
 
 /// <summary>
@@ -12,6 +14,7 @@ public abstract class Dsl
     [DslMethod]
     // ReSharper disable once VirtualMemberNeverOverridden.Global
     // This is used for the proxy interceptor
+    // ReSharper disable once UnusedParameter.Global
     protected virtual Task Act(DslArgs args)
     {
         return Task.CompletedTask;

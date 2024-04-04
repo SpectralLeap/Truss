@@ -1,7 +1,7 @@
 using MediatR;
-using Truss.Application.Abstractions.Domain;
+using Truss.Domain.Events;
 
-namespace Truss.Application.Abstractions.Events;
+namespace Truss.Application.Cqrs.EventSourcing.Events;
 
 /// <summary>
 /// For receiving and acting on domain events

@@ -1,6 +1,4 @@
-using Truss.Application.Abstractions.Domain;
-
-namespace Truss.Application.Abstractions.Events;
+namespace Truss.Domain.Events;
 
 /// <summary>
 /// For transmitting domain events

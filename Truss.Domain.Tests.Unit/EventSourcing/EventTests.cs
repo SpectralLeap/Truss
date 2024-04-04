@@ -1,5 +1,5 @@
-using Truss.Application.Abstractions.Domain;
-using Truss.Application.Abstractions.Events;
+using Truss.Application.Cqrs.EventSourcing.Events;
+using Truss.Domain.Events;
 using Truss.Domain.Tests.Unit.EventSourcing.TestDomain;
 
 namespace Truss.Domain.Tests.Unit.EventSourcing;

@@ -1,4 +1,4 @@
-namespace Truss.Application.Abstractions.Domain;
+namespace Truss.Domain.Entities;
 
 /// <summary>
 /// Base object for ids used by entity types

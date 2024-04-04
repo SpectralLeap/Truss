@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
-using Truss.Application.Abstractions.Domain;
-using Truss.Application.Cqrs.EventSourcing.Common;
+using Truss.Application.Cqrs.EventSourcing.Events;
+using Truss.Application.Cqrs.EventSourcing.Reading;
+using Truss.Application.Cqrs.EventSourcing.Writing;
+using Truss.Domain.Entities;
 using Truss.Results;
 
 namespace Truss.Tests.Infrastructure.InMemory.Events;

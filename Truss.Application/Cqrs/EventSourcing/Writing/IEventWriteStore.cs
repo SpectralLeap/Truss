@@ -1,6 +1,7 @@
+using Truss.Application.Cqrs.EventSourcing.Events;
 using Truss.Results;
 
-namespace Truss.Application.Cqrs.EventSourcing.Common;
+namespace Truss.Application.Cqrs.EventSourcing.Writing;
 
 /// <summary>
 /// For storing an event stream

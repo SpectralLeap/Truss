@@ -1,8 +1,8 @@
-using Truss.Application.Abstractions.Domain;
-using Truss.Application.Abstractions.EventSourcing.Writing;
+using Truss.Domain.Entities;
+using Truss.Domain.EventSourcing;
 using Truss.Results;
 
-namespace Truss.Application.Abstractions.EventSourcing.Reading;
+namespace Truss.Application.Cqrs.EventSourcing.Reading;
 
 /// <summary>
 /// Accesses an event stream for reading

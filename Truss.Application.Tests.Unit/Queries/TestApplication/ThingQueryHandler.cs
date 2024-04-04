@@ -1,4 +1,4 @@
-using Truss.Application.Abstractions.Queries;
+using Truss.Application.Cqrs.Queries;
 using Truss.Results;
 
 namespace Truss.Application.Tests.Unit.Queries.TestApplication;

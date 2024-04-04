@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Truss.Testing.Dsl.Language;
 using Truss.Testing.Dsl.Services;
 
 namespace Truss.Testing.Dsl.Tests.Drivers;

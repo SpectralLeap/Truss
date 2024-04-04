@@ -1,6 +1,6 @@
 using Truss.Results;
 
-namespace Truss.Application.Abstractions.Queries;
+namespace Truss.Application.Cqrs.Queries;
 
 /// <summary>
 /// Bus for sending queries into the mediator system

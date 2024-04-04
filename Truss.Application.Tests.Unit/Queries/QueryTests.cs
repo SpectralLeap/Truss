@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Application.Abstractions.Queries;
+using Truss.Application.Cqrs.Queries;
 using Truss.Application.Tests.Unit.Queries.TestApplication;
 
 namespace Truss.Application.Tests.Unit.Queries;

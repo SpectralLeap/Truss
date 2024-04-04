@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
-using Truss.Application.Abstractions.EventSourcing.Writing;
+using Truss.Domain.EventSourcing;
 
-namespace Truss.Application.Cqrs.EventSourcing.Common;
+namespace Truss.Application.Cqrs.EventSourcing.Reading;
 
 internal sealed class ChangeEventDeserializer
 {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Truss.Testing.Dsl.Services;
 
 // ReSharper disable once CheckNamespace
-internal static class ServiceExtensions
+internal static class ServiceCollectionExtensions
 {
     public static void Load(
         this IServiceCollection services,

@@ -1,7 +1,8 @@
-using Truss.Application.Abstractions.Domain;
+using Truss.Application.Cqrs.EventSourcing.Events;
+using Truss.Domain.Entities;
 using Truss.Results;
 
-namespace Truss.Application.Cqrs.EventSourcing.Common;
+namespace Truss.Application.Cqrs.EventSourcing.Reading;
 
 public interface IEventReadStore
 {

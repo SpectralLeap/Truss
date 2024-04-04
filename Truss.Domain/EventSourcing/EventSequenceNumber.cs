@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Truss.Application.Abstractions.EventSourcing.Writing;
+namespace Truss.Domain.EventSourcing;
 
 /// <summary>
 /// Represents a sequence number for events.

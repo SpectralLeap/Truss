@@ -1,7 +1,7 @@
 using MediatR;
 using Truss.Results;
 
-namespace Truss.Application.Abstractions.Commands;
+namespace Truss.Application.Cqrs.Commands;
 
 /// <summary>
 /// Command for CQRS that returns a <see cref="Result"/>

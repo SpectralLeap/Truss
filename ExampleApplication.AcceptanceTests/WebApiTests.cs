@@ -4,6 +4,7 @@ using RestSharp;
 using Truss.Testing.Dsl;
 using Truss.Testing.Dsl.Drivers;
 using Truss.Testing.Dsl.AspNetCore;
+using Truss.Testing.Dsl.Language;
 using Truss.Testing.Dsl.Services;
 
 namespace ExampleApplication.AcceptanceTests;

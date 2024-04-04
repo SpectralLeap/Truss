@@ -1,4 +1,4 @@
-namespace Truss.Application.Abstractions.Domain;
+namespace Truss.Domain.Events;
 
 /// <summary>
 /// Captures an event from the domain that can

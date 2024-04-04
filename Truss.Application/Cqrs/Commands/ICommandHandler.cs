@@ -3,7 +3,7 @@ using Truss.Results;
 
 #pragma warning disable CS0108, CS0114
 
-namespace Truss.Application.Abstractions.Commands;
+namespace Truss.Application.Cqrs.Commands;
 
 /// <summary>
 /// Implement to handle the designated command type

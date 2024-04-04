@@ -1,4 +1,4 @@
-﻿namespace Truss.Testing.Dsl;
+﻿namespace Truss.Testing.Dsl.Language;
 
 /// <summary>
 /// Represents an exception that is thrown when an argument in a DSL syntax is not in the expected format.

@@ -1,8 +1,7 @@
-
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace Truss.Application.Abstractions.Events;
+namespace Truss.Application.Cqrs.EventSourcing.Events;
 
 /// <summary>
 /// The type of an event

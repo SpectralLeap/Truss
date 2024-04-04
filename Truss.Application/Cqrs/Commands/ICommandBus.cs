@@ -1,6 +1,6 @@
 using Truss.Results;
 
-namespace Truss.Application.Abstractions.Commands;
+namespace Truss.Application.Cqrs.Commands;
 
 /// <summary>
 /// Delivers commands to the bus

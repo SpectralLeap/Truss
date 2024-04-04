@@ -4,7 +4,7 @@ using Truss.Results;
 // ReSharper disable UnusedMember.Global
 #pragma warning disable CS0108, CS0114
 
-namespace Truss.Application.Abstractions.Queries;
+namespace Truss.Application.Cqrs.Queries;
 
 /// <summary>
 /// Handles a query of the specified query type

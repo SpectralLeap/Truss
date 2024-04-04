@@ -1,18 +1,14 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Truss.Application.Abstractions.Commands;
-using Truss.Application.Abstractions.Events;
-using Truss.Application.Abstractions.EventSourcing.Reading;
-using Truss.Application.Abstractions.EventSourcing.Writing;
-using Truss.Application.Abstractions.Queries;
 using Truss.Application.Cqrs.Commands;
-using Truss.Application.Cqrs.EventSourcing.Common;
 using Truss.Application.Cqrs.EventSourcing.Events;
 using Truss.Application.Cqrs.EventSourcing.Reading;
 using Truss.Application.Cqrs.EventSourcing.Writing;
 using Truss.Application.Cqrs.Queries;
 using Truss.Application.Events;
+using Truss.Domain.Events;
+using Truss.Domain.EventSourcing;
 
 namespace Truss.Application;
 

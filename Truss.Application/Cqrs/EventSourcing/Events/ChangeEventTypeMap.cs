@@ -1,5 +1,3 @@
-using Truss.Application.Abstractions.Events;
-
 namespace Truss.Application.Cqrs.EventSourcing.Events;
 
 internal sealed class ChangeEventTypeMap

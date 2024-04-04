@@ -1,4 +1,4 @@
-using Truss.Application.Abstractions.EventSourcing.Writing;
+using Truss.Domain.EventSourcing;
 
 namespace Truss.Application.Tests.Unit.EventSourcing.TestApplication;
 

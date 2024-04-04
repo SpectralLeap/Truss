@@ -36,7 +36,7 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsWhenBaseServiceDefinitionIsNotStatic()
     {
-       Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetDsl<DslWithNonStaticBaseServices>());
+       Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetDsl<DslWithNonStaticServices>());
     }
     
     [Fact]
@@ -48,7 +48,7 @@ public sealed class ServiceTests
     [Fact]
     public void GivesTheNameOfTheNonStaticMember()
     {
-        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetDsl<DslWithNonStaticBaseServices>())
+        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetDsl<DslWithNonStaticServices>())
             .Message;
 
         Assert.Contains("NotStatic", msg);

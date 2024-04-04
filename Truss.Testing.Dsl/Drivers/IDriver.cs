@@ -1,3 +1,5 @@
+using Truss.Testing.Dsl.Language;
+
 namespace Truss.Testing.Dsl.Drivers;
 
 /// <summary>

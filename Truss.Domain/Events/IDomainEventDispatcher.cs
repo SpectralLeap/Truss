@@ -1,6 +1,6 @@
-using Truss.Application.Abstractions.Domain;
+using Truss.Domain.Entities;
 
-namespace Truss.Application.Abstractions.Events;
+namespace Truss.Domain.Events;
 
 /// <summary>
 /// Dispatches domain events to the event bus

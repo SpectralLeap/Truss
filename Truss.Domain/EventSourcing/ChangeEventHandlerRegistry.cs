@@ -1,5 +1,4 @@
-using Truss.Application.Abstractions.Domain;
-using Truss.Application.Abstractions.EventSourcing.Writing;
+using Truss.Domain.Entities;
 using Truss.Results;
 
 namespace Truss.Domain.EventSourcing;

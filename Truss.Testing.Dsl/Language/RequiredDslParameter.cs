@@ -1,5 +1,5 @@
 
-namespace Truss.Testing.Dsl;
+namespace Truss.Testing.Dsl.Language;
 
 public sealed class DslRequiredParameterNotSetException(params string[] names) 
     : Exception($"Required parameters \"{string.Join(", ", names)}\" did not have a value set");

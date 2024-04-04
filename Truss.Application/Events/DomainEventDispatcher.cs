@@ -1,5 +1,5 @@
-using Truss.Application.Abstractions.Domain;
-using Truss.Application.Abstractions.Events;
+using Truss.Domain.Entities;
+using Truss.Domain.Events;
 
 namespace Truss.Application.Events;
 

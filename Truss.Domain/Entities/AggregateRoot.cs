@@ -1,4 +1,3 @@
-using Truss.Application.Abstractions.Domain;
 using Truss.Domain.Events;
 
 

@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Truss.Application.Tests.Integration.TestCore.Domain;
 
-namespace Truss.Application.Tests.Integration;
+namespace Truss.Application.Tests.Integration.TestCore.Persistence;
 
 public sealed class AutoShopConfiguration 
     : IEntityTypeConfiguration<AutoShop>

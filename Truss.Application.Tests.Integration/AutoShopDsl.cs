@@ -1,0 +1,82 @@
+using Microsoft.Extensions.DependencyInjection;
+using Truss.Application.Tests.Integration.TestCore;
+using Truss.Application.Tests.Integration.TestCore.Domain;
+using Truss.Testing.Dsl;
+using Truss.Testing.Dsl.Drivers;
+using Truss.Testing.Dsl.Language;
+using Truss.Testing.Dsl.Services;
+
+namespace Truss.Application.Tests.Integration;
+
+public class AutoShopDsl 
+    : Dsl
+{
+    private readonly AutoShopService _autoShopService;
+
+    [BaseServices] 
+    public static IServiceCollection Services => new ServiceCollection()
+        .AddTestCore()
+    ;
+
+    public AutoShopDsl(AutoShopService autoShopService)
+    {
+        _autoShopService = autoShopService;
+    }
+    
+    public async Task AddAndGetShopUsingDslAndDriver(params string[] args)
+    {
+        var arguments = DslArgs
+            .ForAction<AddAndGetShopAction>()
+            .From(
+                args,
+                DslParameter.Optional("name")
+                    .SetDefault("Midas")
+                    .SetPattern(@"\w+"),
+                DslParameter.Optional("cars")
+                    .SetDefault("toyota camry, ford pinto")
+                    .SetPattern(@"\w+")
+                    .AsList()
+            );
+    
+        await Act(arguments);
+    }
+
+    public void AddAndGetShopOnDsl()
+    {
+        var id = new AutoShopId(Guid.NewGuid());
+        var shop = new AutoShop(id, "Monkey People Auto");
+ 
+        _autoShopService.AddAutoShop(shop);
+ 
+        var shopAgain = _autoShopService.GetAutoShop(id).SuccessValue;
+             
+        Assert.Equal(shop.Name, shopAgain.Name);       
+    }
+
+    public class AddAndGetShopAction
+    {
+        
+    }
+    
+    public class AddAndGetShopDriver : Driver<AddAndGetShopAction>
+    {
+        private readonly AutoShopService _autoShopService;
+
+        public AddAndGetShopDriver(AutoShopService autoShopService)
+        {
+            _autoShopService = autoShopService;
+        }
+        
+        public override async Task Drive(DslArgs args)
+        {
+            var id = new AutoShopId(Guid.NewGuid());
+            var shop = new AutoShop(id, args["name"]!);
+
+            _autoShopService.AddAutoShop(shop);
+
+            var shopAgain = _autoShopService.GetAutoShop(id).SuccessValue;
+            
+            Assert.Equal(shop.Name, shopAgain.Name);
+        }
+    }
+}

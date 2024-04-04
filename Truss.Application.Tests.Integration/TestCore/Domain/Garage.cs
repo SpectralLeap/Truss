@@ -1,6 +1,6 @@
 using Truss.Domain.Entities;
 
-namespace Truss.Application.Tests.Integration;
+namespace Truss.Application.Tests.Integration.TestCore.Domain;
 
 public sealed class Garage : Entity<GarageId>
 {

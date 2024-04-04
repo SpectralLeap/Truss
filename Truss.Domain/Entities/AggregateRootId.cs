@@ -1,4 +1,4 @@
-namespace Truss.Application.Abstractions.Domain;
+namespace Truss.Domain.Entities;
 
 /// <summary>
 /// The Id for an Aggregate Root

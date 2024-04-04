@@ -1,4 +1,4 @@
-namespace Truss.Application.Abstractions.EventSourcing.Writing;
+namespace Truss.Domain.EventSourcing;
 
 /// <summary>
 /// Marker interface to represent a change event for dependency resolution

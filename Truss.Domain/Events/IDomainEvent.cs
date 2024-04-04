@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Truss.Application.Abstractions.Domain;
+namespace Truss.Domain.Events;
 
 /// <summary>
 /// Marker interface to represent a domain event

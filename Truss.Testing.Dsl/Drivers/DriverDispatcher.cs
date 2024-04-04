@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Truss.Testing.Dsl.Language;
 
 namespace Truss.Testing.Dsl.Drivers;
 
@@ -12,7 +13,10 @@ internal sealed class DriverInterfaceNotFoundException(Type type)
 /// Bus connecting the Dsls to the Drivers
 /// </summary>
 /// <param name="serviceProvider"></param>
-internal sealed class DriverDispatcher(IServiceProvider serviceProvider, ILogger<DriverDispatcher> logger)
+internal sealed class DriverDispatcher(
+    IServiceProvider serviceProvider,
+    ILogger<DriverDispatcher> logger
+)
 {
     public async Task CallDriver(DslArgs args)
     {

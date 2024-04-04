@@ -1,5 +1,4 @@
 using MediatR;
-using Truss.Application.Abstractions.Queries;
 using Truss.Results;
 
 namespace Truss.Application.Cqrs.Queries;

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Application.Abstractions.Events;
 using Truss.Application;
+using Truss.Domain.Events;
 using Truss.Domain.Tests.Unit.Entities.TestDomain;
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.

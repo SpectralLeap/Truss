@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Application.Abstractions.EventSourcing.Reading;
-using Truss.Application.Abstractions.EventSourcing.Writing;
-using Truss.Application.Cqrs.EventSourcing.Common;
+using Truss.Application.Cqrs.EventSourcing.Reading;
+using Truss.Application.Cqrs.EventSourcing.Writing;
 using Truss.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Tests.Infrastructure.InMemory;
 

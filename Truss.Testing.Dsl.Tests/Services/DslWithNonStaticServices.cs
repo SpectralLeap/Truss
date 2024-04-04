@@ -14,7 +14,7 @@ public class BaseServiceDefinition : IServiceDefinition
     
 }
 
-public class DslWithNonStaticBaseServices : Dsl, IUsesServiceDefinition<BaseServiceDefinition>
+public class DslWithNonStaticServices : Dsl, IUsesServiceDefinition<BaseServiceDefinition>
 {
     [BaseServices] public IServiceCollection NotStatic = new ServiceCollection();
 }

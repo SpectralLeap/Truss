@@ -1,4 +1,6 @@
-namespace Truss.Application.Abstractions.Domain;
+using Truss.Domain.Events;
+
+namespace Truss.Domain.Entities;
 
 /// <summary>
 /// An aggregate root per DDD

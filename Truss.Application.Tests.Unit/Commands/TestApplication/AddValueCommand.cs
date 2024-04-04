@@ -1,4 +1,4 @@
-using Truss.Application.Abstractions.Commands;
+using Truss.Application.Cqrs.Commands;
 
 namespace Truss.Application.Tests.Unit.Commands.TestApplication;
 

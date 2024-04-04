@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Truss.Application.Abstractions.EventSourcing.Writing;
+namespace Truss.Domain.EventSourcing;
 
 /// <summary>
 /// Represents an aggregate's state has changed

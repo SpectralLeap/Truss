@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
-using Truss.Application.Abstractions.Events;
 
-namespace Truss.Application.Cqrs.EventSourcing.Common;
+namespace Truss.Application.Cqrs.EventSourcing.Events;
 
 public sealed record ChangeEventPayload
 {

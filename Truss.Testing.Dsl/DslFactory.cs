@@ -1,44 +1,53 @@
 using System.Reflection;
 using Castle.DynamicProxy;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Truss.Testing.Dsl.Drivers;
 using Truss.Testing.Dsl.Services;
 
 namespace Truss.Testing.Dsl;
 
 /// <summary>
-/// Represents an exception that is thrown when a DSL tag is not found among the available tags.
-/// </summary>
-public sealed class DslTagNotFoundException(string tag, IEnumerable<string> availableTags) 
-    : Exception($"The override tag {tag} was not in the available tags [{string.Join(", ", availableTags)}]");
-
-/// <summary>
-/// Represents an exception that is thrown when a DSL Collection is not of type IServiceCollection.
-/// </summary>
-public sealed class DslServiceDefinitionIsNotIServiceCollectionException(MemberInfo info) 
-    : Exception($"{info.Name} is not an IServiceCollection. All service definitions must be defined as IServiceCollection");
-
-/// <summary>
-/// Represents an exception that is thrown when a Dsl service is not defined as Static
-/// </summary>
-public sealed class DslServicesNotStaticException(MemberInfo info) 
-    : Exception($"The service definition {info.Name} is not static. Dsl Services must be a static field or property");
-
-/// <summary>
-/// The exception that is thrown when services requested by a specific type were not registered.
-/// </summary>
-public sealed class DslServicesNotRegisteredException(Type type) : Exception($"Services requested by {type.Name} were not registered on the type." 
-                                                                             + $" Assure all types requested for are registered in a {nameof(BaseServicesAttribute)}");
-
-/// <summary>
 /// Represents a factory for creating DSL (Domain-Specific Language) instances.
+/// The lifetime of this type should be singleton.
 /// </summary>
-public sealed class DslFactory : IAsyncDisposable
+public sealed class DslFactory 
+    : IAsyncDisposable
 {
-    private static readonly ProxyGenerator ProxyGenerator = new();
+    private readonly ProxyGenerator _proxyGenerator = new();
     
-    private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
+    private DslManager? _dslManager;
+    private SharedDependencyManager? _sharedDependencyManager;
+    
+    private bool _disposing;
+
+    /// <summary>
+    /// Asynchronously initializes the DSL factory by starting external dependencies.
+    /// </summary>
+    /// <param name="assembly">The assembly to scan for external dependencies</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task InitializeAsync(
+        Assembly assembly
+    )
+    {
+        await InitializeAsync([ assembly ]);
+    }
+    
+    /// <summary>
+    /// Asynchronously initializes the DSL factory by starting external dependencies.
+    /// </summary>
+    /// <param name="assemblies">The assemblies to scan for external dependencies.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task InitializeAsync(
+        IEnumerable<Assembly> assemblies
+    )
+    {
+        _sharedDependencyManager = new SharedDependencyManager(assemblies);
+        await _sharedDependencyManager.Start();
+
+        _dslManager = new DslManager(
+            _sharedDependencyManager,
+            _proxyGenerator
+        );
+    }
+
 
     /// <summary>
     /// Retrieves an instance of a DSL (Domain Specific Language) based on the specified ID and tags.
@@ -52,103 +61,22 @@ public sealed class DslFactory : IAsyncDisposable
     {
         id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
 
-        var provider = _activeProviders.TryGetValue(id, out var activeProvider) 
-            ? activeProvider : Activate(GetServices<TDsl>(tags), id);
-
-        var logger = provider.GetService<ILogger<TDsl>>()!;
-        
-        logger.LogInformation("Getting dsl {Type}", typeof(TDsl).Name);
-        
-        var interceptor = provider.GetService<DslInterceptor>()!;
-        
-        var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
-
-        try
-        {
-            var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
-            return (TDsl)ProxyGenerator.CreateClassProxyWithTarget(typeof(TDsl), instance, constructorArguments, interceptor);
-        }
-        catch (InvalidOperationException ex)
-        {
-            if (ex.Message.ToLower().StartsWith("unable to resolve service")) throw new DslServicesNotRegisteredException(typeof(TDsl));
-
-            throw;
-        }
-    } 
-
-    private object[] ResolveConstructorArgumentsFor<T>(IServiceProvider provider) where T : class
-    {
-        var constructorInfo = typeof(T).GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
-        if (constructorInfo == null)
-        {
-            return Array.Empty<object>();
-        }
-
-        return constructorInfo.GetParameters().Select(p => provider.GetService(p.ParameterType)).ToArray();
+        return _dslManager.ClassProxyWithTarget<TDsl>(id, tags);
     }
 
-    private IServiceCollection GetServices<TDsl>(params string[] tags) where TDsl : class
-    {
-        var collectionCopy = new ServiceCollection()
-                .AddSingleton<DriverDispatcher>()
-                .AddSingleton<DslInterceptor>()
-                .AddLogging(configure: configuration => configuration.AddConsole())
-            ;
 
-        collectionCopy.AddSingleton<TDsl>();
-        
-        var serviceDefinitions = ServiceDefinitions.For<TDsl>();
-
-        collectionCopy.Load(serviceDefinitions.GetBaseServices());
-        collectionCopy.Load(serviceDefinitions.GetOverrideServices(tags));
-
-        var driverType = typeof(Driver<>);
-
-        var driverImplementations = typeof(TDsl).Assembly
-            .GetTypes()
-            .Where(type => type.BaseType is not null && type.BaseType.IsGenericType)
-            .Where(type => type.BaseType!.GetGenericTypeDefinition() == driverType)
-            .ToList();
-
-        foreach (var implementation in driverImplementations)
-        {
-            var type = implementation.BaseType;
-                                 
-            collectionCopy.AddTransient(type, implementation);
-        }
-       
-        return collectionCopy;
-    }
-
-    private IServiceProvider Activate(IServiceCollection serviceCollection, string id)
-    {
-        var provider = serviceCollection.BuildServiceProvider();
-        
-        _activeProviders.Add(id, provider);
-
-        return provider;
-    }
-
-    private bool _disposing;
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// Dispose of all resources
     /// </summary>
-    public void Dispose()
-    {
-        if (_disposing) return;
-        
-        _disposing = true;
-        
-        foreach (var provider in _activeProviders.Values)
-        {
-            if (provider is IDisposable disposable) disposable.Dispose();
-        }
-    }
-
     public async ValueTask DisposeAsync()
     {
-        Dispose();
+        if (_disposing) return;
+
+        _disposing = true;
+
+        await _sharedDependencyManager!.DisposeAsync();
+        await _dslManager.DisposeAsync();
     }
 }
 

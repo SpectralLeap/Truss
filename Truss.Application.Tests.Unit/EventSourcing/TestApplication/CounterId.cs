@@ -1,4 +1,4 @@
-using Truss.Application.Abstractions.Domain;
+using Truss.Domain.Entities;
 
 namespace Truss.Application.Tests.Unit.EventSourcing.TestApplication;
 

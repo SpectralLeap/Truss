@@ -1,7 +1,7 @@
 using MediatR;
 using Truss.Results;
 
-namespace Truss.Application.Abstractions.Queries;
+namespace Truss.Application.Cqrs.Queries;
 
 /// <summary>
 /// A type for reading information
