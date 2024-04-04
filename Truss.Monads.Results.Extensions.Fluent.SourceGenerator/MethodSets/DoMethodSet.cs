@@ -24,7 +24,19 @@ public sealed class DoMethodSet : IMethodSet
             returnType: $"{_tc.InTypes}",
             returnBody: $""
         ));
-
+        
+        methods.Add(Method.Create(
+            setName: "Do",
+            inTypes: _tc.InTypes,
+            methodName: "f",
+            methodSignature: $"Func<{_tc.InTypes}, Result<Nil>>",
+            methodBody: $"""
+                         var nextResult = f({_tc.PriorSuccessValues()});
+                         """,
+            returnType: $"{_tc.InTypes}",
+            returnBody: $""
+        ));
+         
         methods.Add(Method.Create(
             setName: "Do",
             inTypes: _tc.InTypes,
@@ -35,6 +47,19 @@ public sealed class DoMethodSet : IMethodSet
             returnBody: $""
         ));
         
+        methods.Add(Method.Create(
+            setName: "Do",
+            inTypes: _tc.InTypes,
+            methodName: "task",
+            methodSignature: $"Func<{_tc.InTypes}, Task<Result<Nil>>>",
+            methodBody: $"""
+                         var nextResult = await f({_tc.PriorSuccessValues()});
+                         """,
+             
+            returnType: $"{_tc.InTypes}",
+            returnBody: $""
+        ));
+         
         return methods.ToArray();
     }
 }

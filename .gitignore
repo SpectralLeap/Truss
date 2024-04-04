@@ -243,3 +243,4 @@ FodyWeavers.xsd
 *.msm
 *.msp
 *.sln.iml
+.nuget_output

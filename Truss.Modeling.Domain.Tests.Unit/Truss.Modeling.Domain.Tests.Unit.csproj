@@ -31,11 +31,4 @@
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
       <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Moq">
-        <HintPath>..\..\..\.nuget\packages\moq\4.18.4\lib\net6.0\Moq.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

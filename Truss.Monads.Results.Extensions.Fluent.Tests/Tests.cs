@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Truss.Monads.Results.Extensions.Fluent;
 using Xunit;
 
 namespace Truss.Monads.Results.Extensions.Fluent.Tests;
