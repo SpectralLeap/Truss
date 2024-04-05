@@ -65,6 +65,7 @@ public sealed class ResolutionStepGenerator : IGenerator
     
     private string GenerateMethod(Method method)
     {
+        if (method.ProducesResult) return GenerateResultMethod(method);
         if (method.IsAsync) return GenerateAsyncMethod(method);
         
         return $$"""
@@ -84,6 +85,31 @@ public sealed class ResolutionStepGenerator : IGenerator
                  }
                  """;
     }
+
+    private string GenerateResultMethod(Method method)
+    {
+        if (method.IsAsync) return GenerateAsyncResultMethod(method);
+        
+        return $$"""
+                 public {{ReturnSignature(method.ReturnType)}} {{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}(
+                     {{method.MethodSignature}} {{method.MethodName}}
+                 )
+                 {
+                     try
+                     {
+                        {{method.MethodBody}}
+                        
+                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails));
+                        
+                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                     }
+                     catch (Exception ex)
+                     {
+                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                     }
+                 }
+                 """;       
+    }
     
     private string GenerateAsyncMethod(Method method)
     {
@@ -92,9 +118,33 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     try 
+                     try
                      {
                         {{method.MethodBody}}
+                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                     }
+                     catch (Exception ex)
+                     {
+                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                     }
+                 }
+                 """;
+    }
+
+        
+    private string GenerateAsyncResultMethod(Method method)
+    {
+        return $$"""
+                 public async Task<{{ReturnSignature(method.ReturnType)}}> {{method.SetName}}{{(method.OutType is not null ? $"<{method.OutType}>" : "")}}(
+                     {{method.MethodSignature}} {{method.MethodName}}
+                 )
+                 {
+                     try
+                     {
+                        {{method.MethodBody}}
+                        
+                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails));
+                        
                         return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
                      }
                      catch (Exception ex)

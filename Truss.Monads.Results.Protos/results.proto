@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option csharp_namespace = "ResultProtos";
+
+package result;
+
+message ResultGrpcMessage {
+  bool Succeeded = 1;
+  repeated string FailureReasons = 2;
+}

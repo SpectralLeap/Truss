@@ -2,9 +2,12 @@
 
 output_directory=".nuget_output"
 mkdir -p "$output_directory"
+rm -rf $output_directory/refs
+rm $output_directory/*
 
 projects=(
     "Truss.Monads.Results"
+    "Truss.Monads.Results.Protos"
     "Truss.Monads.Results.Extensions.Fluent"
     "Truss.Modeling.Domain"
     "Truss.Modeling.Application"

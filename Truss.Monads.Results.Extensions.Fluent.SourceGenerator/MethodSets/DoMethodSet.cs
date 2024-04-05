@@ -22,7 +22,7 @@ public sealed class DoMethodSet : IMethodSet
             methodSignature: $"Action<{_tc.InTypes}>",
             methodBody: $"action({_tc.PriorSuccessValues()});",
             returnType: $"{_tc.InTypes}",
-            returnBody: $""
+            returnBody: $"({_tc.PriorSuccessValues()})"
         ));
         
         methods.Add(Method.Create(
@@ -31,10 +31,10 @@ public sealed class DoMethodSet : IMethodSet
             methodName: "f",
             methodSignature: $"Func<{_tc.InTypes}, Result<Nil>>",
             methodBody: $"""
-                         var nextResult = f({_tc.PriorSuccessValues()});
+                         var value = f({_tc.PriorSuccessValues()});
                          """,
             returnType: $"{_tc.InTypes}",
-            returnBody: $""
+            returnBody: $"({_tc.PriorSuccessValues()})"
         ));
          
         methods.Add(Method.Create(
@@ -44,7 +44,7 @@ public sealed class DoMethodSet : IMethodSet
             methodSignature: $"Func<{_tc.InTypes}, Task>",
             methodBody: $"await task({_tc.PriorSuccessValues()});",
             returnType: $"{_tc.InTypes}",
-            returnBody: $""
+            returnBody: $"({_tc.PriorSuccessValues()})"
         ));
         
         methods.Add(Method.Create(
@@ -53,11 +53,11 @@ public sealed class DoMethodSet : IMethodSet
             methodName: "task",
             methodSignature: $"Func<{_tc.InTypes}, Task<Result<Nil>>>",
             methodBody: $"""
-                         var nextResult = await f({_tc.PriorSuccessValues()});
+                         var value = await task({_tc.PriorSuccessValues()});
                          """,
              
             returnType: $"{_tc.InTypes}",
-            returnBody: $""
+            returnBody: $"({_tc.PriorSuccessValues()})"
         ));
          
         return methods.ToArray();

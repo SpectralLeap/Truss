@@ -32,17 +32,23 @@ public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
 
     public async Task<Result<IAsyncEnumerable<ChangeEventPayload>>> Read(AggregateRootId<Guid> id)
     {
-        var events = GetEvents(id.Value).ToAsyncEnumerable();
+        var events = GetEvents(id.Value);
 
-        if (await events.IsEmptyAsync()) return Result.Fail("Empty");
         return Result.Success(events);
     }
-    
-    private IEnumerable<ChangeEventPayload> GetEvents(Guid aggregateId) =>
-        _eventStreams.Values.SelectMany(stream => 
+
+    private async IAsyncEnumerable<ChangeEventPayload> GetEvents(Guid aggregateId)
+    {
+        var events = _eventStreams.Values.SelectMany(stream => 
             stream.ContainsKey(aggregateId) ?
                 stream[aggregateId].Select(JsonConvert.DeserializeObject<ChangeEventPayload>).ToList()! :
                 new List<ChangeEventPayload>());
 
+        foreach (var @event in events)
+        {
+            yield return @event;
+        }
+    }
+       
 
 }

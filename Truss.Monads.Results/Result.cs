@@ -11,28 +11,28 @@ public static class Result
     /// Create success
     /// </summary>
     /// <returns></returns>
-    public static Result<Nil> Success() => new(Nil.Value);
+    public static Result<Nil> Success() => Result<Nil>.Success(Nil.Value);
 
     /// <summary>
     /// Create success
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
-    public static Result<T> Success<T>(T result) => new(result);
+    public static Result<T> Success<T>(T result) => Result<T>.Success(result);
 
     /// <summary>
     /// Create failure from reasons
     /// </summary>
     /// <param name="reasons"></param>
     /// <returns></returns>
-    public static Result<Nil> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
+    public static Result<Nil> Fail(params string[] reasons) => Result<Nil>.Fail(FailureDetails.From(reasons));
 
     /// <summary>
     /// Create failure from exception
     /// </summary>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<Nil> Fail(Exception ex) => new(FailureDetails.From(ex));
+    public static Result<Nil> Fail(Exception ex) => Result<Nil>.Fail(FailureDetails.From(ex));
 
     /// <summary>
     /// Create failure from exception with a message
@@ -40,14 +40,14 @@ public static class Result
     /// <param name="message"></param>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<Nil> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
+    public static Result<Nil> Fail(string message, Exception ex) => Result<Nil>.Fail(FailureDetails.From(ex, message));
 
     /// <summary>
     /// Create failure from details
     /// </summary>
     /// <param name="details"></param>
     /// <returns></returns>
-    public static Result<Nil> Fail(FailureDetails details) => new(details);
+    public static Result<Nil> Fail(FailureDetails details) => Result<Nil>.Fail(details);
 }
 
 /// <summary>
@@ -100,7 +100,7 @@ public readonly struct Result<TResult> : IResult
     /// </summary>
     /// <param name="success"></param>
     /// <exception cref="ArgumentNullException">If the success object is null</exception>
-    internal Result(TResult success)
+    private Result(TResult success)
     {
         _successValue = success ?? throw new ArgumentNullException(nameof(success)); 
         Succeeded = true;
@@ -110,7 +110,7 @@ public readonly struct Result<TResult> : IResult
     /// Create failure
     /// </summary>
     /// <param name="failure"></param>
-    internal Result(FailureDetails failure)
+    private Result(FailureDetails failure)
     {
         // ReSharper disable once NotResolvedInText
         Succeeded = false;
@@ -138,7 +138,49 @@ public readonly struct Result<TResult> : IResult
         }
         onFailure(FailureDetails);
     }
-     
+
+    /// <summary>
+    /// Create success
+    /// </summary>
+    /// <returns></returns>
+    public static Result<Nil> Success() => new(Nil.Value);
+
+    /// <summary>
+    /// Create success
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static Result<T> Success<T>(T result) => new(result);
+
+    /// <summary>
+    /// Create failure from reasons
+    /// </summary>
+    /// <param name="reasons"></param>
+    /// <returns></returns>
+    public static Result<TResult> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
+
+    /// <summary>
+    /// Create failure from exception
+    /// </summary>
+    /// <param name="ex"></param>
+    /// <returns></returns>
+    public static Result<TResult> Fail(Exception ex) => new(FailureDetails.From(ex));
+
+    /// <summary>
+    /// Create failure from exception with a message
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="ex"></param>
+    /// <returns></returns>
+    public static Result<TResult> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
+
+    /// <summary>
+    /// Create failure from details
+    /// </summary>
+    /// <param name="details"></param>
+    /// <returns></returns>
+    public static Result<TResult> Fail(FailureDetails details) => new(details);
+         
     /// <summary>
     /// Returns the success value or a default value
     /// </summary>
@@ -151,8 +193,7 @@ public readonly struct Result<TResult> : IResult
         
         return defaultValue;
     }
-
-
+    
     /// <summary>
     /// Implicit cast for readability
     /// </summary>
@@ -169,12 +210,4 @@ public readonly struct Result<TResult> : IResult
     /// </summary>
     /// <returns></returns>
     public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
-}
-
-public interface IResult
-{
-    public bool Succeeded { get; }
-    public object SuccessObject { get; }
-    public bool Failed { get; }
-    public FailureDetails? FailureDetails { get; }
 }
