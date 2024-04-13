@@ -1,7 +1,7 @@
-using MediatR;
+// ReSharper disable UnusedMember.Global
+
 using Truss.Monads.Results;
 
-// ReSharper disable UnusedMember.Global
 #pragma warning disable CS0108, CS0114
 
 namespace Truss.Modeling.Application.Cqrs.Queries;
@@ -12,5 +12,8 @@ namespace Truss.Modeling.Application.Cqrs.Queries;
 /// <typeparam name="TQuery"></typeparam>
 /// <typeparam name="TResult"></typeparam>
 public interface IQueryHandler<in TQuery, TResult>
-    : IRequestHandler<TQuery, Result<TResult>>
-    where TQuery : Query<TResult>;
+    where TQuery : Query<TResult>
+{
+    
+    public Task<Result<TResult>> Handle(TQuery query, CancellationToken cancellationToken);
+}

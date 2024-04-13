@@ -1,4 +1,4 @@
-namespace Truss.Testing.Language;
+namespace Truss.Testing.Dsl;
 
 public sealed class OptionalDslParameter(string name) : DslParameter(name)
 {

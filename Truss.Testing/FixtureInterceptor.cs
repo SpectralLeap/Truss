@@ -1,7 +1,7 @@
 using System.Reflection;
 using Castle.DynamicProxy;
 using Truss.Testing.Drivers;
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 
 namespace Truss.Testing;
 

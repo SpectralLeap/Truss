@@ -1,23 +1,30 @@
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.Events;
+using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Modeling.Application.Events;
+namespace Truss.Modeling.Application.DomainEvents;
 
 /// <summary>
 /// Generally used to dispatch events stored on an
 /// aggregate after changes have been made.
 /// </summary>
-internal sealed class DomainEventDispatcher : IDomainEventDispatcher
+public sealed class DomainEventDispatcher : IDomainEventDispatcher
 {
-    private readonly IEventBus _eventBus;
+    private readonly IDomainEventBus _domainEventBus;
+    private readonly IChangeEventBus _changeEventBus;
 
     /// <summary>
     /// Uses the event bus to dispatch the events
     /// </summary>
-    /// <param name="eventBus"></param>
-    public DomainEventDispatcher(IEventBus eventBus)
+    /// <param name="domainEventBus"></param>
+    /// <param name="changeEventBus"></param>
+    public DomainEventDispatcher(
+        IDomainEventBus domainEventBus,
+        IChangeEventBus changeEventBus
+    )
     {
-        _eventBus = eventBus;
+        _domainEventBus = domainEventBus;
+        _changeEventBus = changeEventBus;
     }
 
     /// <summary>
@@ -41,13 +48,16 @@ internal sealed class DomainEventDispatcher : IDomainEventDispatcher
         {
             var events = root.Events().ToArray();
             
-            root.ClearEvents();
-
             foreach (var @event in events)
             {
-                await _eventBus.Publish(@event, cancellationToken).ConfigureAwait(false);
+                if (@event is DomainEvent domainEvent)
+                    await _domainEventBus.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+
+                if (@event is ChangeEvent changeEvent)
+                    await _changeEventBus.Publish(changeEvent, cancellationToken).ConfigureAwait(false);
             }
 
+            root.ClearEvents();
         }
     }
 }

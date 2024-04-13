@@ -1,11 +1,11 @@
+using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.EventSourcing;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Monads.Results;
 
 namespace Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 
-internal sealed class AggregateEventStreamReader : IAggregateEventStreamReader
+public sealed class AggregateEventStreamReader : IAggregateEventStreamReader
 {
     private readonly IEventReadStore _eventReadStore;
     private readonly ChangeEventDeserializer _deserializer;
@@ -22,14 +22,26 @@ internal sealed class AggregateEventStreamReader : IAggregateEventStreamReader
         _typeMap = typeMap;
     }
     
-    public async Task<Result<IAsyncEnumerable<ChangeEvent>>> ReadEventStream(AggregateRootId<Guid> id)
+    public Result<IAsyncEnumerable<ChangeEvent>> ReadEventStream(AggregateRootId<Guid> id)
     {
-        return await _eventReadStore.Read(id)
-                .Then(events =>
-                        events.Select(e =>
-                            _deserializer.Deserialize(_typeMap.Map(e.EventType), e.SerializedPayload))
-                )
-                .ConfigureAwait(false)
-            ;
+        try
+        {
+            var storedEvents = _eventReadStore.Read(id);
+            return Result.Success(Read(storedEvents));
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail(ex);
+        }
+    }
+
+    private async IAsyncEnumerable<ChangeEvent> Read(IAsyncEnumerable<ChangeEventPayload> storedEvents)
+    {
+         await foreach (var storedEvent in storedEvents)
+         {
+             var @event = _deserializer.Deserialize(
+                 _typeMap.Map(storedEvent.EventType), storedEvent.SerializedPayload);
+             yield return (@event);
+         }       
     }
 }

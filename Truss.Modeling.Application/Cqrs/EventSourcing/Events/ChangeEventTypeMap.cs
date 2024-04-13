@@ -1,6 +1,6 @@
 namespace Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 
-internal sealed class ChangeEventTypeMap
+public sealed class ChangeEventTypeMap
 {
     private readonly Dictionary<EventType, Type> _map = new();
     private readonly Dictionary<Type, EventType> _coMap = new();

@@ -1,4 +1,4 @@
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 using Truss.Testing.Tests.Drivers;
 using Truss.Testing.Tests.Fixtures;
 

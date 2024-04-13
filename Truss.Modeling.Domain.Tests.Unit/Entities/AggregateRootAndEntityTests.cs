@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application;
+using Truss.Modeling.Application.MediatR;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 
@@ -114,9 +115,7 @@ public sealed class AggregateRootAndEntityTests
     public AggregateRootAndEntityTests()
     {
         _services = new ServiceCollection()
-                .AddMediatR(c=> 
-                    c.RegisterServicesFromAssembly(typeof(WordUpdatedEventHandler).Assembly))
-                .AddDomainEvents()
+                .AddTrussWithMediatR([typeof(WordUpdatedEventHandler).Assembly])
                 .AddScoped<WordListener>()
                 .AddScoped<NumberListener>()
                 .BuildServiceProvider()

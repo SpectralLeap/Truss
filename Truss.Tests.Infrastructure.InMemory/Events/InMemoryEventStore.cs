@@ -30,14 +30,7 @@ public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
         return Task.FromResult(Result.Success());
     }
 
-    public async Task<Result<IAsyncEnumerable<ChangeEventPayload>>> Read(AggregateRootId<Guid> id)
-    {
-        var events = GetEvents(id.Value);
-
-        return Result.Success(events);
-    }
-
-    private async IAsyncEnumerable<ChangeEventPayload> GetEvents(Guid aggregateId)
+    public async IAsyncEnumerable<ChangeEventPayload> Read(AggregateRootId<Guid> aggregateId)
     {
         var events = _eventStreams.Values.SelectMany(stream => 
             stream.ContainsKey(aggregateId) ?
@@ -49,6 +42,4 @@ public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
             yield return @event;
         }
     }
-       
-
 }

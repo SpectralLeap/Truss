@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Queries;
+using Truss.Modeling.Application.MediatR;
 using Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
 
 namespace Truss.Modeling.Application.Tests.Unit.Queries;
@@ -12,9 +13,7 @@ public sealed class QueryTests
     public QueryTests()
     {
         _serviceProvider = new ServiceCollection()
-                .AddMediatR(c =>
-                    c.RegisterServicesFromAssembly(typeof(ThingQuery).Assembly))
-                .AddCqrs()
+                .AddTrussWithMediatR([typeof(ThingStore).Assembly])
                 .AddSingleton<ThingStore>()
                 .BuildServiceProvider()
             ;

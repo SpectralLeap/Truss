@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Truss.Monads.Results.Extensions.Fluent;
 using Xunit;
 
 namespace Truss.Monads.Results.Extensions.Fluent.Tests;
@@ -10,6 +7,18 @@ public sealed class Tests
     [Fact]
     public async Task DoesThing()
     {
+        var y = Result.Success(2);
+        
+        if (y.Succeeded) Console.WriteLine(y.SuccessValue);
+        
+        if (y.Failed) Console.WriteLine(y.FailureMessage);
+
+        y.Resolve(
+            onSuccess: i => Console.WriteLine(i),
+            onFailure: f => Console.WriteLine(f.GetMessage()));
+
+        var a = y | 3;
+        
         var x = await 3.AsResult()
                 .Then(i => i + 1)
                 .Then(x => Task.FromResult(x + 1))
@@ -46,11 +55,5 @@ public sealed class Tests
                 .And((x, _, a, z, o, p) => x + 1)
                 .Then((_, _, _, _ ,_, _, a) => Task.FromResult(Result.Success(a)))
             ;
-    }
-
-
-    private Result<int> Return5()
-    {
-        return 5.AsResult();
     }
 }

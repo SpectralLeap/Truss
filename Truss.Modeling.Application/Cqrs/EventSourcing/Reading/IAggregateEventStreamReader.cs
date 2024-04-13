@@ -14,5 +14,5 @@ public interface IAggregateEventStreamReader
     /// </summary>
     /// <param name="id">The id of the aggregate stream to read. Corresponds to the aggregate's id</param>
     /// <returns></returns>
-    public Task<Result<IAsyncEnumerable<ChangeEvent>>> ReadEventStream(AggregateRootId<Guid> id);
+    public Result<IAsyncEnumerable<ChangeEvent>> ReadEventStream(AggregateRootId<Guid> id);
 }

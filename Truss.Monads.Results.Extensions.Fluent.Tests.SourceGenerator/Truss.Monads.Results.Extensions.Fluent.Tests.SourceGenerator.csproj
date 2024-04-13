@@ -21,5 +21,9 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj" />
+    </ItemGroup>
+
 
 </Project>

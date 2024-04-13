@@ -12,8 +12,8 @@ public class ThingQueryHandler : IQueryHandler<ThingQuery, ThingQueryResult>
         _store = store;
     }
     
-    public Task<Result<ThingQueryResult>> Handle(ThingQuery request, CancellationToken cancellationToken)
+    public Task<Result<ThingQueryResult>> Handle(ThingQuery query, CancellationToken cancellationToken)
     {
-        return Result.Success(new ThingQueryResult(_store.GetThing(request.ThingToGet)));
+        return Result.Success(new ThingQueryResult(_store.GetThing(query.ThingToGet)));
     }
 }

@@ -6,7 +6,7 @@ namespace Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 /// <summary>
 /// Serialization for streaming change events
 /// </summary>
-internal sealed class ChangeEventSerializer
+public sealed class ChangeEventSerializer
 {
     /// <summary>
     /// Serialize events into storable payloads

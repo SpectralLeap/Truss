@@ -1,5 +1,5 @@
 using Truss.Testing.Drivers;
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 
 namespace Truss.Testing.Tests.Drivers;
 

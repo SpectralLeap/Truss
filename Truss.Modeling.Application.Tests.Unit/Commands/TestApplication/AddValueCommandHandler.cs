@@ -5,11 +5,11 @@ namespace Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
 
 public class AddValueCommandHandler : ICommandHandler<AddValueCommand, AddValueResult>
 {
-    public async Task<Result<AddValueResult>> Handle(AddValueCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AddValueResult>> Handle(AddValueCommand command, CancellationToken cancellationToken)
     {
-        if (request.Value % 2 == 0)
+        if (command.Value % 2 == 0)
         {
-            return Result.Success(new AddValueResult(request.Value + 1));
+            return Result.Success(new AddValueResult(command.Value + 1));
         }
 
         return Result.Fail("No good");
@@ -18,9 +18,9 @@ public class AddValueCommandHandler : ICommandHandler<AddValueCommand, AddValueR
 
 public class SubtractValueCommandHandler : ICommandHandler<SubtractValueCommand>
 {
-    public Task<Result<Nil>> Handle(SubtractValueCommand request, CancellationToken cancellationToken)
+    public Task<Result<Nil>> Handle(SubtractValueCommand command, CancellationToken cancellationToken)
     {
-        if (request.Value % 2 == 0)
+        if (command.Value % 2 == 0)
         {
             return Task.FromResult(Result.Success());
         }

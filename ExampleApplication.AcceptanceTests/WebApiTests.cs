@@ -4,7 +4,7 @@ using RestSharp;
 using Truss.Testing;
 using Truss.Testing.AspNetCore;
 using Truss.Testing.Drivers;
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 using Truss.Testing.Services;
 
 namespace ExampleApplication.AcceptanceTests;

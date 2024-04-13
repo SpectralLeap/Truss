@@ -1,7 +1,8 @@
 using MediatR;
+using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Application.Cqrs.Commands;
+namespace Truss.Modeling.Application.MediatR;
 
 /// <summary>
 /// Concrete command bus for delivering commands
@@ -28,7 +29,11 @@ internal sealed class CommandBus : ICommandBus
     public async Task<Result<Nil>> SendCommand<TCommand>(TCommand command) 
         where TCommand : Command
     {
-        return await _mediator.Send(command).ConfigureAwait(false);
+        var wrappedCommand = new MediatRCommandWrapper<TCommand>(command);
+        
+        var result = await _mediator.Send(wrappedCommand).ConfigureAwait(false);
+
+        return result;
     }
 
     /// <summary>
@@ -39,8 +44,13 @@ internal sealed class CommandBus : ICommandBus
     /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
     public async Task<Result<TResult>> SendCommand<TCommand, TResult>(TCommand command) 
-        where TCommand : Command<TResult> 
+        where TCommand : Command<TResult>
     {
-        return await _mediator.Send(command).ConfigureAwait(false);
+        var wrappedCommand = new MediatRCommandWrapper<TCommand, TResult>(command);
+        
+        var result = await _mediator.Send(wrappedCommand).ConfigureAwait(false);
+        
+        return result;
     }
+    
 }

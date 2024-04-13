@@ -3,7 +3,7 @@
 namespace Truss.Monads.Results;
 
 /// <summary>
-/// A basic result type that reports success or invalidation reasons
+/// A basic result type that reports success or failure reasons
 /// </summary>
 public static class Result
 {
@@ -51,7 +51,7 @@ public static class Result
 }
 
 /// <summary>
-/// A basic result that returns a value
+/// A basic result that provides a value or failure reasons
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
 public readonly struct Result<TResult> : IResult

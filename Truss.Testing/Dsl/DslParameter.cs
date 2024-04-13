@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Truss.Testing.Language;
+namespace Truss.Testing.Dsl;
 
 /// <summary>
 /// Represents a DSL parameter.

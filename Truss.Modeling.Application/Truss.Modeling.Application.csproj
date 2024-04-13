@@ -10,11 +10,8 @@
     <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="[12.0.0, 13.0.0)" />
-    <PackageReference Include="MediatR.Contracts" Version="[2.0.0, 3.0.0)" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[7.0.0, 9.0.0)" />
-    <PackageReference Include="Newtonsoft.Json" Version="[12.0.1, 14.0.0)" />
-    <PackageReference Include="System.Interactive.Async" Version="[5.0.0, 7)" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.0.0, 9.0.0)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[12, 14.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cqrs\" />

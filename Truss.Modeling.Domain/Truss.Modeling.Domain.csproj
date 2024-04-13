@@ -9,7 +9,6 @@
     <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR.Contracts" Version="[1.0.1, 3)" />
     <PackageReference Include="Newtonsoft.Json" Version="[12.0.1, 14)" />
   </ItemGroup>
 </Project>

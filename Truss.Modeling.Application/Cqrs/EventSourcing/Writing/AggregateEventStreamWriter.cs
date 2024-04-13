@@ -5,7 +5,7 @@ using Truss.Monads.Results;
 
 namespace Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 
-internal sealed class AggregateEventStreamWriter 
+public sealed class AggregateEventStreamWriter 
     : IAggregateEventStreamWriter
 {
     private readonly IEventWriteStore _eventWriteStore;
@@ -23,6 +23,19 @@ internal sealed class AggregateEventStreamWriter
         _typeMap = typeMap;
     }
 
+    public async Task<Result<Nil>> Write(ChangeEvent changeEvent)
+    {
+        var writeableChangeEvent = new ChangeEventPayload(
+            changeEvent.AggregateId,
+            _typeMap.Map(changeEvent.GetType()),
+            _serializer.Serialize(changeEvent)
+        );
+                
+        await _eventWriteStore.Write(writeableChangeEvent);
+
+        return Result.Success();
+    }
+    
     public async Task<Result<Nil>> WriteToStream<TId>(
         IEventSourcedAggregateRoot<TId> aggregate
     )

@@ -3,7 +3,7 @@ using Truss.Modeling.Application.Tests.Integration.TestCore;
 using Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
 using Truss.Testing;
 using Truss.Testing.Drivers;
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 using Truss.Testing.Services;
 
 namespace Truss.Modeling.Application.Tests.Integration;

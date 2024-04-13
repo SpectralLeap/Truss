@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
+using Truss.Modeling.Application.MediatR;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
+using Truss.Modeling.Domain.Events;
 using Truss.Tests.Infrastructure.InMemory;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing;
@@ -15,11 +17,10 @@ public sealed class EventSourcingTests
         counter.IncrementNumber();
         counter.IncrementNumber();
 
-        var writer = AggregateEventStreamWriter;
-        await writer.WriteToStream(counter);
+        await DomainEventDispatcher.DispatchAndClearDomainEvents(counter, new CancellationToken());
 
-        var val = await eventReadStore.Read(counter.Id);
-        Assert.Equal(3, await val.SuccessValue.CountAsync());
+        var val = eventReadStore.Read(counter.Id);
+        Assert.Equal(3, await val.CountAsync());
     }
 
     [Fact]
@@ -28,11 +29,10 @@ public sealed class EventSourcingTests
         var counter = new Counter();
         counter.IncrementNumber();
         counter.IncrementNumber();
-    
-        var writer = AggregateEventStreamWriter;
-        await writer.WriteToStream(counter);
 
-        var events = await AggregateEventStreamReader.ReadEventStream(counter.Id);
+        await DomainEventDispatcher.DispatchAndClearDomainEvents(counter, new CancellationToken());
+        
+       var events = AggregateEventStreamReader.ReadEventStream(counter.Id);
 
         Assert.Equal(3, await events.SuccessValue.CountAsync());
     }
@@ -44,17 +44,17 @@ public sealed class EventSourcingTests
         counter.IncrementNumber();
         counter.IncrementNumber();
         
-        var writer = AggregateEventStreamWriter;
-        await writer.WriteToStream(counter);
-    
-        var events = await AggregateEventStreamReader.ReadEventStream(counter.Id);
+        await DomainEventDispatcher.DispatchAndClearDomainEvents(counter, new CancellationToken());
+   
+        var events = AggregateEventStreamReader.ReadEventStream(counter.Id).SuccessValue;
 
-        var counterAgain = Counter.FromHistory(await events.SuccessValue.ToListAsync());
+        var counterAgain = Counter.FromHistory(await events.ToListAsync());
         counterAgain.IncrementNumber();
         counterAgain.IncrementNumber();
 
-        await writer.WriteToStream(counterAgain);
-        Assert.Equal(5, await (await AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.CountAsync());
+        await DomainEventDispatcher.DispatchAndClearDomainEvents(counterAgain, new CancellationToken());
+        
+        Assert.Equal(5, await (AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.CountAsync());
     }
 
     [Fact]
@@ -63,25 +63,23 @@ public sealed class EventSourcingTests
         var counter = new Counter();
         counter.IncrementNumber();
         counter.IncrementNumber();
-            
-        var writer = AggregateEventStreamWriter;
-        await writer.WriteToStream(counter);
         
-        var events = await AggregateEventStreamReader.ReadEventStream(counter.Id);
+        await DomainEventDispatcher.DispatchAndClearDomainEvents(counter, new CancellationToken());
+        
+        var events = AggregateEventStreamReader.ReadEventStream(counter.Id);
     
         var counterAgain = Counter.FromHistory(await events.SuccessValue.ToListAsync());
         counterAgain.IncrementNumber();
         counterAgain.IncrementNumber();
     
-        await writer.WriteToStream(counterAgain);
         var eventsAgain =
-            await (await AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.ToListAsync();
+            await (AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.ToListAsync();
 
         Assert.Equal(eventsAgain.Count(), eventsAgain.DistinctBy(e => e.EventSequenceNumber).Count());
     }
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
-            .AddEventSourcing()
+            .AddTrussWithMediatR([typeof(Counter).Assembly])
             .AddInMemoryInfrastructure()
             .BuildServiceProvider()
         ;
@@ -89,5 +87,6 @@ public sealed class EventSourcingTests
     private IEventReadStore eventReadStore => _serviceProvider.GetService<IEventReadStore>()!;
     private IAggregateEventStreamWriter AggregateEventStreamWriter => _serviceProvider.GetService<IAggregateEventStreamWriter>()!;
     private IAggregateEventStreamReader AggregateEventStreamReader => _serviceProvider.GetService<IAggregateEventStreamReader>()!;
+    private IDomainEventDispatcher DomainEventDispatcher => _serviceProvider.GetService<IDomainEventDispatcher>()!;
 }
 

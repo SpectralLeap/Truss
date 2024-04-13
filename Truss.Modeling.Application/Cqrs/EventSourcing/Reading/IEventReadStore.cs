@@ -6,5 +6,5 @@ namespace Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 
 public interface IEventReadStore
 {
-    Task<Result<IAsyncEnumerable<ChangeEventPayload>>> Read(AggregateRootId<Guid> id);
+    IAsyncEnumerable<ChangeEventPayload> Read(AggregateRootId<Guid> id);
 }

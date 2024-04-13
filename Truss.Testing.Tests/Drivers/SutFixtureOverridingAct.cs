@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Testing.Language;
+using Truss.Testing.Dsl;
 using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Drivers;

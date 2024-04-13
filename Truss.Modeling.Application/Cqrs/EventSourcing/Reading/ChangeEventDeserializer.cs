@@ -3,7 +3,7 @@ using Truss.Modeling.Domain.EventSourcing;
 
 namespace Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 
-internal sealed class ChangeEventDeserializer
+public sealed class ChangeEventDeserializer
 {
     /// <summary>
     /// Deserialize an event from a stored payload
