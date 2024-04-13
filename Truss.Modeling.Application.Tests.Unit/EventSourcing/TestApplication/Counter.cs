@@ -40,7 +40,7 @@ public sealed class Counter : EventSourcedAggregateRoot<Counter, CounterId>
     private Result<Counter> NumberUpdatedChangeHandler(NumberIncrementedEvent arg)
     {
         Number++;
- 
+         
         return Success();
     }
 

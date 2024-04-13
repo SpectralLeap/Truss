@@ -16,9 +16,9 @@ public interface IChangeEventHandler<in TChangeEvent>
 public sealed class ChangeEventHandler
     : IChangeEventHandler<ChangeEvent>
 {
-    private readonly AggregateEventStreamWriter _aggregateEventStreamWriter;
+    private readonly IAggregateEventStreamWriter _aggregateEventStreamWriter;
 
-    public ChangeEventHandler(AggregateEventStreamWriter aggregateEventStreamWriter)
+    public ChangeEventHandler(IAggregateEventStreamWriter aggregateEventStreamWriter)
     {
         _aggregateEventStreamWriter = aggregateEventStreamWriter;
     }

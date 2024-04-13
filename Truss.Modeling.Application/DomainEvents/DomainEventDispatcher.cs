@@ -17,7 +17,6 @@ public sealed class DomainEventDispatcher : IDomainEventDispatcher
     /// Uses the event bus to dispatch the events
     /// </summary>
     /// <param name="domainEventBus"></param>
-    /// <param name="changeEventBus"></param>
     public DomainEventDispatcher(
         IDomainEventBus domainEventBus,
         IChangeEventBus changeEventBus
@@ -46,15 +45,16 @@ public sealed class DomainEventDispatcher : IDomainEventDispatcher
     {
         foreach (var root in rootsWithEvents)
         {
-            var events = root.Events().ToArray();
+            var events = root.DomainEvents().ToArray();
             
             foreach (var @event in events)
             {
-                if (@event is DomainEvent domainEvent)
-                    await _domainEventBus.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+                await _domainEventBus.Publish(@event, cancellationToken).ConfigureAwait(false);
 
                 if (@event is ChangeEvent changeEvent)
-                    await _changeEventBus.Publish(changeEvent, cancellationToken).ConfigureAwait(false);
+                {
+                    await _changeEventBus.Publish(changeEvent, cancellationToken);
+                }
             }
 
             root.ClearEvents();

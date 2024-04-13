@@ -14,7 +14,7 @@ public abstract class AggregateRoot<TId, TIdType>
 {
    
     /// <inheritdoc/>>
-    public IReadOnlyCollection<IDomainEvent> Events() => _domainEventAggregator.Events;
+    public IReadOnlyCollection<IDomainEvent> DomainEvents() => _domainEventAggregator.Events;
 
     /// <inheritdoc/>>
     public void ClearEvents()
@@ -41,7 +41,7 @@ public abstract class AggregateRoot<TId, TIdType>
     /// Registers an event for later disbursement
     /// </summary>
     /// <param name="event"></param>
-    protected void RegisterDomainEvent(DomainEvent @event)
+    protected void RegisterDomainEvent(IDomainEvent @event)
     {
         _domainEventAggregator.Add(@event);     
     }

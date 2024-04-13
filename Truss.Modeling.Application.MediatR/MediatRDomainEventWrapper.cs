@@ -4,7 +4,7 @@ using Truss.Modeling.Domain.Events;
 namespace Truss.Modeling.Application.MediatR;
 
 internal sealed class MediatRDomainEventWrapper<TDomainEvent>(TDomainEvent domainEvent) : INotification
-    where TDomainEvent : DomainEvent
+    where TDomainEvent : IDomainEvent
 {
     public TDomainEvent DomainEvent { get; } = domainEvent;
 }

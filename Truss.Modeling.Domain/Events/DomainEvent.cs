@@ -11,9 +11,7 @@ public abstract record DomainEvent : IDomainEvent
     /// </summary>
     public const int DomainEventVersion = 1;
         
-    /// <summary>
-    /// The unique id of the event
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; private set; } = Guid.NewGuid();
     
     /// <summary>

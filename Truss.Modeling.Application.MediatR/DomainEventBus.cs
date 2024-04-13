@@ -16,9 +16,11 @@ internal sealed class DomainEventBus : IDomainEventBus
     }
 
     public async Task Publish<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken) 
-        where TDomainEvent : DomainEvent
+        where TDomainEvent : IDomainEvent
     {
-        var wrappedEvent = new MediatRDomainEventWrapper<TDomainEvent>(domainEvent);
+        var wrappedEvent = Activator.CreateInstance(
+            typeof(MediatRDomainEventWrapper<>).MakeGenericType(
+                domainEvent.GetType()), domainEvent);
         
         await _mediator.Publish(wrappedEvent, cancellationToken).ConfigureAwait(false);
     }

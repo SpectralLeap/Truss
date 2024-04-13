@@ -10,7 +10,7 @@ public interface IAggregateRoot
     /// <summary>
     /// The domain events stored on the aggregate
     /// </summary>
-    public IReadOnlyCollection<IDomainEvent> Events();
+    public IReadOnlyCollection<IDomainEvent> DomainEvents();
     
     /// <summary>
     /// Clear the aggregate's domain events

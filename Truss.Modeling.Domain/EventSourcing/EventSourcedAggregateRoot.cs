@@ -3,8 +3,6 @@ using Truss.Monads.Results;
 
 namespace Truss.Modeling.Domain.EventSourcing;
 
-public sealed class EventHandler : Attribute;
-
 /// <summary>
 /// Contains event sourcing logic for implementing event sourced aggregates
 /// </summary>
@@ -83,6 +81,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
 
             @event.SetSequence(_currentEventSequenceNumber);
 
+            RegisterDomainEvent(@event);
             _pendingEventSourcingEvents.Add(@event);
             
             return Result.Success(root);

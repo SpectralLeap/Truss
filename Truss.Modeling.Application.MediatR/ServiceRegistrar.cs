@@ -116,20 +116,9 @@ public static class ServiceRegistrar
                 )
             ;
      
-        foreach (var changeEventHandlerType in changeEventHandlerTypes)
-        {
-            var changeEventType = changeEventHandlerType.GetInterfaces()
-                .First(i => i.GetGenericTypeDefinition() == typeof(IChangeEventHandler<>))
-                .GetGenericArguments()[0];
-                 
-            var wrapperType = typeof(MediatRChangeEventWrapper<>).MakeGenericType(changeEventType);
-            var wrappedHandlerType = typeof(MediatRWrappedChangeEventHandlerAdapter<>).MakeGenericType(changeEventType);
-            var genType = typeof(IChangeEventHandler<>).MakeGenericType(changeEventType);
-            var wrappedGenType = typeof(INotificationHandler<>).MakeGenericType(wrapperType);
-     
-            services.TryAddTransient(genType, changeEventHandlerType);
-            services.TryAddTransient(wrappedGenType, wrappedHandlerType);
-        }
+        services.TryAddTransient<IChangeEventHandler<ChangeEvent>, ChangeEventHandler>();
+        services.TryAddTransient<INotificationHandler<MediatRChangeEventWrapper<ChangeEvent>>,
+            MediatRWrappedChangeEventHandlerAdapter<ChangeEvent>>();
 
         return services;
     }
@@ -156,8 +145,8 @@ public static class ServiceRegistrar
                 .First(i => i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))
                 .GetGenericArguments()[0];
                      
-            var wrapperType = typeof(MediatRDomainEventWrapper<>).MakeGenericType(typeof(DomainEvent));
-            var wrappedHandlerType = typeof(MediatRWrappedDomainEventHandlerAdapter<>).MakeGenericType(typeof(DomainEvent));
+            var wrapperType = typeof(MediatRDomainEventWrapper<>).MakeGenericType(domainEventType);
+            var wrappedHandlerType = typeof(MediatRWrappedDomainEventHandlerAdapter<>).MakeGenericType(domainEventType);
             var genType = typeof(IDomainEventHandler<>).MakeGenericType(domainEventType);
             var wrappedGenType = typeof(INotificationHandler<>).MakeGenericType(wrapperType);
          
