@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,8 +26,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ExampleApplication.WebApi\ExampleApplication.WebApi.csproj" />
-      <ProjectReference Include="..\Truss.Testing.Dsl.AspNetCore\Truss.Testing.Dsl.AspNetCore.csproj" />
-      <ProjectReference Include="..\Truss.Testing.Dsl\Truss.Testing.Dsl.csproj" />
+      <ProjectReference Include="..\Truss.Testing.AspNetCore\Truss.Testing.AspNetCore.csproj" />
+      <ProjectReference Include="..\Truss.Testing\Truss.Testing.csproj" />
     </ItemGroup>
 
 </Project>

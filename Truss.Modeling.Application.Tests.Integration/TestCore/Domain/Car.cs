@@ -1,0 +1,10 @@
+using Truss.Modeling.Domain.Entities;
+
+namespace Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
+
+public sealed class Car : Entity<CarId>
+{
+    public Car(CarId id) : base(id)
+    {
+    }
+}

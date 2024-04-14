@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent.SourceGenerator\Truss.Monads.Results.Extensions.Fluent.SourceGenerator.csproj"
+                          outputItemType="Analyzer"
+                          ReferenceOutputAssembly="false" 
+        />
+        <ProjectReference Include="..\Truss.Monads.Results\Truss.Monads.Results.csproj" />
+    </ItemGroup>
+
+</Project>
