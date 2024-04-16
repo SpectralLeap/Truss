@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0; net5.0; net6.0; net7.0; net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -11,9 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.0.0, 9.0.0)" />
-    <PackageReference Include="Newtonsoft.Json" Version="[12, 14.0.0)" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Cqrs\" />
+    <PackageReference Include="Newtonsoft.Json" Version="[4.0.2, 14)" />
   </ItemGroup>
 </Project>

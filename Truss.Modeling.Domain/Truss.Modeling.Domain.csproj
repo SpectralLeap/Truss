@@ -9,6 +9,6 @@
     <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="[12.0.1, 14)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[3.5.8, 14)" />
   </ItemGroup>
 </Project>

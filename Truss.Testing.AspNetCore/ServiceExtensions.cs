@@ -3,15 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.Testing.AspNetCore;
 
+
 public static class ServiceExtensions
 {
     public static IServiceCollection AddWebServer<T>(this IServiceCollection collection) where T : class
     {
         return collection
-            .AddSingleton<WebApplicationFactory<T>>(provider => new WebApplicationFactory<T>()
+            .AddSingleton(provider => new WebApplicationFactory<T>()
                 .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
                 {
-                    // Ignore self referential services
+                    // Ignore self-referential services
                     foreach (var serviceDescriptor in collection.Where(service => 
                                  service.ServiceType != typeof(WebApplicationFactory<T>) 
                                  && service.ServiceType  != typeof(HttpClient)))
@@ -36,7 +37,7 @@ public static class ServiceExtensions
                     }
                 }))
             )
-            .AddSingleton<HttpClient>(p => p.GetService<WebApplicationFactory<T>>()!.CreateClient()!)
+            .AddSingleton(p => p.GetService<WebApplicationFactory<T>>()!.CreateClient()!)
             ;
     }
                         

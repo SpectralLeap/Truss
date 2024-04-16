@@ -18,23 +18,14 @@ public sealed class FixtureFactory
     
     private bool _disposing;
 
+    /// <summary>
+    /// Creates a new fixture factory
+    /// </summary>
     public FixtureFactory()
     {
         _fixtureManager = new FixtureManager(
             _proxyGenerator
         );
-    }
-    
-    /// <summary>
-    /// Asynchronously initializes the Fixture factory by starting external dependencies.
-    /// </summary>
-    /// <param name="assembly">The assembly to scan for external dependencies</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task InitializeAsync(
-        Assembly assembly
-    )
-    {
-        await InitializeAsync([ assembly ]);
     }
     
     /// <summary>

@@ -1,7 +1,6 @@
 using System.Reflection;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Truss.Testing.Drivers;
 using Truss.Testing.Services;
 
@@ -9,6 +8,9 @@ namespace Truss.Testing;
 
 internal sealed class FixtureManager : IAsyncDisposable
 {
+    // This can change locations after dependency injection version 5.0 so using
+    // reflection to get it
+    private static MethodInfo? ServiceProviderBuilder;
     private readonly ProxyGenerator _proxyGenerator;
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
@@ -34,10 +36,6 @@ internal sealed class FixtureManager : IAsyncDisposable
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
-
-        var logger = provider.GetService<ILogger<TDsl>>()!;
-
-        logger.LogInformation("Getting dsl {Type}", typeof(TDsl).Name);
 
         var interceptor = provider.GetService<FixtureInterceptor>()!;
 
@@ -80,7 +78,6 @@ internal sealed class FixtureManager : IAsyncDisposable
         var collectionCopy = new ServiceCollection()
                 .AddSingleton<DriverDispatcher>()
                 .AddSingleton<FixtureInterceptor>()
-                .AddLogging(configure: configuration => configuration.AddConsole())
             ;
 
         collectionCopy.AddSingleton<TDsl>();
@@ -113,15 +110,26 @@ internal sealed class FixtureManager : IAsyncDisposable
         return collectionCopy;
     }
 
-    private IServiceProvider Activate(IServiceCollection serviceCollection, string id)
+    private IServiceProvider Activate(IServiceCollection services, string id)
     {
-        var provider = serviceCollection.BuildServiceProvider();
+        ServiceProviderBuilder ??= new[]
+            {
+                Assembly.Load("Microsoft.Extensions.DependencyInjection"),
+                Assembly.Load("Microsoft.Extensions.DependencyInjection.Abstractions"),
+            }
+            .SelectMany(assembly =>
+                assembly.GetTypes()
+                    .Where(type => type.GetMethods().Any(method => method.Name.Contains("BuildServiceProvider"))))
+            .Select(type => type.GetMethod("BuildServiceProvider", [typeof(IServiceCollection)]))
+            .FirstOrDefault();
+
+        var provider = (IServiceProvider)ServiceProviderBuilder!.Invoke(services, [services]);
 
         _activeProviders.Add(id, provider);
 
         return provider;
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         foreach (var provider in _activeProviders.Values)

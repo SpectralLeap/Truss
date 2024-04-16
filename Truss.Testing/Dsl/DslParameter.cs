@@ -56,7 +56,7 @@ public abstract class DslParameter(string name)
     /// the values of the DSL parameter.
     private string? _pattern;
 
-    private char _listDelimiter = ',';
+    private string _listDelimiter = ",";
 
     /// <summary>
     /// Sets the available values for the DSL parameter.
@@ -73,7 +73,7 @@ public abstract class DslParameter(string name)
     /// Marks a DSL parameter as a list parameter.
     /// </summary>
     /// <returns>The same <see cref="DslParameter"/> instance.</returns>
-    public DslParameter AsList(char delimiter = ',')
+    public DslParameter AsList(string delimiter = ",")
     {
         _isList = true;
         _listDelimiter = delimiter;
@@ -150,7 +150,7 @@ public abstract class DslParameter(string name)
     private string[] Split(string value)
     {
         return _isList ?
-                value.Split([ _listDelimiter ], StringSplitOptions.RemoveEmptyEntries)
+                value.Split(new string[]{ _listDelimiter }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => v.Trim())
                     .ToArray()
                 : [value]
