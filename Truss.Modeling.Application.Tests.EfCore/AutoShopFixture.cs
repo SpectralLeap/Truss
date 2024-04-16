@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Tests.Integration.TestCore;
-using Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
+using Truss.Modeling.Application.Tests.EfCore.TestCore;
+using Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
 using Truss.Testing;
 using Truss.Testing.Drivers;
 using Truss.Testing.Dsl;
 using Truss.Testing.Services;
 
-namespace Truss.Modeling.Application.Tests.Integration;
+namespace Truss.Modeling.Application.Tests.EfCore;
 
 public class AutoShopFixture 
     : Fixture

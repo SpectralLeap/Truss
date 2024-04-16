@@ -29,6 +29,7 @@ public static class ServiceRegistrar
         Assembly[] assemblies
     )
     {
+#if NETSTANDARD2_0
         return services.AddMediatR(c => 
                     c.RegisterServicesFromAssemblies([..assemblies]))
                 .AddDynamicMediatRHandlers([..assemblies])
@@ -36,6 +37,19 @@ public static class ServiceRegistrar
                 .AddCqrsServices()
                 .AddEventSourcingServices()
             ;
+#endif
+        
+#if NETFRAMEWORK
+        services.AddMediatR([..assemblies]);
+        
+        return services
+                .AddDynamicMediatRHandlers()
+                .AddDynamicMediatRHandlers([..assemblies])
+                .AddDomainEventServices()
+                .AddCqrsServices()
+                .AddEventSourcingServices()
+            ;
+#endif
     }
     
     private static IServiceCollection AddDomainEventServices(

@@ -4,12 +4,13 @@
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <LangVersion>latest</LangVersion>
-        <TargetFrameworks>net6.0;net8.0;net7.0</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0;</TargetFrameworks>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="MediatR" Version="12.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[6, 9)" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="MediatR" Version="[12.0.1, 13)" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[7, 9)" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="[12, 14)" />
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
@@ -23,7 +24,23 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
-
+    <ItemGroup Condition="'$(TargetFramework)' == 'net461' or '$(TargetFramework)' == 'net48' ">
+        <PackageReference Include="MediatR" Version="[9, 10)" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="[7, 10)" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[1, 5)" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="[12, 14)" />
+        <PackageReference Include="System.Linq.Async" Version="[5.1.0, 7)" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Truss.Modeling.Application.MediatR\Truss.Modeling.Application.MediatR.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />

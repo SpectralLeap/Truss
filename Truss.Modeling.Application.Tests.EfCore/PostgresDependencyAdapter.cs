@@ -1,4 +1,4 @@
-namespace Truss.Modeling.Application.Tests.Integration;
+namespace Truss.Modeling.Application.Tests.EfCore;
 
 public sealed class PostgresDependencyAdapter
 {

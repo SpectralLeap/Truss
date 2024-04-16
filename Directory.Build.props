@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <BuildNumber>$([System.DateTime]::Now.ToString("yyyyMMddHHmm"))</BuildNumber>
-        <Version>0.0.1-alpha.$(BuildNumber)</Version>
+        <Version>0.0.2-alpha.$(BuildNumber)</Version>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>

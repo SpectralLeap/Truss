@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
+using Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
 
-namespace Truss.Modeling.Application.Tests.Integration.TestCore.Persistence;
+namespace Truss.Modeling.Application.Tests.EfCore.TestCore.Persistence;
 
 public sealed class AutoShopContext : DbContext
 {

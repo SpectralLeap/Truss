@@ -75,7 +75,7 @@ public sealed class EventSourcingTests
         var eventsAgain =
             await (AggregateEventStreamReader.ReadEventStream(counter.Id)).SuccessValue.ToListAsync();
 
-        Assert.Equal(eventsAgain.Count(), eventsAgain.DistinctBy(e => e.EventSequenceNumber).Count());
+        Assert.Equal(eventsAgain.Count(), eventsAgain.Select(e => e.EventSequenceNumber!.Value).Distinct().Count());
     }
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()

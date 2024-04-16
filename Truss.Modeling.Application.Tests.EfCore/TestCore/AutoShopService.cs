@@ -1,8 +1,8 @@
-using Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
-using Truss.Modeling.Application.Tests.Integration.TestCore.Persistence;
+using Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
+using Truss.Modeling.Application.Tests.EfCore.TestCore.Persistence;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Application.Tests.Integration.TestCore;
+namespace Truss.Modeling.Application.Tests.EfCore.TestCore;
 
 public sealed class AutoShopService
 {

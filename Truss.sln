@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.XunitHelpers", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modeling", "Modeling", "{47157AAD-7752-4754-89E1-BE970A1546D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.Integration", "Truss.Modeling.Application.Tests.Integration\Truss.Modeling.Application.Tests.Integration.csproj", "{5E987008-C6D6-45D3-88AB-E013C4B25CC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.EfCore", "Truss.Modeling.Application.Tests.EfCore\Truss.Modeling.Application.Tests.EfCore.csproj", "{5E987008-C6D6-45D3-88AB-E013C4B25CC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monads", "Monads", "{FFB1F67E-8DB0-4D2C-8CF3-08A299597788}"
 EndProject

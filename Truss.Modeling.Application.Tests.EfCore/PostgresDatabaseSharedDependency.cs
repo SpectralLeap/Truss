@@ -2,11 +2,13 @@ using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Truss.Testing.SharedDependencies;
 
-namespace Truss.Modeling.Application.Tests.Integration;
+namespace Truss.Modeling.Application.Tests.EfCore;
 
 public sealed class PostgresDatabaseSharedDependency 
     : ISharedDependency
 {
+    public static string? ConnectionString;
+    
     [SharedDependencyAdapter]
     // ReSharper disable once NotAccessedField.Global
     public PostgresDependencyAdapter? DependencyAdapter;
@@ -36,8 +38,8 @@ public sealed class PostgresDatabaseSharedDependency
 
         var connString =
             $"Server=localhost;Port={postgresPort};Database=Autos;Username={username};Password={password}";
-        
-        Environment.SetEnvironmentVariable("PG_CONN_STRING", connString);
+
+        ConnectionString = connString;
         
         DependencyAdapter = new PostgresDependencyAdapter(
             connString

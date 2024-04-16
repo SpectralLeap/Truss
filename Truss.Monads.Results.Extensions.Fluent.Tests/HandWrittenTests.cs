@@ -2,10 +2,10 @@ using Xunit;
 
 namespace Truss.Monads.Results.Extensions.Fluent.Tests;
 
-public sealed class Tests
+public sealed class HandWrittenTests
 {
     [Fact]
-    public async Task DoesThing()
+    public async Task HasDecentSyntax()
     {
         var y = Result.Success(2);
         

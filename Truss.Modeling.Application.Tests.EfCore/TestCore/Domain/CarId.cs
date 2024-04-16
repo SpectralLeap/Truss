@@ -1,6 +1,6 @@
 using Truss.Modeling.Domain.Entities;
 
-namespace Truss.Modeling.Application.Tests.Integration.TestCore.Domain;
+namespace Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
 
 public sealed record CarId : EntityId<int>
 {

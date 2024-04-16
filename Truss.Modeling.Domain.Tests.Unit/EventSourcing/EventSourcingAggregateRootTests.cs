@@ -201,11 +201,11 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    async Task
         exceptions_can_be_thrown
         ()
     {
-        Assert.ThrowsAsync<InvalidCastException>(
+        await Assert.ThrowsAsync<InvalidCastException>(
             () => throw ((Result<Orchard>)BindCreation().Then(o => o.ThrowException())).ExpectFailureAndGet().Exception!);
     }
 

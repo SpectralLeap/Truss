@@ -1,3 +1,4 @@
+using System;
 using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
