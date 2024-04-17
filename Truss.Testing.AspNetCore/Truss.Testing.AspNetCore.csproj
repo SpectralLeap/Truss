@@ -4,7 +4,7 @@
         <Title>Truss.Testing.Dsl.AspNetCore</Title>
         <Description>Support for testing AspNetCore web servers</Description>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     </PropertyGroup>
 
    <ItemGroup>
