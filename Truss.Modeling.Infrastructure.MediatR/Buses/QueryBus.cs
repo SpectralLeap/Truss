@@ -1,8 +1,9 @@
 using MediatR;
 using Truss.Modeling.Application.Cqrs.Queries;
+using Truss.Modeling.Infrastructure.MediatR.Wrappers;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Application.MediatR;
+namespace Truss.Modeling.Infrastructure.MediatR.Buses;
 
 internal sealed class QueryBus : IQueryBus
 {
@@ -16,7 +17,7 @@ internal sealed class QueryBus : IQueryBus
     public async Task<Result<TResult>> SendQuery<TQuery, TResult>(TQuery query) where TQuery 
         : Query<TResult>
     {
-        var wrappedQuery = new MediatRQueryWrapper<TQuery, TResult>(query);
+        var wrappedQuery = new QueryWrapper<TQuery, TResult>(query);
         
         var result = await _mediator.Send(wrappedQuery).ConfigureAwait(false);
 

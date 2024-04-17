@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
-using Truss.Modeling.Application.MediatR;
+using Truss.Modeling.Infrastructure.MediatR;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
 using Truss.Tests.Infrastructure.InMemory;

@@ -42,7 +42,7 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Modeling.Application.MediatR\Truss.Modeling.Application.MediatR.csproj" />
+      <ProjectReference Include="..\Truss.Modeling.Infrastructure.MediatR\Truss.Modeling.Infrastructure.MediatR.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
       <ProjectReference Include="..\Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj" />

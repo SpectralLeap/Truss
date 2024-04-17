@@ -1,11 +1,12 @@
 using MediatR;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.EventSourcing;
+using Truss.Modeling.Infrastructure.MediatR.Wrappers;
 
-namespace Truss.Modeling.Application.MediatR;
+namespace Truss.Modeling.Infrastructure.MediatR.Buses;
 
 /// <summary>
-/// A concrete event bus that sends events
+/// A concrete event bus that sends change events
 /// </summary>
 internal sealed class ChangeEventBus : IChangeEventBus
 {
@@ -19,7 +20,7 @@ internal sealed class ChangeEventBus : IChangeEventBus
     public async Task Publish<TChangeEvent>(TChangeEvent changeEvent, CancellationToken cancellationToken) 
         where TChangeEvent : ChangeEvent
     {
-        var wrappedEvent = new MediatRChangeEventWrapper<TChangeEvent>(changeEvent);
+        var wrappedEvent = new ChangeEventWrapper<TChangeEvent>(changeEvent);
         
         await _mediator.Publish(wrappedEvent, cancellationToken).ConfigureAwait(false);
     }

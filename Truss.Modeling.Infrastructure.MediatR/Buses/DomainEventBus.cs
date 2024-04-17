@@ -1,7 +1,8 @@
 using MediatR;
 using Truss.Modeling.Domain.Events;
+using Truss.Modeling.Infrastructure.MediatR.Wrappers;
 
-namespace Truss.Modeling.Application.MediatR;
+namespace Truss.Modeling.Infrastructure.MediatR.Buses;
 
 /// <summary>
 /// A concrete event bus that sends events
@@ -19,7 +20,7 @@ internal sealed class DomainEventBus : IDomainEventBus
         where TDomainEvent : IDomainEvent
     {
         var wrappedEvent = Activator.CreateInstance(
-            typeof(MediatRDomainEventWrapper<>).MakeGenericType(
+            typeof(DomainEventWrapper<>).MakeGenericType(
                 domainEvent.GetType()), domainEvent);
         
         await _mediator.Publish(wrappedEvent, cancellationToken).ConfigureAwait(false);

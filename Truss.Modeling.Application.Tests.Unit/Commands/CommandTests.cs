@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Commands;
-using Truss.Modeling.Application.MediatR;
+using Truss.Modeling.Infrastructure.MediatR;
 using Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
 using Truss.Monads.Results;
 using Truss.Tests.XunitHelpers;
