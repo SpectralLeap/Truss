@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 
 /// <summary>
-/// The type of an event
+/// The type of event
 /// </summary>
 public sealed record EventType
 {
@@ -38,7 +38,7 @@ public sealed record EventType
     public static implicit operator string(EventType e) => e.Value;
     
     /// <summary>
-    /// Implicit conversion from a <see cref="string"/> to an <see cref="EventType"/>
+    /// Implicit conversion from <see cref="string"/> to <see cref="EventType"/>
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>

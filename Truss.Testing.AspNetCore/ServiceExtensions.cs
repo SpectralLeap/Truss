@@ -37,7 +37,7 @@ public static class ServiceExtensions
                     }
                 }))
             )
-            .AddSingleton(p => p.GetService<WebApplicationFactory<T>>()!.CreateClient()!)
+            .AddSingleton<HttpClient>(p => p.GetService<WebApplicationFactory<T>>()!.CreateClient()!)
             ;
     }
                         

@@ -1,64 +1,30 @@
+using System.Net;
 using ExampleApplication.WebApi;
 using Microsoft.Extensions.DependencyInjection;
-using RestSharp;
 using Truss.Testing;
 using Truss.Testing.AspNetCore;
-using Truss.Testing.Drivers;
-using Truss.Testing.Dsl;
 using Truss.Testing.Services;
 
 namespace ExampleApplication.AcceptanceTests;
 
-
-public sealed class Login;
-public sealed class Heartbeat;
-
-public sealed class RequestContext
-{
-    private readonly List<string?> _requests = new();
-
-    public void Add(string? value)
-    {
-        _requests.Add(value);
-    }
-}
-
-public sealed class HeartbeatDriver(HttpClient client, RequestContext requestContext) 
-    : Driver<Heartbeat>
-{
-    public override async Task Drive(DslArgs args)
-    {
-        var c = new RestClient(client.BaseAddress!);
-        var request = new RestRequest("/heartbeat");
-        var response = await c.ExecuteAsync(request);
-
-        requestContext.Add(response.Content);
-    }
-}
-
-public sealed class LoginDriver() : Driver<Login>
-{
-    public override Task Drive(DslArgs args)
-    {
-        return Task.CompletedTask;
-    }
-}
-
-public class ExampleServiceFixture(RequestContext requestContext) : Fixture
+public class ExampleServiceFixture(HttpClient client) : Fixture
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()
         .AddWebServer<Program>()
-        .AddSingleton<RequestContext>()
     ;
 
-    public async Task Login(params string[] args)
+    public async Task AssertHeartbeat()
     {
-        await Act(DslArgs.ForAction<Heartbeat>());
-    }
+        Assert.NotNull(client);
 
-    public void AssertHeartbeat()
-    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "heartbeat");
+        
+        var response = await client.SendAsync(request);
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
+        Assert.Equal("OK", await response.Content.ReadAsStringAsync());
     }
 }
 
@@ -71,6 +37,6 @@ public sealed class WebApiTests
     {
         var dsl = _fixture.GetFixture<ExampleServiceFixture>();
         
-        await dsl.Login();
+        await dsl.AssertHeartbeat();
     }
 }

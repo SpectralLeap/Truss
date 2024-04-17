@@ -10,7 +10,7 @@ internal sealed class FixtureManager : IAsyncDisposable
 {
     // This can change locations after dependency injection version 5.0 so using
     // reflection to get it
-    private static MethodInfo? ServiceProviderBuilder;
+    private static MethodInfo? _serviceProviderBuilder;
     private readonly ProxyGenerator _proxyGenerator;
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
@@ -44,12 +44,17 @@ internal sealed class FixtureManager : IAsyncDisposable
         try
         {
             var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
-            return (TDsl) _proxyGenerator.CreateClassProxyWithTarget(
+
+            if (typeof(TDsl).IsSealed) return instance;
+            
+            var proxy = (TDsl) _proxyGenerator.CreateClassProxyWithTarget(
                 typeof(TDsl),
                 instance,
                 constructorArguments,
                 interceptor
             );
+
+            return proxy;
         }
         catch (InvalidOperationException ex)
         {
@@ -112,7 +117,7 @@ internal sealed class FixtureManager : IAsyncDisposable
 
     private IServiceProvider Activate(IServiceCollection services, string id)
     {
-        ServiceProviderBuilder ??= new[]
+        _serviceProviderBuilder ??= new[]
             {
                 Assembly.Load("Microsoft.Extensions.DependencyInjection"),
                 Assembly.Load("Microsoft.Extensions.DependencyInjection.Abstractions"),
@@ -123,7 +128,7 @@ internal sealed class FixtureManager : IAsyncDisposable
             .Select(type => type.GetMethod("BuildServiceProvider", [typeof(IServiceCollection)]))
             .FirstOrDefault();
 
-        var provider = (IServiceProvider)ServiceProviderBuilder!.Invoke(services, [services]);
+        var provider = (IServiceProvider)_serviceProviderBuilder!.Invoke(services, [services]);
 
         _activeProviders.Add(id, provider);
 
