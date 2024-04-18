@@ -1,4 +1,4 @@
-﻿namespace System.Runtime.CompilerServices
+﻿namespace Truss.Modeling.Domain.Tests.Unit
 {
     internal static class IsExternalInit {}
 }

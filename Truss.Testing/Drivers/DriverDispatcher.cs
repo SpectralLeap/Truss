@@ -2,12 +2,6 @@ using Truss.Testing.Dsl;
 
 namespace Truss.Testing.Drivers;
 
-internal sealed class DriverNotFoundException(Type type)
-    : Exception($"Driver for {type.Name} was not found");
-
-internal sealed class DriverInterfaceNotFoundException(Type type)
-    : Exception($"Driver for {type.Name} does not implement the driver interface");
-
 /// <summary>
 /// Bus connecting the Dsls to the Drivers
 /// </summary>

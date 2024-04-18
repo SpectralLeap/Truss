@@ -2,7 +2,7 @@ using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Modeling.Application.DomainEvents;
+namespace Truss.Modeling.Infrastructure.Buses;
 
 /// <summary>
 /// Generally used to dispatch events stored on an
@@ -11,19 +11,16 @@ namespace Truss.Modeling.Application.DomainEvents;
 public sealed class DomainEventDispatcher : IDomainEventDispatcher
 {
     private readonly IDomainEventBus _domainEventBus;
-    private readonly IChangeEventBus _changeEventBus;
 
     /// <summary>
     /// Uses the event bus to dispatch the events
     /// </summary>
     /// <param name="domainEventBus"></param>
     public DomainEventDispatcher(
-        IDomainEventBus domainEventBus,
-        IChangeEventBus changeEventBus
+        IDomainEventBus domainEventBus
     )
     {
         _domainEventBus = domainEventBus;
-        _changeEventBus = changeEventBus;
     }
 
     /// <summary>
@@ -50,11 +47,6 @@ public sealed class DomainEventDispatcher : IDomainEventDispatcher
             foreach (var @event in events)
             {
                 await _domainEventBus.Publish(@event, cancellationToken).ConfigureAwait(false);
-
-                if (@event is ChangeEvent changeEvent)
-                {
-                    await _changeEventBus.Publish(changeEvent, cancellationToken);
-                }
             }
 
             root.ClearEvents();

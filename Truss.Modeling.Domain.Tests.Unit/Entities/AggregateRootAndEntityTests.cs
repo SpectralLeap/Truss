@@ -1,10 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Infrastructure.MediatR;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
+using Truss.Modeling.Infrastructure;
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 
@@ -117,7 +114,7 @@ public sealed class AggregateRootAndEntityTests
     public AggregateRootAndEntityTests()
     {
         _services = new ServiceCollection()
-                .AddTrussWithMediatR([typeof(WordUpdatedEventHandler).Assembly])
+                .InstallTruss([typeof(WordUpdatedEventHandler).Assembly])
                 .AddScoped<WordListener>()
                 .AddScoped<NumberListener>()
                 .BuildServiceProvider()

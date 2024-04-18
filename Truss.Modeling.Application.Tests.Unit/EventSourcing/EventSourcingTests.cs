@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
-using Truss.Modeling.Infrastructure.MediatR;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
+using Truss.Modeling.Infrastructure;
 using Truss.Tests.Infrastructure.InMemory;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing;
@@ -79,8 +79,12 @@ public sealed class EventSourcingTests
     }
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
-            .AddTrussWithMediatR([typeof(Counter).Assembly])
-            .AddInMemoryInfrastructure()
+            .InstallTruss(
+                [
+                    typeof(Counter).Assembly,
+                    typeof(InMemoryInfrastructureServiceInstaller).Assembly
+                ]
+                )
             .BuildServiceProvider()
         ;
 

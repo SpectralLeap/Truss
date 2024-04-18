@@ -8,7 +8,8 @@ namespace Truss.Modeling.Infrastructure.MediatR.Buses;
 /// <summary>
 /// Concrete command bus for delivering commands
 /// </summary>
-internal sealed class CommandBus : ICommandBus
+internal sealed class CommandBus 
+    : ICommandBus
 {
     private readonly IMediator _mediator;
 
@@ -27,7 +28,10 @@ internal sealed class CommandBus : ICommandBus
     /// <param name="command"></param>
     /// <typeparam name="TCommand"></typeparam>
     /// <returns></returns>
-    public async Task<Result<Nil>> SendCommand<TCommand>(TCommand command) 
+    public async Task<Result<Nil>> SendCommand<TCommand>(
+        TCommand command,
+        CancellationToken cancellationToken = new()
+    ) 
         where TCommand : Command
     {
         var wrappedCommand = new CommandWrapper<TCommand>(command);
@@ -44,7 +48,10 @@ internal sealed class CommandBus : ICommandBus
     /// <typeparam name="TCommand"></typeparam>
     /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
-    public async Task<Result<TResult>> SendCommand<TCommand, TResult>(TCommand command) 
+    public async Task<Result<TResult>> SendCommand<TCommand, TResult>(
+        TCommand command,
+        CancellationToken cancellationToken = new()
+    ) 
         where TCommand : Command<TResult>
     {
         var wrappedCommand = new CommandWrapper<TCommand, TResult>(command);

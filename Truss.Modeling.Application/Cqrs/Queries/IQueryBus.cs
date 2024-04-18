@@ -11,9 +11,13 @@ public interface IQueryBus
     /// Bus a query
     /// </summary>
     /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
     /// <typeparam name="TResult"></typeparam>
     /// <typeparam name="TQuery"></typeparam>
     /// <returns></returns>
-    public Task<Result<TResult>> SendQuery<TQuery, TResult>(TQuery query)
+    public Task<Result<TResult>> SendQuery<TQuery, TResult>(
+        TQuery query,
+        CancellationToken cancellationToken = new()
+    )
         where TQuery : Query<TResult>;
 }

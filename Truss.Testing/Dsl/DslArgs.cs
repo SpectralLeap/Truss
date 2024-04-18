@@ -1,23 +1,6 @@
 ﻿namespace Truss.Testing.Dsl;
 
 /// <summary>
-/// Represents an exception that is thrown when an argument in a DSL syntax is not in the expected format.
-/// </summary>
-public sealed class DslArgumentSyntaxException(string arg) 
-    : Exception($"Argument \"{arg}\" is not in format \"name: value\"");
-
-/// <summary>
-/// Represents an exception that is thrown when an argument is not in the parameter set.
-/// </summary>
-public sealed class DslArgumentNotInParameterSetException(string name, string[] keys) 
-    : Exception($"Argument \"{name}\" is not in the parameter set. Available arguments are [{string.Join(", ", keys)}]");
-
-/// <summary>
-/// Represents an exception that is thrown when the DSL argument class does not have any parameters set.
-/// </summary>
-public sealed class DslArgsDoNotHaveParametersSetException() : Exception("The Dsl Argument class does not have parameters");
-
-/// <summary>
 /// Represents a DSL (Domain-Specific Language) argument parser for a specific action type.
 /// </summary>
 public sealed class DslArgs

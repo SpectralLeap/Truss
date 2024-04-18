@@ -5,10 +5,13 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="[9, )" />
+    <PackageReference Include="Newtonsoft.Json" Version="[3.5.8, 14)" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Truss.Monads.Results.Extensions.Fluent\Truss.Monads.Results.Extensions.Fluent.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="[3.5.8, 14)" />
   </ItemGroup>
 </Project>

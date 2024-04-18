@@ -2,9 +2,11 @@ using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Truss.Modeling.Application;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Cqrs.Queries;
+using Truss.Modeling.Application.Dependencies;
 using Truss.Modeling.Application.DomainEvents;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.EventSourcing;
@@ -18,27 +20,9 @@ namespace Truss.Modeling.Infrastructure.MediatR;
 
 public sealed class TrussMediatrInfrastructureInstaller : ITrussServiceInstaller
 {
-    public void InstallServices(TrussDependencyModel trussDependencyModel)
+    public void InstallServices(TrussDependencyModel model)
     {
-        trussDependencyModel.Add((services, assemblies) =>
-            {
-#if NETSTANDARD2_0
-                services.AddMediatR(c =>
-                        c.RegisterServicesFromAssemblies([..assemblies]))
-                    .AddAdapters(assemblies)
-                    ;
-#endif
-#if NETFRAMEWORK
-                services.AddMediatR([..assemblies])
-                    .AddDynamicMediatRHandlers(assemblies)
-                    ;
-#endif
-            })
-            .AddTransient<IDomainEventDispatcher, DomainEventDispatcher>()
-            .AddTransient<IDomainEventBus, DomainEventBus>()
-            .AddTransient<IChangeEventBus, ChangeEventBus>()
-            .AddTransient<ICommandBus, CommandBus>()
-            .AddTransient<IQueryBus, QueryBus>();
+
     }
 }
 

@@ -1,18 +1,21 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
+using Truss.Modeling.Infrastructure;
 using Truss.Tests.Infrastructure.InMemory.Events;
 
 namespace Truss.Tests.Infrastructure.InMemory;
 
-public static class ServiceExtensions
+public sealed class InMemoryInfrastructureServiceInstaller 
+    : ITrussServiceInstaller
 {
-    public static IServiceCollection AddInMemoryInfrastructure(this IServiceCollection services)
+    public void InstallServices(IServiceCollection services)
     {
         var store = new InMemoryEventStore();
-        return services
-                .AddSingleton<IEventWriteStore>(store)
-                .AddSingleton<IEventReadStore>(store)
+        
+        services
+            .AddSingleton<IEventWriteStore>(store)
+            .AddSingleton<IEventReadStore>(store)
             ;
     }
 }

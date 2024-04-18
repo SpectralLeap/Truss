@@ -1,3 +1,4 @@
+using MediatR;
 using Truss.Modeling.Domain.Events;
 
 namespace Truss.Modeling.Application.DomainEvents;
@@ -6,8 +7,6 @@ namespace Truss.Modeling.Application.DomainEvents;
 /// For receiving and acting on domain events
 /// </summary>
 /// <typeparam name="TDomainEvent"></typeparam>
-public interface IDomainEventHandler<in TDomainEvent> 
-    where TDomainEvent : IDomainEvent
-{
-    public Task Handle(TDomainEvent domainEvent, CancellationToken cancellationToken);
-}
+public interface IDomainEventHandler<in TDomainEvent>
+    : INotificationHandler<TDomainEvent>
+    where TDomainEvent : IDomainEvent;

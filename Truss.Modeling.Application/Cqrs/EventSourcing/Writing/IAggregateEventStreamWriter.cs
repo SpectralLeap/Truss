@@ -16,5 +16,6 @@ public interface IAggregateEventStreamWriter
     public Task<Result<Nil>> WriteToStream<TId>(IEventSourcedAggregateRoot<TId> aggregate) 
         where TId : AggregateRootId<Guid>;
 
-    public Task<Result<Nil>> Write(ChangeEvent changeEvent);
+    public Task<Result<Nil>> Write(IChangeEvent changeEvent);
+    
 }

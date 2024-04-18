@@ -1,18 +1,7 @@
-using Authentication.Grpc;
 using Grpc.Core;
 using Truss.Tests.GrpcService;
-using User.Grpc;
 
 namespace ExampleApplication.WebApi.Services;
-
-public sealed class AuthenticationClient : AuthenticationService.AuthenticationServiceClient;
-
-public sealed class GrpcAuthenticationPresenter : AuthenticationService.AuthenticationServiceBase;
-
-public sealed class GrpcUserPresenter : UserService.UserServiceBase
-{
-    
-}
 
 public sealed class GreeterService : Greeter.GreeterBase
 {

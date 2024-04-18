@@ -1,11 +1,12 @@
+using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.EventSourcing;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
+namespace Truss.Modeling.Infrastructure.EventSourcingServices;
 
-public sealed class AggregateEventStreamWriter 
+internal sealed class AggregateEventStreamWriter 
     : IAggregateEventStreamWriter
 {
     private readonly IEventWriteStore _eventWriteStore;
@@ -23,7 +24,7 @@ public sealed class AggregateEventStreamWriter
         _typeMap = typeMap;
     }
 
-    public async Task<Result<Nil>> Write(ChangeEvent changeEvent)
+    public async Task<Result<Nil>> Write(IChangeEvent changeEvent)
     {
         var writeableChangeEvent = new ChangeEventPayload(
             changeEvent.AggregateId,

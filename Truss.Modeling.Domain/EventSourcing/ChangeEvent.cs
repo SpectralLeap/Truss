@@ -20,9 +20,8 @@ public abstract record ChangeEvent
     [JsonProperty]
     public Guid Id { get; private set; } = Guid.NewGuid();   
     
-    /// <summary>
-    /// Represents the unique identifier of an aggregate.
-    /// </summary>
+   
+    /// <inheritdoc />
     [JsonProperty]
     public Guid AggregateId { get; private set; }
 

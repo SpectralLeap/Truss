@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
+namespace Truss.Modeling.Infrastructure.EventSourcingServices;
 
-public sealed class ChangeEventDeserializer
+internal sealed class ChangeEventDeserializer
 {
     /// <summary>
     /// Deserialize an event from a stored payload

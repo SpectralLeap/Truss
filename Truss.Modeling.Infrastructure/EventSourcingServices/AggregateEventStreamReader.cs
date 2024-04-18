@@ -1,11 +1,12 @@
 using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.EventSourcing;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
+namespace Truss.Modeling.Infrastructure.EventSourcingServices;
 
-public sealed class AggregateEventStreamReader : IAggregateEventStreamReader
+internal sealed class AggregateEventStreamReader : IAggregateEventStreamReader
 {
     private readonly IEventReadStore _eventReadStore;
     private readonly ChangeEventDeserializer _deserializer;
