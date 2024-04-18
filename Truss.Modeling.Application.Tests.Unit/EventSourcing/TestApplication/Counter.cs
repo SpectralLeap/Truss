@@ -3,8 +3,6 @@ using Truss.Monads.Results;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 
-public sealed class EventHandlerAttribute : Attribute;
-
 public sealed class Counter : EventSourcedAggregateRoot<Counter, CounterId>
 {
     private int Number { get; set; }

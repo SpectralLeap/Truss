@@ -1,5 +1,3 @@
-using Truss.Monads.Results;
-
 namespace Truss.Modeling.Application.Cqrs.Queries;
 
 
@@ -7,6 +5,5 @@ namespace Truss.Modeling.Application.Cqrs.Queries;
 /// A type for reading information
 /// </summary>
 /// <typeparam name="TQueryResult"></typeparam>
-public record Query<TQueryResult>;
-    
-    
+public record Query<TQueryResult> 
+    : IQuery<TQueryResult>;

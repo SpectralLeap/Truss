@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Commands;
-using Truss.Modeling.Application.MediatR;
 using Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
+using Truss.Modeling.Infrastructure;
 using Truss.Monads.Results;
 using Truss.Tests.XunitHelpers;
 
@@ -14,7 +14,7 @@ public sealed class CommandTests
     public CommandTests()
     {
         var serviceProvider = new ServiceCollection()
-                .AddTrussWithMediatR([typeof(AddValueCommand).Assembly])
+                .InstallTruss([typeof(AddValueCommand).Assembly])
                 .BuildServiceProvider()
             ;
 

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Truss.Monads.Results.Extensions.Fluent.SourceGenerator;
 
 public sealed class TypingContext

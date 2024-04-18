@@ -1,3 +1,4 @@
+using MediatR;
 using Truss.Monads.Results;
 
 #pragma warning disable CS0108, CS0114
@@ -8,7 +9,8 @@ namespace Truss.Modeling.Application.Cqrs.Commands;
 /// Implement to handle the designated command type
 /// </summary>
 /// <typeparam name="TCommand"></typeparam>
-public interface ICommandHandler<in TCommand>
+public interface ICommandHandler<in TCommand> 
+    : IRequestHandler<TCommand, Result<Nil>>
     where TCommand : Command
 {
      /// <summary>
@@ -26,6 +28,7 @@ public interface ICommandHandler<in TCommand>
 /// <typeparam name="TCommand"></typeparam>
 /// <typeparam name="TResult"></typeparam>
 public interface ICommandHandler<in TCommand, TResult> 
+    : IRequestHandler<TCommand, Result<TResult>>
     where TCommand : Command<TResult>
 {
     /// <summary>

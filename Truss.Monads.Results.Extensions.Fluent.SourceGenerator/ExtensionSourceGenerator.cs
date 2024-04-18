@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Truss.Monads.Results.Extensions.Fluent.SourceGenerator.Generators;
 using Truss.Monads.Results.Extensions.Fluent.SourceGenerator.MethodSets;
@@ -36,7 +35,7 @@ public sealed class ExtensionSourceGenerator : ISourceGenerator
         setList.Add( new DoMethodSet(typingContext));   
         
         if (size < MaxSize) setList.Add(new AndMethodSet(typingContext));
-
+        
         var sets = setList.ToArray();
 
         var generators = new List<IGenerator>();

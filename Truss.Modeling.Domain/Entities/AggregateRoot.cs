@@ -15,6 +15,7 @@ public abstract class AggregateRoot<TId, TIdType>
    
     /// <inheritdoc/>>
     public IReadOnlyCollection<IDomainEvent> DomainEvents() => _domainEventAggregator.Events;
+    private readonly DomainEventAggregator _domainEventAggregator = new();
 
     /// <inheritdoc/>>
     public void ClearEvents()
@@ -22,19 +23,13 @@ public abstract class AggregateRoot<TId, TIdType>
         _domainEventAggregator.ClearDomainEvents();    
     }
 
-    private readonly IDomainEventAggregator _domainEventAggregator;
  
     /// <summary>
     /// Requires an Id for consistency with the underlying event systems
     /// </summary>
     /// <param name="id"></param>
-    protected AggregateRoot(TId id) : this(id, new DomainEventAggregator())
+    protected AggregateRoot(TId id) : base(id)
     {
-    }
-
-    private AggregateRoot(TId id, IDomainEventAggregator eventAggregator) : base(id)
-    {
-        _domainEventAggregator = eventAggregator;
     }
     
     /// <summary>

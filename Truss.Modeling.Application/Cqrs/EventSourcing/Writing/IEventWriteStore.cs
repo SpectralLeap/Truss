@@ -8,5 +8,8 @@ namespace Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 /// </summary>
 public interface IEventWriteStore
 {
-    public Task<Result<Nil>> Write(ChangeEventPayload @event);
+    public Task<Result<Nil>> Write(
+        ChangeEventPayload @event,
+        CancellationToken cancellationToken
+    );
 }

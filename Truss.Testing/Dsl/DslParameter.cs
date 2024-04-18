@@ -178,16 +178,3 @@ public abstract class DslParameter(string name)
     }
 
 }
-
-/// <summary>
-/// Exception that is thrown when a DSL parameter value does not match the specified pattern.
-/// </summary>
-public sealed class DslValueDoesNotMatchPattern(string name, string value, string pattern)
-    : Exception($"For parameter \"{name}\" the value \"{value}\" did not match pattern {pattern}");
-    
-    
-/// <summary>
-/// Exception that is thrown when a DSL parameter value is not available.
-/// </summary>
-public sealed class DslValueNotAvailableException(string name, string value, string[] availableValues)
-    : Exception($"For parameter \"{name}\" the value \"{value}\" was not in available values [{string.Join(", ", availableValues.Select(v => $"\"{v}\""))}]");

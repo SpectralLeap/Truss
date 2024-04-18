@@ -3,7 +3,7 @@ namespace Truss.Modeling.Domain.Events;
 /// <summary>
 /// A collection of the events that occurred on an entity
 /// </summary>
-internal sealed class DomainEventAggregator : IDomainEventAggregator
+internal sealed class DomainEventAggregator
 {
     private readonly Dictionary<Guid, IDomainEvent> _domainEvents = new();
     

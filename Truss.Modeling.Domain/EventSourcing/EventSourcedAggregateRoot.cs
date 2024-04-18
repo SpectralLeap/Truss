@@ -4,13 +4,13 @@ using Truss.Monads.Results;
 namespace Truss.Modeling.Domain.EventSourcing;
 
 /// <summary>
-/// Contains event sourcing logic for implementing event sourced aggregates
+/// An aggregate constructed from a stream of events
 /// </summary>
 /// <typeparam name="TRoot">
 /// The type of <see cref="AggregateRoot{TId,TIdType}"/> encapsulated in <see cref="Result"/>.
 /// The intent is for this to be self-referential for method chaining. See Curiously Recurring Template Pattern.
 /// </typeparam>
-/// <typeparam name="TId"><see cref="AggregateRootId{TId}"/> of the aggregate type type. Must be a type of <see cref="Guid"/></typeparam>
+/// <typeparam name="TId"><see cref="AggregateRootId{TId}"/> of the aggregate type. Must be a type of <see cref="Guid"/></typeparam>
 public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId, Guid>, IEventSourcedAggregateRoot<TId>
     where TId : AggregateRootId<Guid>
     where TRoot : EventSourcedAggregateRoot<TRoot, TId>
@@ -20,8 +20,9 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// Events that have not yet been stored
     /// </summary>
     public IReadOnlyCollection<ChangeEvent> PendingChangeEvents => _pendingEventSourcingEvents;
-    private readonly List<ChangeEvent> _pendingEventSourcingEvents = new();
     
+    private readonly List<ChangeEvent> _pendingEventSourcingEvents = new();
+   
     /// <summary>
     /// It is not reliable to depend on dates or times in event sourcing.
     /// The sequence number is used to enforce ordering.
@@ -32,7 +33,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// <summary>
     /// A registry for derived class's change events
     /// </summary>
-    private readonly ChangeEventHandlerRegistry<TRoot, TId> _handlers;
+    private readonly IChangeEventHandlerRegistry<TRoot> _handlers;
 
     /// <summary>
     /// The configuration builder given to derived types to configure
@@ -69,7 +70,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// <typeparam name="TChangeEvent">The <see cref="Type"/> of the <see cref="ChangeEvent"/></typeparam>
     protected Result<TRoot> Apply<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
     {
-        if (_currentEventSequenceNumber.Value > 1 
+        if (_currentEventSequenceNumber.Value > 0 
             && typeof(CreationEvent<TId>).IsAssignableFrom(typeof(TChangeEvent)))
         {
             return Result.Fail("An aggregate cannot be created more than once.");
@@ -82,6 +83,7 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
             @event.SetSequence(_currentEventSequenceNumber);
 
             RegisterDomainEvent(@event);
+            
             _pendingEventSourcingEvents.Add(@event);
             
             return Result.Success(root);
@@ -119,22 +121,23 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     {
         var changeEvents = eventHistory.OrderBy(e => e.EventSequenceNumber).ToArray();
 
-        var sequenceAnalysis = ChangeEventSequenceAnalysis(changeEvents);
-        if (!sequenceAnalysis.IsValid)
-        {
-            return Result.Fail(sequenceAnalysis.InvalidationReasons.ToArray());
-        }
-        
-        var entity = typeGenerator(sequenceAnalysis.CreationEvent!.AggregateId);
-
-        entity._currentEventSequenceNumber = changeEvents.Last().EventSequenceNumber!;
-
-        foreach (var changeEvent in changeEvents)
-        {
-            entity.Restore(changeEvent);
-        }
-
-        return Result.Success(entity);
+        return ValidateChangeEvents(changeEvents)
+                .Then(creationEvent =>
+                {
+                    var entity = typeGenerator(creationEvent.AggregateId);
+ 
+                    entity._currentEventSequenceNumber = changeEvents.Last().EventSequenceNumber!;
+ 
+                    foreach (var changeEvent in changeEvents)
+                    {
+                        var restoration = entity.Restore(changeEvent);
+                        
+                        if (restoration.Failed) return Result.Fail(restoration.FailureDetails);
+                    }
+ 
+                    return Result.Success(entity);                   
+                })
+            ;
     }
 
     /// <summary>
@@ -143,65 +146,62 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// </summary>
     /// <param name="changeEvents"></param>
     /// <returns></returns>
-    private static (bool IsValid, List<string> InvalidationReasons, CreationEvent<TId>? CreationEvent) 
-        // ReSharper disable once CyclomaticComplexity
-        // It's not super great but it's just validations
-        ChangeEventSequenceAnalysis(ChangeEvent[] changeEvents)
+    private static Result<CreationEvent<TId>>
+        ValidateChangeEvents(ChangeEvent[] changeEvents)
     {
-        var isValid = true;
         var invalidationReasons = new List<string>();
 
         if (!changeEvents.Any())
         {
-            isValid = false;
             invalidationReasons.Add("There are no events to rehydrate from");
-            return (isValid, invalidationReasons, null);
+            return Result.Fail(invalidationReasons);
         }
         
-        var possibleCreationEvent = changeEvents.First() as CreationEvent<TId>;
+        var creationEvent = changeEvents.First() as CreationEvent<TId>;
 
-        if (possibleCreationEvent is null)
+        if (creationEvent is null)
         {
-            isValid = false;
-            invalidationReasons.Add("The entity's creation event is missing");
+            return Result.Fail("The entity's creation event is missing");
         }
         
-        if(possibleCreationEvent is not null &&
-           possibleCreationEvent.EventSequenceNumber is null)
+        if(creationEvent.EventSequenceNumber is null)
         {
-            isValid = false;
-            invalidationReasons.Add("The entity's creation event was not created with a valid sequence. Events must be created through aggregates");
+            return Result.Fail("The entity's creation event was not created with a valid sequence. Events must be created through aggregates");
         }
 
-        if (possibleCreationEvent is not null &&
-            possibleCreationEvent.EventSequenceNumber is not null &&
-            possibleCreationEvent.EventSequenceNumber != 1)
+        if (creationEvent.EventSequenceNumber != 1)
         {
-            isValid = false;
             invalidationReasons.Add("The entity's creation event is not in sequence");           
         }
 
         var sequence = new EventSequenceNumber(1);
         foreach (var changeEvent in changeEvents.Skip(1))
         {
-            if (changeEvent is CreationEvent<TId>)
-            {
-                isValid = false;
-                invalidationReasons.Add("The entity has multiple creation events");
-            }
+            sequence = ValidateSequence(changeEvent, invalidationReasons, sequence);
+        }
+        
+        if (invalidationReasons.Any()) return Result.Fail(invalidationReasons);
 
-            if (changeEvent.EventSequenceNumber != sequence + 1)
-            {
-                isValid = false;
-                invalidationReasons.Add($"A change event is missing between sequence {sequence} and {changeEvent}");
-            }
+        return Result.Success(creationEvent);
+    }
 
-            sequence += 1;
+    private static EventSequenceNumber ValidateSequence(ChangeEvent changeEvent, List<string> invalidationReasons,
+        EventSequenceNumber sequence)
+    {
+        if (changeEvent is CreationEvent<TId>)
+        {
+            invalidationReasons.Add("The entity has multiple creation events");
         }
 
-        return (isValid, invalidationReasons, possibleCreationEvent);
+        if (changeEvent.EventSequenceNumber != sequence + 1)
+        {
+            invalidationReasons.Add($"A change event is missing between sequence {sequence} and {changeEvent}");
+        }
+
+        sequence += 1;
+        return sequence;
     }
-    
+
     /// <summary>
     /// Report a successful change
     /// </summary>

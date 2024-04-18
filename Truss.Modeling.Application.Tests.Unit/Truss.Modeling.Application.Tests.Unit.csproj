@@ -9,11 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
-        <PackageReference Include="MediatR" Version="[12.0.1, 13)" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[7, 9)" />
+        <PackageReference Include="MediatR" Version="[12, )" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[7, )" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="[12, 14)" />
-        <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="[12, )" />
+        <PackageReference Include="System.Linq.Async" Version="[1, )" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -42,9 +42,9 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Modeling.Application.MediatR\Truss.Modeling.Application.MediatR.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
+      <ProjectReference Include="..\Truss.Modeling.Infrastructure\Truss.Modeling.Infrastructure.csproj" />
       <ProjectReference Include="..\Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj" />
       <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
     </ItemGroup>

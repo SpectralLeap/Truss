@@ -151,30 +151,3 @@ internal sealed class FixtureManager : IAsyncDisposable
         }
     }
 }
-
-
-/// <summary>
-/// Represents an exception that is thrown when a DSL tag is not found among the available tags.
-/// </summary>
-public sealed class DslTagNotFoundException(string tag, IEnumerable<string> availableTags) 
-    : Exception($"The override tag {tag} was not in the available tags [{string.Join(", ", availableTags)}]");
-
-/// <summary>
-/// Represents an exception that is thrown when a DSL Collection is not of type IServiceCollection.
-/// </summary>
-public sealed class DslServiceDefinitionIsNotIServiceCollectionException(MemberInfo info) 
-    : Exception($"{info.Name} is not an IServiceCollection. All service definitions must be defined as IServiceCollection");
-
-/// <summary>
-/// Represents an exception that is thrown when a Dsl service is not defined as Static
-/// </summary>
-public sealed class DslServicesNotStaticException(MemberInfo info) 
-    : Exception($"The service definition {info.Name} is not static. Dsl Services must be a static field or property");
-
-/// <summary>
-/// The exception that is thrown when services requested by a specific type were not registered.
-/// </summary>
-public sealed class DslServicesNotRegisteredException(Type type) 
-    : Exception($"Services requested by {type.Name} were not registered on the type." 
-                + $" Assure all types requested for are registered in a {nameof(BaseServicesAttribute)}");
-

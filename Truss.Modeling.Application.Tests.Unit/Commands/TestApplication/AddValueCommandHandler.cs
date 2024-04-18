@@ -15,16 +15,3 @@ public class AddValueCommandHandler : ICommandHandler<AddValueCommand, AddValueR
         return Result.Fail("No good");
     }
 }
-
-public class SubtractValueCommandHandler : ICommandHandler<SubtractValueCommand>
-{
-    public Task<Result<Nil>> Handle(SubtractValueCommand command, CancellationToken cancellationToken)
-    {
-        if (command.Value % 2 == 0)
-        {
-            return Task.FromResult(Result.Success());
-        }
-        
-        return Task.FromResult(Result.Fail("value was odd"));
-    }
-}

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[7, )" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[7, )" />
+        <PackageReference Include="MediatR" Version="[12, )" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
+    </ItemGroup>
+</Project>
