@@ -25,9 +25,16 @@ internal sealed class ChangeEventHandlerRegistry<TRoot, TId> : IChangeEventHandl
     /// </summary>
     /// <typeparam name="TChangeEvent"></typeparam>
     /// <returns></returns>
-    internal Result<TRoot> Handle<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
+    public Result<TRoot> Handle<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
     {
-        return _changeEventHandlers[@event.GetType()](@event);
+        var type = @event.GetType();
+        
+        if (!_changeEventHandlers.TryGetValue(type, out var handler))
+        {
+            return Result.Fail($"The event type {type.Name} is not registered");
+        }
+        
+        return handler(@event);
     }
     
     

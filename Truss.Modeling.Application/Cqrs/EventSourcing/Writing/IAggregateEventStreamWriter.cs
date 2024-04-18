@@ -13,9 +13,9 @@ public interface IAggregateEventStreamWriter
     /// Append the events to a stream
     /// </summary>
     /// <returns></returns>
-    public Task<Result<Nil>> WriteToStream<TId>(IEventSourcedAggregateRoot<TId> aggregate) 
+    public Task<Result<Nil>> WriteToStream<TId>(
+        IEventSourcedAggregateRoot<TId> aggregate,
+        CancellationToken cancellationToken = new()
+    ) 
         where TId : AggregateRootId<Guid>;
-
-    public Task<Result<Nil>> Write(IChangeEvent changeEvent);
-    
 }

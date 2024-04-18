@@ -26,6 +26,13 @@ public static class Result
     /// <param name="reasons"></param>
     /// <returns></returns>
     public static Result<Nil> Fail(params string[] reasons) => Result<Nil>.Fail(FailureDetails.From(reasons));
+    
+    /// <summary>
+    /// Create failure from reasons
+    /// </summary>
+    /// <param name="reasons"></param>
+    /// <returns></returns>
+    public static Result<Nil> Fail(IEnumerable<string> reasons) => Result<Nil>.Fail(FailureDetails.From(reasons.ToArray()));
 
     /// <summary>
     /// Create failure from exception

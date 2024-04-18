@@ -4,7 +4,6 @@ using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Cqrs.Queries;
-using Truss.Modeling.Application.DomainEvents;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Infrastructure.Buses;
 using Truss.Modeling.Infrastructure.EventSourcingServices;
@@ -45,10 +44,10 @@ public static class ServiceExtensions
                     
 #if NETSTANDARD2_0
         services.AddMediatR(c =>
-            c.RegisterServicesFromAssemblies([typeof(ChangeEventHandler<>).Assembly, ..assemblies]));
+            c.RegisterServicesFromAssemblies(assemblies));
 #endif
 #if NETFRAMEWORK
-        services.AddMediatR([..assemblies]);
+        services.AddMediatR(assemblies);
 #endif
         
         return services

@@ -24,21 +24,9 @@ internal sealed class AggregateEventStreamWriter
         _typeMap = typeMap;
     }
 
-    public async Task<Result<Nil>> Write(IChangeEvent changeEvent)
-    {
-        var writeableChangeEvent = new ChangeEventPayload(
-            changeEvent.AggregateId,
-            _typeMap.Map(changeEvent.GetType()),
-            _serializer.Serialize(changeEvent)
-        );
-                
-        await _eventWriteStore.Write(writeableChangeEvent);
-
-        return Result.Success();
-    }
-    
     public async Task<Result<Nil>> WriteToStream<TId>(
-        IEventSourcedAggregateRoot<TId> aggregate
+        IEventSourcedAggregateRoot<TId> aggregate,
+        CancellationToken cancellationToken = new()
     )
         where TId : AggregateRootId<Guid>
     {
@@ -52,7 +40,10 @@ internal sealed class AggregateEventStreamWriter
                 _serializer.Serialize(changeEvent)
             );
         
-            await _eventWriteStore.Write(writeableChangeEvent);
+            await _eventWriteStore.Write(
+                writeableChangeEvent,
+                cancellationToken
+            );
         }
         
         return Result.Success();

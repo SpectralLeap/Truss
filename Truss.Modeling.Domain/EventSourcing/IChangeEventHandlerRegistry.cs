@@ -18,4 +18,11 @@ public interface IChangeEventHandlerRegistry<TRoot>
     /// <typeparam name="TChangeEvent">The <see cref="Type"/> of the <see cref="ChangeEvent"/></typeparam>
     public IChangeEventHandlerRegistry<TRoot> AddHandler<TChangeEvent>(Func<TChangeEvent, Result<TRoot>> handler)
         where TChangeEvent : ChangeEvent;
+
+    /// <summary>
+    /// Calls the handler
+    /// </summary>
+    /// <typeparam name="TChangeEvent"></typeparam>
+    /// <returns></returns>
+    public Result<TRoot> Handle<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent;
 }

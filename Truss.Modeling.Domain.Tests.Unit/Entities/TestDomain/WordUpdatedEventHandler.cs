@@ -1,4 +1,3 @@
-using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Modeling.Application.DomainEvents;
 
 namespace Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;

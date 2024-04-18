@@ -165,7 +165,7 @@ public sealed class EventSourcingAggregateRootTests
         var fakeEvent = (ChangeEvent)new FakeEvent(Guid.NewGuid());
         fakeEvent.SetSequence(new EventSequenceNumber(2));
 
-        Assert.Throws<KeyNotFoundException>(() => Orchard.FromHistory(new[] { creation, fakeEvent }));
+        Assert.True(Orchard.FromHistoryRaw([creation, fakeEvent]).Failed);
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public sealed class EventSourcingAggregateRootTests
         rehydrating_an_aggregate_without_events_is_handled
         ()
     {
-        Assert.Throws<InvalidOperationException>(() => Orchard.FromHistory(new ChangeEvent []{}));
+        Assert.True(Orchard.FromHistoryRaw([]).Failed);
     }
 
     [Fact]

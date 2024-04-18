@@ -11,7 +11,7 @@ public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
 {
     private readonly Dictionary<string, Dictionary<Guid, List<string>>> _eventStreams = new();
 
-    public Task<Result<Nil>> Write(ChangeEventPayload @event)
+    public Task<Result<Nil>> Write(ChangeEventPayload @event, CancellationToken cancellationToken)
     {
         if (!_eventStreams.ContainsKey(@event.EventType))
         {

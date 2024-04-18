@@ -62,6 +62,11 @@ public sealed class Orchard : EventSourcedAggregateRoot<Orchard, OrchardId>
         
         return Success();
     }
+    
+    public static Result<Orchard> FromHistoryRaw(IEnumerable<ChangeEvent> events)
+    {
+        return Rehydrate(id => new Orchard(new OrchardId(id)), events);
+    }
 
     public static Orchard FromHistory(IEnumerable<ChangeEvent> events)
     {

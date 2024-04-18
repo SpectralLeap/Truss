@@ -1,6 +1,5 @@
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.Events;
-using Truss.Modeling.Domain.EventSourcing;
 
 namespace Truss.Modeling.Infrastructure.Buses;
 

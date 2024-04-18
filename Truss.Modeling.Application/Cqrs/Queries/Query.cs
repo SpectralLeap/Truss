@@ -1,5 +1,3 @@
-using Truss.Monads.Results;
-
 namespace Truss.Modeling.Application.Cqrs.Queries;
 
 
