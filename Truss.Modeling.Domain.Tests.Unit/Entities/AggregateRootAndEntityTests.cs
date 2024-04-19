@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 using Truss.Modeling.Infrastructure;
@@ -123,7 +122,7 @@ public sealed class AggregateRootAndEntityTests
                     c.RegisterServicesFromAssemblies([typeof(WordUpdatedEvent).Assembly]))
 #endif
                 .AddTruss(c => 
-                    c.AddModule<TestModuleInstaller>()
+                    c.InstallModule<TestModuleInstaller>()
                 )
                 .AddScoped<WordListener>()
                 .AddScoped<NumberListener>()
@@ -135,11 +134,4 @@ public sealed class AggregateRootAndEntityTests
         _numberListener = _services.GetService<NumberListener>();
     }
      
-}
-
-public sealed class TestModuleInstaller : ITrussModuleInstaller
-{
-    public void Install(IServiceCollection services)
-    {
-    }
 }

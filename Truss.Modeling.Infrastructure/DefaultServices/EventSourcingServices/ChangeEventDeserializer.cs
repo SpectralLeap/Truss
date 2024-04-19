@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Modeling.Infrastructure.EventSourcingServices;
+namespace Truss.Modeling.Infrastructure.DefaultServices.EventSourcingServices;
 
 internal sealed class ChangeEventDeserializer
 {

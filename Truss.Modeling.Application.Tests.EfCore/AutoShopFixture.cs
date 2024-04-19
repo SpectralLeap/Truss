@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Tests.EfCore.TestCore;
-using Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
+using Truss.Modeling.Application.Tests.TestCore.Domain;
 using Truss.Testing;
 using Truss.Testing.Drivers;
 using Truss.Testing.Dsl;

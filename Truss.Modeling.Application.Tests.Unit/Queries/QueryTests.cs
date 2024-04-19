@@ -21,7 +21,7 @@ public sealed class QueryTests
                     c.RegisterServicesFromAssemblies([typeof(ThingStore).Assembly]))
 #endif
                 .AddTruss(c => 
-                    c.AddModule<TestModule>()
+                    c.InstallModule<TestModule>()
                 )
                 .AddSingleton<ThingStore>()
                 .BuildServiceProvider()

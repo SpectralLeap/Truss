@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Tests.EfCore.TestCore.Persistence;
+using Truss.Modeling.Application.Tests.EfCore.Persistence;
 
-namespace Truss.Modeling.Application.Tests.EfCore.TestCore;
+namespace Truss.Modeling.Application.Tests.EfCore;
 
 public static class ServiceExtensions
 {

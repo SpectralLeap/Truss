@@ -1,38 +1,44 @@
 ﻿using System.Reflection;
 using Truss.Modeling.Application;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
+using Truss.Modeling.Application.Installation;
+using Truss.Modeling.Infrastructure.Installation;
 
 namespace Truss.Modeling.Infrastructure;
 
-public sealed class TrussConfig
+public sealed class TrussServiceConfiguration
 {
     internal bool IsEventSourcing => _eventStoreType is not null;
     
     private readonly List<Assembly> _moduleAssemblies = [];
     private readonly List<Assembly> _infrastructureAssemblies = [];
-    private Type _eventStoreType;
-    private Func<IEventStore> _eventStoreFactory;
+    private Type? _eventStoreType;
+    private Func<IEventStore>? _eventStoreFactory;
 
     
-    public TrussConfig AddModule<TModuleInstaller>()
+    public TrussServiceConfiguration InstallModule<TModuleInstaller>()
         where TModuleInstaller : ITrussModuleInstaller
     {
         _moduleAssemblies.Add(typeof(TModuleInstaller).Assembly);
         return this;
     }
     
-    public void AddInfrastructure<TInfrastructureInstaller>()
+    public TrussServiceConfiguration InstallInfrastructure<TInfrastructureInstaller>()
         where TInfrastructureInstaller : ITrussInfrastructureInstaller
     {
         _infrastructureAssemblies.Add(typeof(TInfrastructureInstaller).Assembly);
+        return this;
     }
     
-    public void WithEventStore<TEventStore>(
-        Func<IEventStore> factory = null
+    public TrussServiceConfiguration SetEventStore<TEventStore>(
+        Func<IEventStore>? factory = null
     )
         where TEventStore : IEventStore
     {
         _eventStoreType = typeof(TEventStore);
+        _eventStoreFactory = factory;
+        
+        return this;
     }
 
     internal Assembly[] GetModuleAssemblies()
@@ -45,7 +51,7 @@ public sealed class TrussConfig
         return _infrastructureAssemblies.ToArray();
     }
 
-    internal Type GetEventStoreType()
+    internal Type? GetEventStoreType()
     {
         return _eventStoreType;
     }

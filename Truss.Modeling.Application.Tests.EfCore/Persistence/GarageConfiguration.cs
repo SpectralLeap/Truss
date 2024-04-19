@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Truss.Modeling.Application.Tests.EfCore.TestCore.Domain;
+using Truss.Modeling.Application.Tests.TestCore.Domain;
 
-namespace Truss.Modeling.Application.Tests.EfCore.TestCore.Persistence;
+namespace Truss.Modeling.Application.Tests.EfCore.Persistence;
 
 public sealed class GarageConfiguration
     : IEntityTypeConfiguration<Garage>
