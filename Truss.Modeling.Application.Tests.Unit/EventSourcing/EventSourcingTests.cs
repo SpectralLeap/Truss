@@ -19,7 +19,7 @@ public sealed class EventSourcingTests
 
         await AggregateEventStreamWriter.WriteToStream(counter);
 
-        var val = eventReadStore.Read(counter.Id);
+        var val = eventStore.Read(counter.Id);
         Assert.Equal(3, await val.CountAsync());
     }
 
@@ -79,16 +79,14 @@ public sealed class EventSourcingTests
     }
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
-            .InstallTruss(
-                [
-                    typeof(Counter).Assembly,
-                    typeof(InMemoryInfrastructureServiceInstaller).Assembly
-                ]
+            .AddTruss(c =>
+                c.AddModule<TestModule>()
+                    .AddInfrastructure<InMemoryInfrastructureInstaller>()
                 )
             .BuildServiceProvider()
         ;
 
-    private IEventReadStore eventReadStore => _serviceProvider.GetService<IEventReadStore>()!;
+    private IEventStore eventStore => _serviceProvider.GetService<IEventStore>()!;
     private IAggregateEventStreamWriter AggregateEventStreamWriter => _serviceProvider.GetService<IAggregateEventStreamWriter>()!;
     private IAggregateEventStreamReader AggregateEventStreamReader => _serviceProvider.GetService<IAggregateEventStreamReader>()!;
     private IDomainEventDispatcher DomainEventDispatcher => _serviceProvider.GetService<IDomainEventDispatcher>()!;

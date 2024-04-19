@@ -4,7 +4,7 @@ output_directory=".nuget_output"
 mkdir -p "$output_directory"
 rm $output_directory/*
 
-if uname -r | grep -q Microsoft; then
+if uname -r | grep -q microsoft; then
     echo "Running on WSL"
     powershell.exe dotnet build --configuration Release
     powershell.exe dotnet pack -o $output_directory

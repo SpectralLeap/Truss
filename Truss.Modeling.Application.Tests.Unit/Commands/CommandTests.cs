@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
@@ -14,7 +15,13 @@ public sealed class CommandTests
     public CommandTests()
     {
         var serviceProvider = new ServiceCollection()
-                .InstallTruss([typeof(AddValueCommand).Assembly])
+#if NET461 || NET47 || NET48
+                .AddMediatR([typeof(AddValueCommand).Assembly])
+#else
+                .AddMediatR(c => 
+                    c.RegisterServicesFromAssemblies([typeof(AddValueCommand).Assembly]))
+#endif
+                .AddTruss(c => c.AddModule<TestModule>())
                 .BuildServiceProvider()
             ;
 

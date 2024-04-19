@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Truss.Modeling.Application.Tests.TestCore\Truss.Modeling.Application.Tests.TestCore.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
       <ProjectReference Include="..\Truss.Testing\Truss.Testing.csproj" />
     </ItemGroup>

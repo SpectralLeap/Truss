@@ -9,17 +9,17 @@ namespace Truss.Modeling.Infrastructure.EventSourcingServices;
 internal sealed class AggregateEventStreamWriter 
     : IAggregateEventStreamWriter
 {
-    private readonly IEventWriteStore _eventWriteStore;
+    private readonly IEventStore _eventStore;
     private readonly ChangeEventSerializer _serializer;
     private readonly ChangeEventTypeMap _typeMap;
 
     public AggregateEventStreamWriter(
-        IEventWriteStore eventWriteStore,
+        IEventStore eventStore,
         ChangeEventSerializer serializer,
         ChangeEventTypeMap typeMap
     )
     {
-        _eventWriteStore = eventWriteStore;
+        _eventStore = eventStore;
         _serializer = serializer;
         _typeMap = typeMap;
     }
@@ -40,7 +40,7 @@ internal sealed class AggregateEventStreamWriter
                 _serializer.Serialize(changeEvent)
             );
         
-            await _eventWriteStore.Write(
+            await _eventStore.Write(
                 writeableChangeEvent,
                 cancellationToken
             );

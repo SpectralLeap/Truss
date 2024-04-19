@@ -1,13 +1,12 @@
 using Newtonsoft.Json;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Domain.Entities;
 using Truss.Monads.Results;
 
 namespace Truss.Tests.Infrastructure.InMemory.Events;
 
-public sealed class InMemoryEventStore : IEventWriteStore, IEventReadStore
+public sealed class InMemoryEventStore : IEventStore
 {
     private readonly Dictionary<string, Dictionary<Guid, List<string>>> _eventStreams = new();
 

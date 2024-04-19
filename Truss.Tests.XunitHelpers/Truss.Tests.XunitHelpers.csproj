@@ -8,6 +8,6 @@
     <ProjectReference Include="..\Truss.Monads.Results\Truss.Monads.Results.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xunit.assert" Version="2.0.0" />
+    <PackageReference Include="xunit.assert" Version="[1, )" />
   </ItemGroup>
 </Project>

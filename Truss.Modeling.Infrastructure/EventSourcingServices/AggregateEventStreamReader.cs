@@ -1,5 +1,6 @@
 using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
+using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.EventSourcing;
 using Truss.Monads.Results;
@@ -8,17 +9,17 @@ namespace Truss.Modeling.Infrastructure.EventSourcingServices;
 
 internal sealed class AggregateEventStreamReader : IAggregateEventStreamReader
 {
-    private readonly IEventReadStore _eventReadStore;
+    private readonly IEventStore _eventStore;
     private readonly ChangeEventDeserializer _deserializer;
     private readonly ChangeEventTypeMap _typeMap;
 
     public AggregateEventStreamReader(
-        IEventReadStore eventReadStore,
+        IEventStore eventStore,
         ChangeEventDeserializer deserializer,
         ChangeEventTypeMap typeMap
     )
     {
-        _eventReadStore = eventReadStore;
+        _eventStore = eventStore;
         _deserializer = deserializer;
         _typeMap = typeMap;
     }
@@ -27,7 +28,7 @@ internal sealed class AggregateEventStreamReader : IAggregateEventStreamReader
     {
         try
         {
-            var storedEvents = _eventReadStore.Read(id);
+            var storedEvents = _eventStore.Read(id);
             return Result.Success(Read(storedEvents));
         }
         catch (Exception ex)

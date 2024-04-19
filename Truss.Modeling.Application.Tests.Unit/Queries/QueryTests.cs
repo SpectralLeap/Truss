@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
@@ -13,7 +14,15 @@ public sealed class QueryTests
     public QueryTests()
     {
         _serviceProvider = new ServiceCollection()
-                .InstallTruss([typeof(ThingStore).Assembly])
+#if NET461 || NET47 || NET48
+                .AddMediatR([typeof(ThingStore).Assembly])
+#else
+                .AddMediatR(c => 
+                    c.RegisterServicesFromAssemblies([typeof(ThingStore).Assembly]))
+#endif
+                .AddTruss(c => 
+                    c.AddModule<TestModule>()
+                )
                 .AddSingleton<ThingStore>()
                 .BuildServiceProvider()
             ;
