@@ -6,10 +6,10 @@ using Truss.Tests.Infrastructure.InMemory.Events;
 
 namespace Truss.Tests.Infrastructure.InMemory;
 
-public sealed class InMemoryInfrastructureInstaller 
-    : ITrussInfrastructureInstaller
+public sealed class InMemoryInfrastructure 
+    : IInfrastructure
 {
-    public void Install(
+    public void Define(
         IServiceCollection services,
         TrussServiceConfiguration serviceConfiguration,
         IConfiguration configuration

@@ -17,14 +17,14 @@ public sealed class TrussServiceConfiguration
 
     
     public TrussServiceConfiguration InstallModule<TModuleInstaller>()
-        where TModuleInstaller : ITrussModuleInstaller
+        where TModuleInstaller : IModule
     {
         _moduleAssemblies.Add(typeof(TModuleInstaller).Assembly);
         return this;
     }
     
     public TrussServiceConfiguration InstallInfrastructure<TInfrastructureInstaller>()
-        where TInfrastructureInstaller : ITrussInfrastructureInstaller
+        where TInfrastructureInstaller : IInfrastructure
     {
         _infrastructureAssemblies.Add(typeof(TInfrastructureInstaller).Assembly);
         return this;

@@ -122,7 +122,7 @@ public sealed class AggregateRootAndEntityTests
                     c.RegisterServicesFromAssemblies([typeof(WordUpdatedEvent).Assembly]))
 #endif
                 .AddTruss(c => 
-                    c.InstallModule<TestModuleInstaller>()
+                    c.InstallModule<DomainTestModule>()
                 )
                 .AddScoped<WordListener>()
                 .AddScoped<NumberListener>()

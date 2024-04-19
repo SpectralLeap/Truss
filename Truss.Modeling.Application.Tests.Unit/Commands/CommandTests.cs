@@ -21,7 +21,7 @@ public sealed class CommandTests
                 .AddMediatR(c => 
                     c.RegisterServicesFromAssemblies([typeof(AddValueCommand).Assembly]))
 #endif
-                .AddTruss(c => c.InstallModule<TestModule>())
+                .AddTruss(c => c.InstallModule<ApplicationTestModule>())
                 .BuildServiceProvider()
             ;
 

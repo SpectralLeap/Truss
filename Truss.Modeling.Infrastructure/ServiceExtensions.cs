@@ -66,8 +66,8 @@ public static class ServiceExtensions
             moduleAssemblies
         );
         
-        moduleInstaller.InvokeAll<ITrussModuleInstaller>(
-            installer => installer.Install(services, configuration));
+        moduleInstaller.InvokeAll<IModule>(
+            installer => installer.Define(services, configuration));
         return moduleAssemblies;
     }
  
@@ -83,8 +83,8 @@ public static class ServiceExtensions
             infrastructureAssemblies
         );
        
-        infrastructureInstaller.InvokeAll<ITrussInfrastructureInstaller>(
-            installer => installer.Install(services, serviceConfiguration, configuration));
+        infrastructureInstaller.InvokeAll<IInfrastructure>(
+            installer => installer.Define(services, serviceConfiguration, configuration));
         return infrastructureAssemblies;
     }
 

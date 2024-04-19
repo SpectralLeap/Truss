@@ -3,7 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.Modeling.Application.Installation;
 
-public interface ITrussModuleInstaller
+public interface IModule
 {
-    public void Install(IServiceCollection services, IConfiguration configuration);
+    public void Define(
+        IServiceCollection services,
+        IConfiguration configuration
+    );
 }

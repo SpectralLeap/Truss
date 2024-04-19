@@ -4,9 +4,9 @@ using Truss.Modeling.Application.Installation;
 
 namespace Truss.Modeling.Application.Tests.Unit;
 
-public sealed class TestModule : ITrussModuleInstaller
+public sealed class ApplicationTestModule : IModule
 {
-    public void Install(IServiceCollection services, IConfiguration configuration)
+    public void Define(IServiceCollection services, IConfiguration configuration)
     {
     }
 }
