@@ -38,6 +38,11 @@ public sealed class ResolutionStepGenerator : IGenerator
                     
                     {{Methods()}}
                     
+                    public Result<{{_typingContext.InTuple}}> AsResult() 
+                    {
+                         return {{_typingContext.PriorResultName}};
+                    }
+                    
                     public static implicit operator Result<{{_typingContext.InTuple}}>(
                         {{Name}}<{{_typingContext.InTypes}}> {{Name.ToLower()}})
                             => {{Name.ToLower()}}.{{_typingContext.PriorResultName}};
@@ -71,6 +76,8 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
+                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     
                      try 
                      {
                         {{method.MethodBody}}
@@ -93,6 +100,8 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
+                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     
                      try
                      {
                         {{method.MethodBody}}
@@ -116,6 +125,8 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
+                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     
                      try
                      {
                         {{method.MethodBody}}
@@ -137,6 +148,8 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
+                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     
                      try
                      {
                         {{method.MethodBody}}
