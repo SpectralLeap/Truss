@@ -2,7 +2,7 @@ using MediatR;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Infrastructure.DefaultServices.Buses;
+namespace Truss.Modeling.Installation.DefaultServices.Buses;
 
 public sealed class CommandBus : ICommandBus
 {
@@ -16,7 +16,7 @@ public sealed class CommandBus : ICommandBus
     public async Task<Result<Nil>> SendCommand<TCommand>(
         TCommand command,
         CancellationToken cancellationToken
-    ) where TCommand : Command
+    ) where TCommand : ICommand
     {
         return await _mediator.Send(command, cancellationToken);
     }
@@ -24,7 +24,7 @@ public sealed class CommandBus : ICommandBus
     public async Task<Result<TResult>> SendCommand<TCommand, TResult>(
         TCommand command,
         CancellationToken cancellationToken
-    ) where TCommand : Command<TResult>
+    ) where TCommand : ICommand<TResult>
     {
         return await _mediator.Send(command, cancellationToken);
     }

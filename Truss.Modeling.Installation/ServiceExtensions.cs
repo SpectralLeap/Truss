@@ -7,12 +7,11 @@ using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Installation;
 using Truss.Modeling.Domain.Events;
-using Truss.Modeling.Infrastructure.Configuration;
-using Truss.Modeling.Infrastructure.DefaultServices.Buses;
-using Truss.Modeling.Infrastructure.DefaultServices.EventSourcingServices;
-using Truss.Modeling.Infrastructure.Installation;
+using Truss.Modeling.Installation.Configuration;
+using Truss.Modeling.Installation.DefaultServices.Buses;
+using Truss.Modeling.Installation.DefaultServices.EventSourcingServices;
 
-namespace Truss.Modeling.Infrastructure;
+namespace Truss.Modeling.Installation;
 
 public static class ServiceExtensions
 {
@@ -21,35 +20,35 @@ public static class ServiceExtensions
         Action<TrussServiceConfiguration> configure
     )
     {
-        return services.AddTruss(
-            new EmptyConfiguration(),
-            configure
-        );
-    }
-    
-    public static IServiceCollection AddTruss(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<TrussServiceConfiguration> configure
-    )
-    {
         var serviceConfiguration = new TrussServiceConfiguration();
+        serviceConfiguration.UseConfiguration(new EmptyConfiguration());
         configure(serviceConfiguration);
 
+        var configuration = serviceConfiguration.Configuration;
         var moduleAssemblies = InstallModules(services, serviceConfiguration, configuration);
-        var infrastructureAssemblies = InstallInfrastructure(services, serviceConfiguration, configuration);
 
+        Assembly[] assemblies =
+        [
+            ..moduleAssemblies,
+        ];
+        
         services.AddBusesAndDispatchers();
         if (serviceConfiguration.IsEventSourcing)
         {
             services.AddEventSourcing(
                 serviceConfiguration.GetEventStoreType(),
                 serviceConfiguration.GetEventStoreFactory(),
-            [
-                ..moduleAssemblies,
-                ..infrastructureAssemblies
-            ]);
+                assemblies
+            );
         }
+
+#if NET461 || NET47 || NET48
+            services.AddMediatR(assemblies);
+#else
+            services.AddMediatR(c =>
+                c.RegisterServicesFromAssemblies(assemblies));
+#endif
+
         
         return services;
     }
@@ -71,23 +70,6 @@ public static class ServiceExtensions
         return moduleAssemblies;
     }
  
-    private static Assembly[] InstallInfrastructure(
-        IServiceCollection services,
-        TrussServiceConfiguration serviceConfiguration,
-        IConfiguration configuration
-    )
-    {
-        var infrastructureAssemblies = serviceConfiguration.GetInfrastructureAssemblies();
-        
-        var infrastructureInstaller = new TrussInstallerAgent(
-            infrastructureAssemblies
-        );
-       
-        infrastructureInstaller.InvokeAll<IInfrastructure>(
-            installer => installer.Define(services, serviceConfiguration, configuration));
-        return infrastructureAssemblies;
-    }
-
    private static void AddBusesAndDispatchers(
         this IServiceCollection services
     )
@@ -102,7 +84,7 @@ public static class ServiceExtensions
 
     private static void AddEventSourcing(
         this IServiceCollection services,
-        Type eventStoreType,
+        Type? eventStoreType,
         Func<IEventStore>? eventStoreFactory,
         Assembly[] assemblies
     )

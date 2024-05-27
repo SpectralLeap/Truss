@@ -2,7 +2,7 @@ using System.Reflection;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
 using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Modeling.Infrastructure.DefaultServices.EventSourcingServices;
+namespace Truss.Modeling.Installation.DefaultServices.EventSourcingServices;
 
 internal sealed class ChangeEventTypeMap
 {

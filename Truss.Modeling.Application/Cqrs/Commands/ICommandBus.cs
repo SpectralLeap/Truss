@@ -17,7 +17,7 @@ public interface ICommandBus
     public Task<Result<Nil>> SendCommand<TCommand>(
         TCommand command,
         CancellationToken cancellationToken = new()
-     ) where TCommand : Command;
+     ) where TCommand : ICommand;
 
     /// <summary>
     /// Dispatch a command to the bus
@@ -31,5 +31,5 @@ public interface ICommandBus
         TCommand command,
         CancellationToken cancellationToken = new()
     )
-        where TCommand : Command<TResult>;
+        where TCommand : ICommand<TResult>;
 }

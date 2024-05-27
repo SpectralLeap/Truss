@@ -2,7 +2,7 @@ using MediatR;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Infrastructure.DefaultServices.Buses;
+namespace Truss.Modeling.Installation.DefaultServices.Buses;
 
 public sealed class QueryBus : IQueryBus
 {

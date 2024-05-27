@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 
-namespace Truss.Modeling.Infrastructure.Configuration;
+namespace Truss.Modeling.Installation.Configuration;
 
 public sealed class EmptyConfigurationSection : IConfigurationSection
 {

@@ -4,7 +4,7 @@ using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.EventSourcing;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Infrastructure.DefaultServices.EventSourcingServices;
+namespace Truss.Modeling.Installation.DefaultServices.EventSourcingServices;
 
 internal sealed class AggregateEventStreamWriter 
     : IAggregateEventStreamWriter

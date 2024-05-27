@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Truss.Modeling.Infrastructure;
+namespace Truss.Modeling.Installation;
 
 public sealed class TrussInstallerAgent
 {

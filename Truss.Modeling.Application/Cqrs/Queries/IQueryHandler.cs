@@ -14,7 +14,7 @@ namespace Truss.Modeling.Application.Cqrs.Queries;
 /// <typeparam name="TResult"></typeparam>
 public interface IQueryHandler<in TQuery, TResult>
     : IRequestHandler<TQuery, Result<TResult>>
-    where TQuery : Query<TResult>
+    where TQuery : IQuery<TResult>
 {
     
     public Task<Result<TResult>> Handle(TQuery query, CancellationToken cancellationToken);

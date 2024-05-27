@@ -11,7 +11,7 @@ namespace Truss.Modeling.Application.Cqrs.Commands;
 /// <typeparam name="TCommand"></typeparam>
 public interface ICommandHandler<in TCommand> 
     : IRequestHandler<TCommand, Result<Nil>>
-    where TCommand : Command
+    where TCommand : ICommand
 {
      /// <summary>
      /// Handle the command's execution
@@ -29,7 +29,7 @@ public interface ICommandHandler<in TCommand>
 /// <typeparam name="TResult"></typeparam>
 public interface ICommandHandler<in TCommand, TResult> 
     : IRequestHandler<TCommand, Result<TResult>>
-    where TCommand : Command<TResult>
+    where TCommand : ICommand<TResult>
 {
     /// <summary>
     /// Handle the command's execution

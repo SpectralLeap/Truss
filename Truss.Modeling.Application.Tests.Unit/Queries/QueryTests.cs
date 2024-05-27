@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
-using Truss.Modeling.Infrastructure;
+using Truss.Modeling.Installation;
 
 namespace Truss.Modeling.Application.Tests.Unit.Queries;
 

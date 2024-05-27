@@ -1,6 +1,5 @@
 namespace Truss.Monads.Results;
 
-#pragma warning disable CS0108, CS0114
 public interface IResult
 {
     public bool Succeeded { get; }
