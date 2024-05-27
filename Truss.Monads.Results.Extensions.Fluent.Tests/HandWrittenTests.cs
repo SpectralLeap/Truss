@@ -56,4 +56,21 @@ public sealed class HandWrittenTests
                 .Then((_, _, _, _ ,_, _, a) => Task.FromResult(Result.Success(a)))
             ;
     }
+
+    [Fact]
+    public void FailsOnFailure()
+    {
+        var result = 9.AsResult()
+                .Then(n => n + 1)
+                .Then(n =>
+                {
+                    if (n > 9) return Result.Fail("no");
+
+                    return Result.Success();
+                })
+                .Then(_ => "Done")
+            ;
+        
+        Assert.True(result.Failed);
+    }
 }

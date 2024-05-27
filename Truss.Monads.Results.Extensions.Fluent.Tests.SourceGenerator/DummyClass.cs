@@ -11,4 +11,12 @@ public sealed class DummyClass
         
         return this;
     }
+    
+    public Task<DummyClass> DoAsync(params DummyClass[] classes)
+    {
+            
+        Value = string.Join("s", classes.Select(c => c.Value));
+            
+        return Task.FromResult(this);
+    }
 }

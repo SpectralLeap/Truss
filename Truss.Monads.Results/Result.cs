@@ -216,5 +216,5 @@ public readonly struct Result<TResult> : IResult
     /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>
-    public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
+    //public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
 }
