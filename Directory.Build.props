@@ -4,5 +4,6 @@
         <Version>0.0.2-alpha.$(BuildNumber)</Version>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 </Project>

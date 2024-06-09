@@ -2,6 +2,7 @@ using Truss.Monads.Results.Extensions.Fluent.SourceGenerator.MethodSets;
 
 namespace Truss.Monads.Results.Extensions.Fluent.SourceGenerator.Generators;
 
+
 public sealed class ResolutionStepGenerator : IGenerator
 {
     public string Name => "ResolutionStep";
@@ -20,21 +21,41 @@ public sealed class ResolutionStepGenerator : IGenerator
     public string Generate()
     {
         return $$"""
+                 #nullable enable
+                 
                  using System;
                  using System.Threading.Tasks;
                  using Truss.Monads.Results;
 
-                 public readonly struct {{Name}}<{{_typingContext.InTypes}}>
+                 public readonly struct {{Name}}<{{_typingContext.InTypes}}> 
+                    : IDisposable, IAsyncDisposable
                  {
                     public readonly bool Failed => {{_typingContext.PriorResultName}}.Failed;
                     public readonly FailureDetails FailureDetails => {{_typingContext.PriorResultName}}.FailureDetails;
                     
                     private readonly Result<{{_typingContext.InTuple}}> {{_typingContext.PriorResultName}};
+                    private readonly HashSet<IDisposable> _disposables;
+                    private readonly HashSet<IAsyncDisposable> _asyncDisposables;
                     
-                    public {{Name}}(Result<{{_typingContext.InTuple}}> fromResult)
+                    private readonly SemaphoreSlim _disposalSemaphore = new(1, 1);
+                    private readonly bool[] _disposed = [false];
+                    
+                    public {{Name}}(
+                        Result<{{_typingContext.InTuple}}> fromResult,
+                        HashSet<IDisposable>? disposables = null,
+                        HashSet<IAsyncDisposable>? asyncDisposables = null
+                    )
                     {
+                        _disposables = disposables ?? new();
+                        _asyncDisposables = asyncDisposables ?? new();
+                        
                         {{_typingContext.PriorResultName}} = fromResult;
-                    }
+                        
+                        if (fromResult.Succeeded)
+                        {
+                            {{StoreDisposable(_typingContext)}}
+                        }
+                    } 
                     
                     {{Methods()}}
                     
@@ -45,10 +66,60 @@ public sealed class ResolutionStepGenerator : IGenerator
                     
                     public static implicit operator Result<{{_typingContext.InTuple}}>(
                         {{Name}}<{{_typingContext.InTypes}}> {{Name.ToLower()}})
-                            => {{Name.ToLower()}}.{{_typingContext.PriorResultName}};
+                            => {{Name.ToLower()}}.AsResult();
+                    
+                    public void Dispose()
+                    {
+                        if (_disposed[0]) return;
+                        
+                        _disposalSemaphore.Wait();
+                        
+                        try
+                        {
+                            DisposeInternal(); 
+                            
+                            GC.SuppressFinalize(this);
+                        }
+                        finally
+                        {
+                            _disposalSemaphore.Release();
+                        }
+                    }
+                   
+                    public async ValueTask DisposeAsync()
+                    {
+                        if (_disposed[0]) return;
+                        
+                        await _disposalSemaphore.WaitAsync();
+                        
+                        try
+                        {
+                            await Task.WhenAll(_asyncDisposables
+                                .Select(async d => await d.DisposeAsync().ConfigureAwait(false))
+                            ).ConfigureAwait(false);
+                            
+                            DisposeInternal();
+                            
+                            GC.SuppressFinalize(this);
+                        }
+                        finally
+                        {
+                            _disposalSemaphore.Release();
+                        }
+                    }
+                     
+                    private void DisposeInternal()
+                    {
+                        foreach(var disposable in _disposables) 
+                        {
+                            disposable.Dispose();
+                        }                       
+                        
+                        _disposed[0] = true;
+                    }
                  }
                  """;
-}
+    }
 
     private string Methods()
     {
@@ -65,6 +136,21 @@ public sealed class ResolutionStepGenerator : IGenerator
     {
         return $"{Name}<{returnType}>";
     }
+
+    private string SuccessReturnStatement(Method method)
+    {
+        return $"return new {ReturnSignature(method.ReturnType)}(Result.Success({method.ReturnBody}), _disposables, _asyncDisposables);";
+    }
+
+    private string FailureReturnStatement(Method method)
+    {
+        return $"return new {ReturnSignature(method.ReturnType)}(Result.Fail(ex), _disposables, _asyncDisposables);";
+    }
+
+    private string IfFailedReturnStatement(Method method)
+    {
+        return $"if (Failed) return new {ReturnSignature(method.ReturnType)}(Result.Fail(FailureDetails), _disposables, _asyncDisposables);";
+    }
     
     private string GenerateMethod(Method method)
     {
@@ -76,16 +162,17 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     {{IfFailedReturnStatement(method)}}
                      
                      try 
                      {
                         {{method.MethodBody}}
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                        
+                        {{SuccessReturnStatement(method)}}
                      }
                      catch (Exception ex)
                      {
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                        {{FailureReturnStatement(method)}}
                      }
                  }
                  """;
@@ -100,19 +187,19 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     {{IfFailedReturnStatement(method)}}
                      
                      try
                      {
                         {{method.MethodBody}}
                         
-                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails));
+                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails), _disposables, _asyncDisposables);
                         
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                        {{SuccessReturnStatement(method)}}
                      }
                      catch (Exception ex)
                      {
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                        {{FailureReturnStatement(method)}}
                      }
                  }
                  """;       
@@ -125,16 +212,17 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     {{IfFailedReturnStatement(method)}}
                      
                      try
                      {
                         {{method.MethodBody}}
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                        
+                        {{SuccessReturnStatement(method)}}
                      }
                      catch (Exception ex)
                      {
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                        {{FailureReturnStatement(method)}}
                      }
                  }
                  """;
@@ -148,22 +236,46 @@ public sealed class ResolutionStepGenerator : IGenerator
                      {{method.MethodSignature}} {{method.MethodName}}
                  )
                  {
-                     if (Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(FailureDetails));
+                     {{IfFailedReturnStatement(method)}}
                      
                      try
                      {
                         {{method.MethodBody}}
                         
-                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails));
+                        if (value.Failed) return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(value.FailureDetails), _disposables, _asyncDisposables);
                         
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Success({{method.ReturnBody}}));
+                        {{SuccessReturnStatement(method)}}
                      }
                      catch (Exception ex)
                      {
-                        return new {{ReturnSignature(method.ReturnType)}}(Result.Fail(ex));
+                        {{FailureReturnStatement(method)}}
                      }
                  }
                  """;
+    }
+
+    private string StoreDisposable(TypingContext typingContext)
+    {
+        var lastResultObject = "var lastResultObject = fromResult.SuccessValue";
+
+        if (typingContext.Size > 1)
+        {
+            lastResultObject += $".Item{_typingContext.Size}";
+        }
+        
+        return lastResultObject + ";" +
+               """
+               
+               if (lastResultObject is IDisposable disposable)
+               {{
+                   _disposables.Add(disposable);
+               }}
+
+               if (lastResultObject is IAsyncDisposable asyncDisposable)
+               {
+                   _asyncDisposables.Add(asyncDisposable);
+               }
+               """;
     }
 
 }

@@ -54,8 +54,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EB9AFD7B-1D76-4342-9689-477A2E216ED5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Ipc.Abstractions", "Truss.Ipc.Abstractions\Truss.Ipc.Abstractions.csproj", "{3D70A1D9-7783-44E9-96D1-7ACC1146D260}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,10 +148,6 @@ Global
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D70A1D9-7783-44E9-96D1-7ACC1146D260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D70A1D9-7783-44E9-96D1-7ACC1146D260}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D70A1D9-7783-44E9-96D1-7ACC1146D260}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D70A1D9-7783-44E9-96D1-7ACC1146D260}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}

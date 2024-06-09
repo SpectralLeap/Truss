@@ -3,11 +3,25 @@ namespace Truss.Monads.Results.Extensions.Fluent.SourceGenerator;
 public sealed class TypingContext
 {
     public readonly string OutType = "TOut";
-    public readonly string PriorResultName = "result";
+    public readonly string PriorResultName = "_result";
     public string InTypes { get; } 
     public string InTuple { get; }
 
     public readonly int Size;
+   
+    public TypingContext(int size)
+    {
+        var inTypeArray = new List<string>();
+
+        for (int i = 1; i <= size; i++)
+        {
+            inTypeArray.Add($"TSuccess{i}");
+        }
+       
+        InTypes = string.Join(", ", inTypeArray);
+        InTuple = size > 1 ? $"({InTypes})" : InTypes;
+        Size = size;
+    }
     
     public string PriorSuccessValues()
     {
@@ -24,20 +38,5 @@ public sealed class TypingContext
      
         return string.Join(",\n", values); 
     }
-    
-    public TypingContext(int size)
-    {
-        var inTypeArray = new List<string>();
-
-        for (int i = 1; i <= size; i++)
-        {
-            inTypeArray.Add($"TSuccess{i}");
-        }
-       
-        InTypes = string.Join(", ", inTypeArray);
-        InTuple = size > 1 ? $"({InTypes})" : InTypes;
-        Size = size;
-    }
-    
-
+ 
 }

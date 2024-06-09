@@ -17,8 +17,6 @@ public sealed class HandWrittenTests
             onSuccess: i => Console.WriteLine(i),
             onFailure: f => Console.WriteLine(f.GetMessage()));
 
-        var a = y | 3;
-        
         var x = await 3.AsResult()
                 .Then(i => i + 1)
                 .Then(x => Task.FromResult(x + 1))
@@ -55,12 +53,13 @@ public sealed class HandWrittenTests
                 .And((x, _, a, z, o, p) => x + 1)
                 .Then((_, _, _, _ ,_, _, a) => Task.FromResult(Result.Success(a)))
             ;
+        
     }
 
     [Fact]
     public void FailsOnFailure()
     {
-        var result = 9.AsResult()
+        using var result = 9.AsResult()
                 .Then(n => n + 1)
                 .Then(n =>
                 {
@@ -72,5 +71,47 @@ public sealed class HandWrittenTests
             ;
         
         Assert.True(result.Failed);
+    }
+
+    [Fact]
+    public void DisposesTheThings()
+    {
+        var result = GetThingAsResult()
+            ;
+        
+        Assert.False(result.SuccessValue.IsDisposed);
+    }
+
+    [Fact]
+    public void DisposesTheThingIfFromAChain()
+    {
+        var result = GetThingFromResolutionChain()
+            ;
+            
+        Assert.True(result.SuccessValue.IsDisposed);
+    }
+
+    private Result<DisposableThing> GetThingAsResult()
+    {
+        return Result.Success(new DisposableThing());
+    }
+
+    private Result<DisposableThing> GetThingFromResolutionChain()
+    {
+        using var x = 9.AsResult()
+                .Then(_ => new DisposableThing())
+            ;
+
+        return x;
+    }
+}
+
+public sealed class DisposableThing : IDisposable
+{
+    public bool IsDisposed;
+    
+    public void Dispose()
+    {
+        IsDisposed = true;
     }
 }

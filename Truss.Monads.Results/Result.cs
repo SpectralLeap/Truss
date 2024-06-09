@@ -61,7 +61,7 @@ public static class Result
 /// A basic result that provides a value or failure reasons
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
-public readonly struct Result<TResult> : IResult
+public readonly struct Result<TResult>
 {
     private readonly TResult? _successValue;
     private readonly FailureDetails? _failureDetails;
@@ -211,10 +211,4 @@ public readonly struct Result<TResult> : IResult
 
         return new Result<TResult>(value.FailureDetails);
     }
- 
-    /// <summary>
-    /// Implicit cast for readability
-    /// </summary>
-    /// <returns></returns>
-    //public static implicit operator Task<Result<TResult>>(Result<TResult> result) => Task.FromResult(result);
 }

@@ -46,5 +46,4 @@ public sealed class ExtensionSourceGenerator : ISourceGenerator
         
         return generators.ToArray();
     }
-
 }
