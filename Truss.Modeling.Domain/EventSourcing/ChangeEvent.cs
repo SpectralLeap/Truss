@@ -1,12 +1,12 @@
 using Newtonsoft.Json;
+using Truss.Modeling.Domain.Events;
 
 namespace Truss.Modeling.Domain.EventSourcing;
 
 /// <summary>
 /// Represents an aggregate's state has changed
 /// </summary>
-public abstract record ChangeEvent 
-    : IChangeEvent
+public abstract record ChangeEvent : IDomainEvent
 {
     /// <summary>
     /// For general event versioning
@@ -21,7 +21,10 @@ public abstract record ChangeEvent
     public Guid Id { get; private set; } = Guid.NewGuid();   
     
    
-    /// <inheritdoc />
+    /// <summary>
+    /// The unique Id of the Aggregate the
+    /// event relates to
+    /// </summary>
     [JsonProperty]
     public Guid AggregateId { get; private set; }
 

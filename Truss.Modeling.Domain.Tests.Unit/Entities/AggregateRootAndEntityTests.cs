@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
-using Truss.Modeling.Installation;
+using Truss;
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 
@@ -116,7 +116,7 @@ public sealed class AggregateRootAndEntityTests
         _services = new ServiceCollection()
 
                 .AddTruss(c => 
-                    c.InstallModule<DomainTestModule>()
+                    c.AddModule<DomainTestModuleInstaller>()
                 )
                 .AddScoped<WordListener>()
                 .AddScoped<NumberListener>()

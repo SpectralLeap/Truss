@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
-using Truss.Modeling.Installation;
+using Truss;
 
 namespace Truss.Modeling.Application.Tests.Unit.Queries;
 
@@ -21,7 +21,7 @@ public sealed class QueryTests
                     c.RegisterServicesFromAssemblies([typeof(ThingStore).Assembly]))
 #endif
                 .AddTruss(c => 
-                    c.InstallModule<ApplicationTestModule>()
+                    c.AddModule<ApplicationTestModuleInstaller>()
                 )
                 .AddSingleton<ThingStore>()
                 .BuildServiceProvider()

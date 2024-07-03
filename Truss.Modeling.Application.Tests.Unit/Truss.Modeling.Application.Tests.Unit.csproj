@@ -46,8 +46,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
+      <ProjectReference Include="..\Truss.Modeling.Area\Truss.Modeling.Area.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
-      <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
+      <ProjectReference Include="..\Truss\Truss.csproj" />
       <ProjectReference Include="..\Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj" />
       <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
     </ItemGroup>

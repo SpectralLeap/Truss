@@ -1,6 +1,6 @@
 using ExampleApplication.WebApi.Services;
 using Truss.Modeling.Application.Cqrs.Commands;
-using Truss.Modeling.Installation;
+using Truss;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ builder.Services.AddGrpc();
 
 builder.Services
     .AddTruss(c => 
-        c.InstallModule<Module>());
+        c.AddModule<ModuleInstaller>());
 
 var app = builder.Build();
 

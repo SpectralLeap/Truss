@@ -3,7 +3,7 @@ using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
-using Truss.Modeling.Installation;
+using Truss;
 using Truss.Tests.Infrastructure.InMemory;
 using Truss.Tests.Infrastructure.InMemory.Events;
 
@@ -81,8 +81,8 @@ public sealed class EventSourcingTests
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
             .AddTruss(c =>
-                c.SetEventStore<InMemoryEventStore>()
-                    .InstallModule<ApplicationTestModule>()
+                c.UseEventStore<InMemoryEventStore>()
+                    .AddModule<ApplicationTestModuleInstaller>()
                 )
             .BuildServiceProvider()
         ;

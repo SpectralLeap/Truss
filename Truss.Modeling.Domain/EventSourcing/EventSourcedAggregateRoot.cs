@@ -68,7 +68,8 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// </summary>
     /// <param name="event">The <see cref="ChangeEvent"/> that should be registered</param>
     /// <typeparam name="TChangeEvent">The <see cref="Type"/> of the <see cref="ChangeEvent"/></typeparam>
-    protected Result<TRoot> Apply<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
+    protected Result<TRoot> Apply<TChangeEvent>(TChangeEvent @event) 
+        where TChangeEvent : ChangeEvent
     {
         if (_currentEventSequenceNumber.Value > 0 
             && typeof(CreationEvent<TId>).IsAssignableFrom(typeof(TChangeEvent)))
@@ -95,7 +96,8 @@ public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId,
     /// </summary>
     /// <param name="event"></param>
     /// <typeparam name="TChangeEvent"></typeparam>
-    private Result<TRoot> Restore<TChangeEvent>(TChangeEvent @event) where TChangeEvent : ChangeEvent
+    private Result<TRoot> Restore<TChangeEvent>(TChangeEvent @event) 
+        where TChangeEvent : ChangeEvent
     {
         if (!_configured)
         {

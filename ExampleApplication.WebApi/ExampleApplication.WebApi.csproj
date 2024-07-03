@@ -19,7 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ExampleApplication.Protobufs\ExampleApplication.Protobufs.csproj" />
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
-      <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
+      <ProjectReference Include="..\Truss\Truss.csproj" />
     </ItemGroup>
 
 </Project>
