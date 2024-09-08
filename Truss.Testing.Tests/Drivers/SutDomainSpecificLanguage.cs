@@ -5,11 +5,11 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests.Drivers;
 
-public class SutFixture(
+public class SutDomainSpecificLanguage(
     IUserInfo userInfo,
     IGuidProvider guidProvider,
     RegistrationStore registrationStore
-)  : Fixture
+)  : DomainSpecificLanguage
 {
     public IUserInfo UserInfo { get; } = userInfo;
     public IGuidProvider guidProvider { get; } = guidProvider;

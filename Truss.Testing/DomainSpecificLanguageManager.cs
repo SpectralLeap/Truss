@@ -6,7 +6,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing;
 
-internal sealed class FixtureManager : IAsyncDisposable
+internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
 {
     // This can change locations after dependency injection version 5.0 so using
     // reflection to get it
@@ -15,14 +15,14 @@ internal sealed class FixtureManager : IAsyncDisposable
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
 
-    public FixtureManager(
+    public DomainSpecificLanguageManager(
         ProxyGenerator proxyGenerator
     )
     {
         _proxyGenerator = proxyGenerator;
     }
 
-    public FixtureManager(
+    public DomainSpecificLanguageManager(
         SharedDependencyManager sharedDependencyManager,
         ProxyGenerator proxyGenerator
     )
@@ -31,13 +31,13 @@ internal sealed class FixtureManager : IAsyncDisposable
         _proxyGenerator = proxyGenerator;
     }
 
-    public TDsl ClassProxyWithTarget<TDsl>(string id, string[] tags) where TDsl : Fixture
+    public TDsl ClassProxyWithTarget<TDsl>(string id, string[] tags) where TDsl : DomainSpecificLanguage
     {
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
 
-        var interceptor = provider.GetService<FixtureInterceptor>()!;
+        var interceptor = provider.GetService<DomainSpecificLanguageInterceptor>()!;
 
         var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
 
@@ -82,7 +82,7 @@ internal sealed class FixtureManager : IAsyncDisposable
     {
         var collectionCopy = new ServiceCollection()
                 .AddSingleton<DriverDispatcher>()
-                .AddSingleton<FixtureInterceptor>()
+                .AddSingleton<DomainSpecificLanguageInterceptor>()
             ;
 
         collectionCopy.AddSingleton<TDsl>();

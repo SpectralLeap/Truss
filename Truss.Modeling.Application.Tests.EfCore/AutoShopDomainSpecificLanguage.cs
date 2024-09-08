@@ -7,8 +7,8 @@ using Truss.Testing.Services;
 
 namespace Truss.Modeling.Application.Tests.EfCore;
 
-public class AutoShopFixture 
-    : Fixture
+public class AutoShopDomainSpecificLanguage 
+    : DomainSpecificLanguage
 {
     private readonly AutoShopService _autoShopService;
 
@@ -17,7 +17,7 @@ public class AutoShopFixture
         .AddTestCore()
     ;
 
-    public AutoShopFixture(AutoShopService autoShopService)
+    public AutoShopDomainSpecificLanguage(AutoShopService autoShopService)
     {
         _autoShopService = autoShopService;
     }
@@ -52,10 +52,7 @@ public class AutoShopFixture
         Assert.Equal(shop.Name, shopAgain.Name);       
     }
 
-    public class AddAndGetShopAction
-    {
-        
-    }
+    public class AddAndGetShopAction;
     
     public class AddAndGetShopDriver : Driver<AddAndGetShopAction>
     {

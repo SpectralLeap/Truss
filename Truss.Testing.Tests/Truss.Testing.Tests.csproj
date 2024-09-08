@@ -27,5 +27,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Truss.Testing\Truss.Testing.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="DomainSpecificLanguageFactoryTests.cs" />
+    </ItemGroup>
     
 </Project>

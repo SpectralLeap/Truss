@@ -2,13 +2,13 @@ namespace Truss.Testing.Tests.Services;
 
 public sealed class ServiceTests
 {
-    private readonly FixtureFactory _factoryFixture = new();
+    private readonly DomainSpecificLanguageFactory _factoryDomainSpecificLanguage = new();
     
     [Fact]
     public void CanUseOverrides()
     {
-        var adminSystem = _factoryFixture.GetFixture<FixtureWithOverrides>(tags: "admin");
-        var userSystem = _factoryFixture.GetFixture<FixtureWithOverrides>();
+        var adminSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>(tags: "admin");
+        var userSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>();
     
         Assert.True(adminSystem.UserInfo.IsAdmin);
         Assert.False(userSystem.UserInfo.IsAdmin);
@@ -17,8 +17,8 @@ public sealed class ServiceTests
     [Fact]
     public void CanUseMultipleOverrides()
     {
-        var overriddenSystem = _factoryFixture.GetFixture<FixtureWithOverrides>(tags: ["admin", "empty guid"]);
-        var userSystem = _factoryFixture.GetFixture<FixtureWithOverrides>();
+        var overriddenSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>(tags: ["admin", "empty guid"]);
+        var userSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>();
     
         Assert.True(overriddenSystem.UserInfo.IsAdmin);
         Assert.False(userSystem.UserInfo.IsAdmin);
@@ -30,25 +30,29 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsWhenTheDslRequestsADependencyItDidNotRegister()
     {
-       Assert.Throws<DslServicesNotRegisteredException>(() => _factoryFixture.GetFixture<FixtureRequestingUnregisteredDependency>());
+       Assert.Throws<DslServicesNotRegisteredException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
+       <DomainSpecificLanguageRequestingUnregisteredDependency>());
     }
 
     [Fact]
     public void ThrowsWhenBaseServiceDefinitionIsNotStatic()
     {
-       Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetFixture<FixtureWithNonStaticServices>());
+       Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
+           <DomainSpecificLanguageWithNonStaticServices>());
     }
     
     [Fact]
     public void ThrowsWhenOverrideServiceDefinitionIsNotStatic()
     {
-        Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetFixture<FixtureWithNonStaticOverrideService>());
+        Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
+            <DomainSpecificLanguageWithNonStaticOverrideService>());
     }
     
     [Fact]
     public void GivesTheNameOfTheNonStaticMember()
     {
-        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryFixture.GetFixture<FixtureWithNonStaticServices>())
+        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
+                <DomainSpecificLanguageWithNonStaticServices>())
             .Message;
 
         Assert.Contains("NotStatic", msg);
@@ -58,14 +62,14 @@ public sealed class ServiceTests
     public void ThrowsIfNotRightType()
     {
         Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
-            _factoryFixture.GetFixture<FixtureWithWrongCollectionType>());
+            _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithWrongCollectionType>());
     }
     
     [Fact]
     public void GivesTheNameOfIncorrectlyTypedMember()
     {
         var msg = Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
-            _factoryFixture.GetFixture<FixtureWithWrongCollectionType>())
+            _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithWrongCollectionType>())
             .Message;
 
         Assert.Contains("IncorrectType", msg);

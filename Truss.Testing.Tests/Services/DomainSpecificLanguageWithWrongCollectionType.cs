@@ -3,7 +3,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Services;
 
-public class FixtureWithWrongCollectionType : Fixture
+public sealed class DomainSpecificLanguageWithWrongCollectionType : DomainSpecificLanguage
 {
     [BaseServices] public static IServiceProvider IncorrectType = new ServiceCollection().BuildServiceProvider();
 }

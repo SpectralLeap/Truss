@@ -3,11 +3,11 @@ using Truss.Testing.Tests.Drivers;
 
 namespace Truss.Testing.Tests.Fixtures;
 
-public sealed class DslFixture
+public sealed class DslDomainSpecificLanguage
 {
     public string? Value { get; private set; }
     
-    public DslFixture AcceptOnlyNameAndValue(params string[] args)
+    public DslDomainSpecificLanguage AcceptOnlyNameAndValue(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -22,7 +22,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture AcceptsNamesAndList(params string[] args)
+    public DslDomainSpecificLanguage AcceptsNamesAndList(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -38,7 +38,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture UsesDefaultValueOfValue(params string[] args)
+    public DslDomainSpecificLanguage UsesDefaultValueOfValue(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -53,7 +53,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture OptionalDefaultingToNull(params string[] args)
+    public DslDomainSpecificLanguage OptionalDefaultingToNull(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -67,7 +67,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture RequiredParameter(params string[] args)
+    public DslDomainSpecificLanguage RequiredParameter(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -81,7 +81,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture AcceptsIntegersByPattern(params string[] args)
+    public DslDomainSpecificLanguage AcceptsIntegersByPattern(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()

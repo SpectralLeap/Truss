@@ -22,4 +22,8 @@
       <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Endpoints.cs" />
+    </ItemGroup>
+
 </Project>

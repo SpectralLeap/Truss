@@ -5,10 +5,10 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests.Services;
 
-public class FixtureWithOverrides(
+public class DomainSpecificLanguageWithOverrides(
     IUserInfo userInfo,
     IGuidProvider guidProvider
-)  : Fixture
+)  : DomainSpecificLanguage
 {
     public IUserInfo UserInfo { get; } = userInfo;
     

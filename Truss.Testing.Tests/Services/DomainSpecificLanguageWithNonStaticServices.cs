@@ -3,7 +3,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Services;
 
-public class FixtureWithNonStaticServices : Fixture, IUsesServiceDefinition<BaseServiceDefinition>
+public class DomainSpecificLanguageWithNonStaticServices : DomainSpecificLanguage, IUsesServiceDefinition<BaseServiceDefinition>
 {
     [BaseServices] public IServiceCollection NotStatic = new ServiceCollection();
 }

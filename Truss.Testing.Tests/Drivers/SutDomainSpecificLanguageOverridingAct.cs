@@ -4,7 +4,8 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Drivers;
 
-public class SutFixtureOverridingAct(RegistrationStore store) : Fixture
+public class SutDomainSpecificLanguageOverridingAct(RegistrationStore store)
+    : DomainSpecificLanguage
 {
     private const string LocalEmail = "local@local.com";
     private const string DrivenEmail = "driver@driver.com";
