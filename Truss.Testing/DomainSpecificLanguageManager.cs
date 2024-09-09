@@ -31,8 +31,9 @@ internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
         _proxyGenerator = proxyGenerator;
     }
 
-    public TDsl ClassProxyWithTarget<TDsl>(string id, string[] tags) where TDsl : DomainSpecificLanguage
+    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) where TDsl : DomainSpecificLanguage
     {
+
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
@@ -45,8 +46,13 @@ internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
         {
             var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
 
+            if (instance is IAsyncInitialized asyncInitialized)
+            {
+                await asyncInitialized.InitializeAsync();
+            }
+
             if (typeof(TDsl).IsSealed) return instance;
-            
+
             var proxy = (TDsl) _proxyGenerator.CreateClassProxyWithTarget(
                 typeof(TDsl),
                 instance,

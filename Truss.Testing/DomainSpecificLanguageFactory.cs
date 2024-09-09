@@ -52,16 +52,35 @@ public sealed class DomainSpecificLanguageFactory
     /// If an ID is not provided, a new GUID is generated.
     /// </summary>
     /// <typeparam name="TDomainSpecificLanguage">The type of the DomainSpecificLanguage to retrieve.</typeparam>
-    /// <param name="id">Optional. The ID of the DomainSpecificLanguage instance to retrieve. If not provided, a new GUID will be generated.</param>
+    /// <param name="id">Optional. The ID of the DomainSpecificLanguage instance to retrieve. If not provided,
+    /// a new GUID will be generated.</param>
     /// <param name="tags">Optional. An array of tags to apply DomainSpecificLanguage service overrides.</param>
     /// <returns>An instance of the specified DomainSpecificLanguage type.</returns>
-    public TDomainSpecificLanguage GetDomainSpecificLanguage<TDomainSpecificLanguage>(string? id = null, params string[] tags) where TDomainSpecificLanguage : DomainSpecificLanguage
+    public TDomainSpecificLanguage GetDomainSpecificLanguage<TDomainSpecificLanguage>(string? id = null, params string[] tags)
+        where TDomainSpecificLanguage : DomainSpecificLanguage
     {
         id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
 
-        return _domainSpecificLanguageManager!.ClassProxyWithTarget<TDomainSpecificLanguage>(id, tags);
+        return _domainSpecificLanguageManager!.ClassProxyWithTargetAsync<TDomainSpecificLanguage>(id, tags)
+            .GetAwaiter()
+            .GetResult();
     }
 
+    /// <summary>
+    /// Retrieves an instance of a DomainSpecificLanguage based on the specified ID and tags and initializes it asynchronously.
+    /// If an ID is not provided, a new GUID is generated.
+    /// </summary>
+    /// <typeparam name="TDomainSpecificLanguage">The type of the DomainSpecificLanguage to retrieve.</typeparam>
+    /// <param name="id">Optional. The ID of the DomainSpecificLanguage instance to retrieve. If not provided, a new GUID will be generated.</param>
+    /// <param name="tags">Optional. An array of tags to apply DomainSpecificLanguage service overrides.</param>
+    /// <returns>An instance of the specified DomainSpecificLanguage type.</returns>
+    public async Task<TDomainSpecificLanguage> GetDomainSpecificLanguageAsync<TDomainSpecificLanguage>(string? id = null, params string[] tags)
+        where TDomainSpecificLanguage : DomainSpecificLanguage
+    {
+        id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
+
+        return await _domainSpecificLanguageManager!.ClassProxyWithTargetAsync<TDomainSpecificLanguage>(id, tags);
+    }
 
 
     /// <summary>
@@ -77,4 +96,3 @@ public sealed class DomainSpecificLanguageFactory
         await _domainSpecificLanguageManager!.DisposeAsync();
     }
 }
-
