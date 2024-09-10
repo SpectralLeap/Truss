@@ -2,13 +2,13 @@ namespace Truss.Testing.Tests.Services;
 
 public sealed class ServiceTests
 {
-    private readonly DomainSpecificLanguageFactory _factoryDomainSpecificLanguage = new();
+    private readonly DriverFactory _factoryDriver = new();
     
     [Fact]
     public void CanUseOverrides()
     {
-        var adminSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>(tags: "admin");
-        var userSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>();
+        var adminSystem = _factoryDriver.GetDriver<DriverWithOverrides>(tags: "admin");
+        var userSystem = _factoryDriver.GetDriver<DriverWithOverrides>();
     
         Assert.True(adminSystem.UserInfo.IsAdmin);
         Assert.False(userSystem.UserInfo.IsAdmin);
@@ -17,8 +17,8 @@ public sealed class ServiceTests
     [Fact]
     public void CanUseMultipleOverrides()
     {
-        var overriddenSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>(tags: ["admin", "empty guid"]);
-        var userSystem = _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithOverrides>();
+        var overriddenSystem = _factoryDriver.GetDriver<DriverWithOverrides>(tags: ["admin", "empty guid"]);
+        var userSystem = _factoryDriver.GetDriver<DriverWithOverrides>();
     
         Assert.True(overriddenSystem.UserInfo.IsAdmin);
         Assert.False(userSystem.UserInfo.IsAdmin);
@@ -30,29 +30,29 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsWhenTheDslRequestsADependencyItDidNotRegister()
     {
-       Assert.Throws<DslServicesNotRegisteredException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
-       <DomainSpecificLanguageRequestingUnregisteredDependency>());
+       Assert.Throws<DslServicesNotRegisteredException>(() => _factoryDriver.GetDriver
+       <DriverRequestingUnregisteredDependency>());
     }
 
     [Fact]
     public void ThrowsWhenBaseServiceDefinitionIsNotStatic()
     {
-       Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
-           <DomainSpecificLanguageWithNonStaticServices>());
+       Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+           <DriverWithNonStaticServices>());
     }
     
     [Fact]
     public void ThrowsWhenOverrideServiceDefinitionIsNotStatic()
     {
-        Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
-            <DomainSpecificLanguageWithNonStaticOverrideService>());
+        Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+            <DriverWithNonStaticOverrideService>());
     }
     
     [Fact]
     public void GivesTheNameOfTheNonStaticMember()
     {
-        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryDomainSpecificLanguage.GetDomainSpecificLanguage
-                <DomainSpecificLanguageWithNonStaticServices>())
+        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+                <DriverWithNonStaticServices>())
             .Message;
 
         Assert.Contains("NotStatic", msg);
@@ -62,14 +62,14 @@ public sealed class ServiceTests
     public void ThrowsIfNotRightType()
     {
         Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
-            _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithWrongCollectionType>());
+            _factoryDriver.GetDriver<DriverWithWrongCollectionType>());
     }
     
     [Fact]
     public void GivesTheNameOfIncorrectlyTypedMember()
     {
         var msg = Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
-            _factoryDomainSpecificLanguage.GetDomainSpecificLanguage<DomainSpecificLanguageWithWrongCollectionType>())
+            _factoryDriver.GetDriver<DriverWithWrongCollectionType>())
             .Message;
 
         Assert.Contains("IncorrectType", msg);

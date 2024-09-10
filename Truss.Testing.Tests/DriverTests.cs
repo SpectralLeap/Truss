@@ -4,9 +4,9 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests;
 
-public sealed class DomainSpecificLanguageTests
+public sealed class DriverTests
 {
-    private readonly DslDomainSpecificLanguage _dslDomainSpecificLanguage = new();
+    private readonly DslDriver _dslDriver = new();
 
     [Theory]
     [InlineData("")]
@@ -16,7 +16,7 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("name : ")]
     public void ArgumentsMustBeInNameColonValueFormat(string argument)
     {
-        Assert.Throws<DslArgumentSyntaxException>(() => _dslDomainSpecificLanguage.AcceptOnlyNameAndValue(argument));
+        Assert.Throws<DslArgumentSyntaxException>(() => _dslDriver.AcceptOnlyNameAndValue(argument));
     }
     
     [Theory]
@@ -26,27 +26,27 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("name  :value")]
     public void ArgumentsCanHaveWhitespaceAroundColon(string argument)
     {
-        _dslDomainSpecificLanguage.AcceptOnlyNameAndValue(argument);
+        _dslDriver.AcceptOnlyNameAndValue(argument);
         
-        Assert.Equal("value", _dslDomainSpecificLanguage.Value);
+        Assert.Equal("value", _dslDriver.Value);
     }
 
     [Fact]
     public void AcceptsAvailableValues()
     {
-        _dslDomainSpecificLanguage.AcceptOnlyNameAndValue("name: value");
+        _dslDriver.AcceptOnlyNameAndValue("name: value");
     }
     
     [Fact]
     public void DoesNotAcceptNonAvailableValues()
     {
-        Assert.Throws<DslValueNotAvailableException>(() => _dslDomainSpecificLanguage.AcceptOnlyNameAndValue("name: not value"));
+        Assert.Throws<DslValueNotAvailableException>(() => _dslDriver.AcceptOnlyNameAndValue("name: not value"));
     }
      
     [Fact]
     public void ArgumentsMustBeAvailableAsParameters()
     {
-        Assert.Throws<DslArgumentNotInParameterSetException>(() => _dslDomainSpecificLanguage.AcceptOnlyNameAndValue("number: 1"));
+        Assert.Throws<DslArgumentNotInParameterSetException>(() => _dslDriver.AcceptOnlyNameAndValue("number: 1"));
     }
 
     [Theory]
@@ -55,41 +55,41 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("name: VALUE")]
     public void CapitalizationDoesNotMatter(string argument)
     {
-        _dslDomainSpecificLanguage.AcceptOnlyNameAndValue(argument);
-        Assert.Equal("value", _dslDomainSpecificLanguage.Value);
+        _dslDriver.AcceptOnlyNameAndValue(argument);
+        Assert.Equal("value", _dslDriver.Value);
     }
 
     [Fact]
     public void AcceptsListsAsValues()
     {
-        _dslDomainSpecificLanguage.AcceptsNamesAndList("names: joe, janet, jim");
-        Assert.Equal("joe, janet, jim", _dslDomainSpecificLanguage.Value);
+        _dslDriver.AcceptsNamesAndList("names: joe, janet, jim");
+        Assert.Equal("joe, janet, jim", _dslDriver.Value);
     }
     
     [Fact]
     public void OnlyAcceptsListsWhereAllValuesAreInAvailableValues()
     {
-      Assert.Throws<DslValueNotAvailableException>(() => _dslDomainSpecificLanguage.AcceptsNamesAndList("names: joe, janet, jim, not me"));
+      Assert.Throws<DslValueNotAvailableException>(() => _dslDriver.AcceptsNamesAndList("names: joe, janet, jim, not me"));
     }
 
     [Fact]
     public void UsesDefaultValues()
     {
-        _dslDomainSpecificLanguage.UsesDefaultValueOfValue();
-        Assert.Equal("value", _dslDomainSpecificLanguage.Value);
+        _dslDriver.UsesDefaultValueOfValue();
+        Assert.Equal("value", _dslDriver.Value);
     }
     
     [Fact]
     public void CanDefaultToNull()
     {
-        _dslDomainSpecificLanguage.OptionalDefaultingToNull();
-        Assert.Null(_dslDomainSpecificLanguage.Value);
+        _dslDriver.OptionalDefaultingToNull();
+        Assert.Null(_dslDriver.Value);
     }
     
     [Fact]
     public void IfRequiredNotSetThenThrows()
     {
-        Assert.Throws<DslRequiredParameterNotSetException>(() => _dslDomainSpecificLanguage.RequiredParameter());
+        Assert.Throws<DslRequiredParameterNotSetException>(() => _dslDriver.RequiredParameter());
     }
     
     [Theory]
@@ -99,7 +99,7 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("93401234710707")]
     public void AllowsByPattern(string data)
     {
-        _dslDomainSpecificLanguage.AcceptsIntegersByPattern($"number: {data}");
+        _dslDriver.AcceptsIntegersByPattern($"number: {data}");
     }
     
     [Theory]
@@ -108,7 +108,7 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("1.2")]
     public void DisallowsByPattern(string data)
     {
-        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDomainSpecificLanguage.AcceptsIntegersByPattern($"number: {data}"));
+        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDriver.AcceptsIntegersByPattern($"number: {data}"));
     }
     
     [Theory]
@@ -117,7 +117,7 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("1293123, 13407, 934012347156007")]
     public void AllowsByPatternInList(string data)
     {
-        _dslDomainSpecificLanguage.AcceptsIntegersByPatternInList($"numbers: {data}");
+        _dslDriver.AcceptsIntegersByPatternInList($"numbers: {data}");
     }
      
     [Theory]
@@ -126,7 +126,7 @@ public sealed class DomainSpecificLanguageTests
     [InlineData("1.2")]
     public void DisallowsByPatternInList(string data)
     {
-        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDomainSpecificLanguage.AcceptsIntegersByPatternInList($"numbers: {data}"));
+        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDriver.AcceptsIntegersByPatternInList($"numbers: {data}"));
     }
      
     [Fact]

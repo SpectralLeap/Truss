@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Title>Truss.Testing.Dsl</Title>
-        <Description>Helps create domain specific languages and domain specific languages for testing</Description>
+        <Description>Helps create drivers and domain specific languages for testing</Description>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     </PropertyGroup>
 

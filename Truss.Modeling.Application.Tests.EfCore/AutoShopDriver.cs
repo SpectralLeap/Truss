@@ -7,8 +7,8 @@ using Truss.Testing.Services;
 
 namespace Truss.Modeling.Application.Tests.EfCore;
 
-public class AutoShopDomainSpecificLanguage 
-    : DomainSpecificLanguage
+public class AutoShopDriver 
+    : Driver
 {
     private readonly AutoShopService _autoShopService;
 
@@ -17,7 +17,7 @@ public class AutoShopDomainSpecificLanguage
         .AddTestCore()
     ;
 
-    public AutoShopDomainSpecificLanguage(AutoShopService autoShopService)
+    public AutoShopDriver(AutoShopService autoShopService)
     {
         _autoShopService = autoShopService;
     }

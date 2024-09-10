@@ -6,7 +6,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing;
 
-internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
+internal sealed class DriverManager : IAsyncDisposable
 {
     // This can change locations after dependency injection version 5.0 so using
     // reflection to get it
@@ -15,14 +15,14 @@ internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
 
-    public DomainSpecificLanguageManager(
+    public DriverManager(
         ProxyGenerator proxyGenerator
     )
     {
         _proxyGenerator = proxyGenerator;
     }
 
-    public DomainSpecificLanguageManager(
+    public DriverManager(
         SharedDependencyManager sharedDependencyManager,
         ProxyGenerator proxyGenerator
     )
@@ -31,14 +31,14 @@ internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
         _proxyGenerator = proxyGenerator;
     }
 
-    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) where TDsl : DomainSpecificLanguage
+    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) where TDsl : Driver
     {
 
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
 
-        var interceptor = provider.GetService<DomainSpecificLanguageInterceptor>()!;
+        var interceptor = provider.GetService<DriverInterceptor>()!;
 
         var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
 
@@ -88,7 +88,7 @@ internal sealed class DomainSpecificLanguageManager : IAsyncDisposable
     {
         var collectionCopy = new ServiceCollection()
                 .AddSingleton<DriverDispatcher>()
-                .AddSingleton<DomainSpecificLanguageInterceptor>()
+                .AddSingleton<DriverInterceptor>()
             ;
 
         collectionCopy.AddSingleton<TDsl>();

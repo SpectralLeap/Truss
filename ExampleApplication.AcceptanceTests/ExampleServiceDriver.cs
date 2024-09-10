@@ -7,7 +7,7 @@ using Truss.Testing.Services;
 
 namespace ExampleApplication.AcceptanceTests;
 
-public class ExampleServiceDomainSpecificLanguage(HttpClient client) : DomainSpecificLanguage
+public class ExampleServiceDriver(HttpClient client) : Driver
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()

@@ -3,19 +3,19 @@ using Truss.Testing;
 namespace Truss.Modeling.Application.Tests.EfCore;
 
 public sealed class EntityFrameworkTests 
-    : IClassFixture<DomainSpecificLanguageFactoryLifetimeAdapter>
+    : IClassFixture<DriverFactoryLifetimeAdapter>
 {
-    private readonly DomainSpecificLanguageFactory _factory;
+    private readonly DriverFactory _factory;
 
-    public EntityFrameworkTests(DomainSpecificLanguageFactoryLifetimeAdapter factory)
+    public EntityFrameworkTests(DriverFactoryLifetimeAdapter factory)
     {
-        _factory = factory.DomainSpecificLanguageFactory;
+        _factory = factory.DriverFactory;
     }
     
     [Fact]
     public async Task CanUseDslAndDriver()
     {
-        var dsl = _factory.GetDomainSpecificLanguage<AutoShopDomainSpecificLanguage>();
+        var dsl = _factory.GetDriver<AutoShopDriver>();
 
         await dsl.AddAndGetShopUsingDslAndDriver("name: phillips");
     }
@@ -23,7 +23,7 @@ public sealed class EntityFrameworkTests
     [Fact]
     public void CanUseDependenciesDirectlyOnTheDsl()
     {
-        var dsl = _factory.GetDomainSpecificLanguage<AutoShopDomainSpecificLanguage>();
+        var dsl = _factory.GetDriver<AutoShopDriver>();
     
         dsl.AddAndGetShopOnDsl();
     }

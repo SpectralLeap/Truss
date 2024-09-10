@@ -3,7 +3,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Fixtures;
 
-public class RegisteredDomainSpecificLanguageWithPropertiesDefined(IServiceProvider provider) : DomainSpecificLanguage
+public class RegisteredDriverWithPropertiesDefined(IServiceProvider provider) : Driver
 {
     [BaseServices]
     private static IServiceCollection BaseServices => new ServiceCollection()

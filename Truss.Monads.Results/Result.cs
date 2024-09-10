@@ -212,12 +212,3 @@ public readonly struct Result<TResult> : IResult
         return new Result<TResult>(value.FailureDetails);
     }
 }
-
-public interface IResult
-{
-    public bool Succeeded { get; }
-    public bool Failed { get; }
-    public object SuccessObject { get; }
-    public FailureDetails FailureDetails { get; }
-    public string FailureMessage { get; }
-}

@@ -5,7 +5,7 @@ namespace Truss.Testing;
 /// <summary>
 /// Represents an abstract class for Domain Specific Language implementation.
 /// </summary>
-public abstract class DomainSpecificLanguage
+public abstract class Driver
 {
     /// <summary>
     /// Override to perform actions before the driver
