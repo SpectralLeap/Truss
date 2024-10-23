@@ -5,11 +5,11 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests.Drivers;
 
-public class SutFixture(
+public class SutDriver(
     IUserInfo userInfo,
     IGuidProvider guidProvider,
     RegistrationStore registrationStore
-)  : Fixture
+)  : Driver
 {
     public IUserInfo UserInfo { get; } = userInfo;
     public IGuidProvider guidProvider { get; } = guidProvider;

@@ -8,6 +8,11 @@ public sealed class DslArgs
     internal readonly Type ActionType;
     private Dictionary<string, DslParameter>? _parameterSet;
 
+    private DslArgs()
+    {
+
+    }
+
     private DslArgs(Type actionType)
     {
         ActionType = actionType;

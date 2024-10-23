@@ -5,10 +5,10 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests.Services;
 
-public class FixtureWithOverrides(
+public class DriverWithOverrides(
     IUserInfo userInfo,
     IGuidProvider guidProvider
-)  : Fixture
+)  : Driver
 {
     public IUserInfo UserInfo { get; } = userInfo;
     

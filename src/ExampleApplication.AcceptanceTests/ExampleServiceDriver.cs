@@ -7,7 +7,7 @@ using Truss.Testing.Services;
 
 namespace ExampleApplication.AcceptanceTests;
 
-public class ExampleServiceFixture(HttpClient client) : Fixture
+public class ExampleServiceDriver(HttpClient client) : Driver
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()

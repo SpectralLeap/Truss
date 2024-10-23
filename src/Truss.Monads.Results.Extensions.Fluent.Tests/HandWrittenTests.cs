@@ -105,13 +105,3 @@ public sealed class HandWrittenTests
         return x;
     }
 }
-
-public sealed class DisposableThing : IDisposable
-{
-    public bool IsDisposed;
-    
-    public void Dispose()
-    {
-        IsDisposed = true;
-    }
-}

@@ -28,7 +28,7 @@ public sealed class EventTests
         Assert.InRange(DateTime.UtcNow - e.Time, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
     }
 
-    private sealed class NonEventType {}
+    private sealed class NonEventType;
     
     [Fact]
     public void event_classes_must_have_name_ending_in_event()
@@ -36,7 +36,7 @@ public sealed class EventTests
         Assert.Throws<ArgumentException>(() => (EventType)typeof(NonEventType));
     }
     
-    private sealed class NonEventTypeWithASuperLongNameThatIsWayTooLongToBeUsedEvent {}
+    private sealed class NonEventTypeWithASuperLongNameThatIsWayTooLongToBeUsedEvent;
      
     [Fact]
     public void event_classes_cannot_have_names_over_50_chars()

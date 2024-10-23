@@ -1,3 +1,4 @@
+using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Installation;

@@ -6,7 +6,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing;
 
-internal sealed class FixtureManager : IAsyncDisposable
+internal sealed class DriverManager : IAsyncDisposable
 {
     // This can change locations after dependency injection version 5.0 so using
     // reflection to get it
@@ -15,14 +15,14 @@ internal sealed class FixtureManager : IAsyncDisposable
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
 
-    public FixtureManager(
+    public DriverManager(
         ProxyGenerator proxyGenerator
     )
     {
         _proxyGenerator = proxyGenerator;
     }
 
-    public FixtureManager(
+    public DriverManager(
         SharedDependencyManager sharedDependencyManager,
         ProxyGenerator proxyGenerator
     )
@@ -31,13 +31,14 @@ internal sealed class FixtureManager : IAsyncDisposable
         _proxyGenerator = proxyGenerator;
     }
 
-    public TDsl ClassProxyWithTarget<TDsl>(string id, string[] tags) where TDsl : Fixture
+    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) where TDsl : Driver
     {
+
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
 
-        var interceptor = provider.GetService<FixtureInterceptor>()!;
+        var interceptor = provider.GetService<DriverInterceptor>()!;
 
         var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
 
@@ -45,8 +46,13 @@ internal sealed class FixtureManager : IAsyncDisposable
         {
             var instance = ActivatorUtilities.CreateInstance<TDsl>(provider);
 
+            if (instance is IAsyncInitialized asyncInitialized)
+            {
+                await asyncInitialized.InitializeAsync();
+            }
+
             if (typeof(TDsl).IsSealed) return instance;
-            
+
             var proxy = (TDsl) _proxyGenerator.CreateClassProxyWithTarget(
                 typeof(TDsl),
                 instance,
@@ -82,7 +88,7 @@ internal sealed class FixtureManager : IAsyncDisposable
     {
         var collectionCopy = new ServiceCollection()
                 .AddSingleton<DriverDispatcher>()
-                .AddSingleton<FixtureInterceptor>()
+                .AddSingleton<DriverInterceptor>()
             ;
 
         collectionCopy.AddSingleton<TDsl>();

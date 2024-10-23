@@ -61,7 +61,7 @@ public static class Result
 /// A basic result that provides a value or failure reasons
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
-public readonly struct Result<TResult>
+public readonly struct Result<TResult> : IResult
 {
     private readonly TResult? _successValue;
     private readonly FailureDetails? _failureDetails;

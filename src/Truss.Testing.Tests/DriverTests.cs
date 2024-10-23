@@ -4,9 +4,9 @@ using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests;
 
-public sealed class FixtureTests
+public sealed class DriverTests
 {
-    private readonly DslFixture _dslFixture = new();
+    private readonly DslDriver _dslDriver = new();
 
     [Theory]
     [InlineData("")]
@@ -16,7 +16,7 @@ public sealed class FixtureTests
     [InlineData("name : ")]
     public void ArgumentsMustBeInNameColonValueFormat(string argument)
     {
-        Assert.Throws<DslArgumentSyntaxException>(() => _dslFixture.AcceptOnlyNameAndValue(argument));
+        Assert.Throws<DslArgumentSyntaxException>(() => _dslDriver.AcceptOnlyNameAndValue(argument));
     }
     
     [Theory]
@@ -26,27 +26,27 @@ public sealed class FixtureTests
     [InlineData("name  :value")]
     public void ArgumentsCanHaveWhitespaceAroundColon(string argument)
     {
-        _dslFixture.AcceptOnlyNameAndValue(argument);
+        _dslDriver.AcceptOnlyNameAndValue(argument);
         
-        Assert.Equal("value", _dslFixture.Value);
+        Assert.Equal("value", _dslDriver.Value);
     }
 
     [Fact]
     public void AcceptsAvailableValues()
     {
-        _dslFixture.AcceptOnlyNameAndValue("name: value");
+        _dslDriver.AcceptOnlyNameAndValue("name: value");
     }
     
     [Fact]
     public void DoesNotAcceptNonAvailableValues()
     {
-        Assert.Throws<DslValueNotAvailableException>(() => _dslFixture.AcceptOnlyNameAndValue("name: not value"));
+        Assert.Throws<DslValueNotAvailableException>(() => _dslDriver.AcceptOnlyNameAndValue("name: not value"));
     }
      
     [Fact]
     public void ArgumentsMustBeAvailableAsParameters()
     {
-        Assert.Throws<DslArgumentNotInParameterSetException>(() => _dslFixture.AcceptOnlyNameAndValue("number: 1"));
+        Assert.Throws<DslArgumentNotInParameterSetException>(() => _dslDriver.AcceptOnlyNameAndValue("number: 1"));
     }
 
     [Theory]
@@ -55,41 +55,41 @@ public sealed class FixtureTests
     [InlineData("name: VALUE")]
     public void CapitalizationDoesNotMatter(string argument)
     {
-        _dslFixture.AcceptOnlyNameAndValue(argument);
-        Assert.Equal("value", _dslFixture.Value);
+        _dslDriver.AcceptOnlyNameAndValue(argument);
+        Assert.Equal("value", _dslDriver.Value);
     }
 
     [Fact]
     public void AcceptsListsAsValues()
     {
-        _dslFixture.AcceptsNamesAndList("names: joe, janet, jim");
-        Assert.Equal("joe, janet, jim", _dslFixture.Value);
+        _dslDriver.AcceptsNamesAndList("names: joe, janet, jim");
+        Assert.Equal("joe, janet, jim", _dslDriver.Value);
     }
     
     [Fact]
     public void OnlyAcceptsListsWhereAllValuesAreInAvailableValues()
     {
-      Assert.Throws<DslValueNotAvailableException>(() => _dslFixture.AcceptsNamesAndList("names: joe, janet, jim, not me"));
+      Assert.Throws<DslValueNotAvailableException>(() => _dslDriver.AcceptsNamesAndList("names: joe, janet, jim, not me"));
     }
 
     [Fact]
     public void UsesDefaultValues()
     {
-        _dslFixture.UsesDefaultValueOfValue();
-        Assert.Equal("value", _dslFixture.Value);
+        _dslDriver.UsesDefaultValueOfValue();
+        Assert.Equal("value", _dslDriver.Value);
     }
     
     [Fact]
     public void CanDefaultToNull()
     {
-        _dslFixture.OptionalDefaultingToNull();
-        Assert.Null(_dslFixture.Value);
+        _dslDriver.OptionalDefaultingToNull();
+        Assert.Null(_dslDriver.Value);
     }
     
     [Fact]
     public void IfRequiredNotSetThenThrows()
     {
-        Assert.Throws<DslRequiredParameterNotSetException>(() => _dslFixture.RequiredParameter());
+        Assert.Throws<DslRequiredParameterNotSetException>(() => _dslDriver.RequiredParameter());
     }
     
     [Theory]
@@ -99,7 +99,7 @@ public sealed class FixtureTests
     [InlineData("93401234710707")]
     public void AllowsByPattern(string data)
     {
-        _dslFixture.AcceptsIntegersByPattern($"number: {data}");
+        _dslDriver.AcceptsIntegersByPattern($"number: {data}");
     }
     
     [Theory]
@@ -108,7 +108,7 @@ public sealed class FixtureTests
     [InlineData("1.2")]
     public void DisallowsByPattern(string data)
     {
-        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslFixture.AcceptsIntegersByPattern($"number: {data}"));
+        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDriver.AcceptsIntegersByPattern($"number: {data}"));
     }
     
     [Theory]
@@ -117,7 +117,7 @@ public sealed class FixtureTests
     [InlineData("1293123, 13407, 934012347156007")]
     public void AllowsByPatternInList(string data)
     {
-        _dslFixture.AcceptsIntegersByPatternInList($"numbers: {data}");
+        _dslDriver.AcceptsIntegersByPatternInList($"numbers: {data}");
     }
      
     [Theory]
@@ -126,7 +126,7 @@ public sealed class FixtureTests
     [InlineData("1.2")]
     public void DisallowsByPatternInList(string data)
     {
-        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslFixture.AcceptsIntegersByPatternInList($"numbers: {data}"));
+        Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDriver.AcceptsIntegersByPatternInList($"numbers: {data}"));
     }
      
     [Fact]

@@ -5,7 +5,7 @@ using Truss.Testing.Dsl;
 
 namespace Truss.Testing;
 
-internal sealed class FixtureInterceptor(DriverDispatcher driverDispatcher) : IInterceptor
+internal sealed class DriverInterceptor(DriverDispatcher driverDispatcher) : IInterceptor
 {
     public void Intercept(IInvocation invocation)
     {

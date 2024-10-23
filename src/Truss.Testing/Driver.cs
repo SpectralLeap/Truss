@@ -3,9 +3,9 @@ using Truss.Testing.Dsl;
 namespace Truss.Testing;
 
 /// <summary>
-/// Represents an abstract class for DSL (Domain Specific Language) implementation.
+/// Represents an abstract class for Domain Specific Language implementation.
 /// </summary>
-public abstract class Fixture
+public abstract class Driver
 {
     /// <summary>
     /// Override to perform actions before the driver

@@ -3,7 +3,7 @@ using Truss.Testing.Services;
 
 namespace Truss.Testing.Tests.Fixtures;
 
-public class RegisteredFixture(IServiceProvider provider) : Fixture
+public class RegisteredDriver(IServiceProvider provider) : Driver
 {
     
     [BaseServices]

@@ -3,11 +3,11 @@ using Truss.Testing.Tests.Drivers;
 
 namespace Truss.Testing.Tests.Fixtures;
 
-public sealed class DslFixture
+public sealed class DslDriver
 {
     public string? Value { get; private set; }
     
-    public DslFixture AcceptOnlyNameAndValue(params string[] args)
+    public DslDriver AcceptOnlyNameAndValue(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -22,7 +22,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture AcceptsNamesAndList(params string[] args)
+    public DslDriver AcceptsNamesAndList(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -38,7 +38,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture UsesDefaultValueOfValue(params string[] args)
+    public DslDriver UsesDefaultValueOfValue(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -53,7 +53,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture OptionalDefaultingToNull(params string[] args)
+    public DslDriver OptionalDefaultingToNull(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -67,7 +67,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture RequiredParameter(params string[] args)
+    public DslDriver RequiredParameter(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()
@@ -81,7 +81,7 @@ public sealed class DslFixture
         return this;
     }
 
-    public DslFixture AcceptsIntegersByPattern(params string[] args)
+    public DslDriver AcceptsIntegersByPattern(params string[] args)
     {
         var parameters = DslArgs
             .ForAction<RegisterUserDriver>()

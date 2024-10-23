@@ -51,4 +51,8 @@
       <ProjectReference Include="..\Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj" />
       <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="ApplicationTestAreaInstaller.cs" />
+    </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@ using ExampleApplication.WebApi.Services;
 using MediatR;
 using Truss.Modeling.Application.Installation;
 
+namespace ExampleApplication.WebApi;
+
 public sealed class Module : IModule
 {
     public void Define(IServiceCollection services, IConfiguration configuration)
