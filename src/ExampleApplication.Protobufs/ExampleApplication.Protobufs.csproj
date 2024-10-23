@@ -18,12 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Authentication.proto" />
-      <Protobuf Include="Authentication.proto" />
-      <None Remove="user.proto" />
-      <Protobuf Include="user.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
+      <Protobuf Include="*.proto" />
     </ItemGroup>
 
 </Project>

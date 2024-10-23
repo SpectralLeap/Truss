@@ -14,7 +14,7 @@ public sealed class TestGenerator
     public string Generate()
     {
         var lines = new List<string>();
-        for (int i = 1; i <= _size; i++)
+        for (var i = 1; i <= _size; i++)
         {
             lines.AddRange(AndDoThen(i, "Sync"));
             lines.AddRange(AndDoThen(i, "Async"));
@@ -95,7 +95,7 @@ public sealed class TestGenerator
               public {{(sync.Equals("Async") ? "async Task" : "void")}} AndDoThen{{i}}{{sync}}()
               {
               var doCount = 0;
-              """
+              """,
         };
 
         lines.AddRange(CreateBlock(i, sync));
@@ -114,7 +114,7 @@ public sealed class TestGenerator
               [Fact]
               public  {{(sync.Equals("Async") ? "async Task" : "void")}} AndThenFailThen{{i}}{{sync}}()
               {
-              """
+              """,
         };
         
         lines.AddRange(CreateAndThenFailBlock(i, sync));
@@ -133,7 +133,7 @@ public sealed class TestGenerator
               [Fact]
               public  {{(sync.Equals("Async") ? "async Task" : "void")}} AndThenFailInResultThen{{i}}{{sync}}()
               {
-              """
+              """,
         };
          
         lines.AddRange(CreateAndThenFailInResultBlock(i, sync));
@@ -152,7 +152,7 @@ public sealed class TestGenerator
               [Fact]
               public {{(sync.Equals("Async") ? "async Task" : "void")}} AndFailThen{{i}}{{sync}}()
               {
-              """
+              """,
         };
         
         lines.AddRange(CreateAndFailBlock(i, sync));
@@ -253,7 +253,7 @@ public sealed class TestGenerator
               [Fact]
               public {{(sync.Equals("Async") ? "async Task" : "void")}} AndDoFailThen{{i}}{{sync}}()
               {
-              """
+              """,
         };
     
         lines.AddRange(CreateFailBlock(i, sync));

@@ -18,7 +18,7 @@ public sealed class GreeterPipelineBehavior<TRequest, _>
         {
             return Result.Success(new GreetResult
             {
-                Greeting = "The greeting had an a"
+                Greeting = "The greeting had an a",
             });
         }
 

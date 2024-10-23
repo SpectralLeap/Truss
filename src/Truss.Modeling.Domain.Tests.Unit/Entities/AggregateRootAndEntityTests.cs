@@ -106,9 +106,9 @@ public sealed class AggregateRootAndEntityTests
         Assert.Equal(1, numbers.Pop());        
     }
 
-    readonly IServiceProvider _services;
+    private readonly IServiceProvider _services;
 
-    readonly IDomainEventDispatcher _dispatcher;
+    private readonly IDomainEventDispatcher _dispatcher;
     private readonly NumberListener? _numberListener;
 
     public AggregateRootAndEntityTests()

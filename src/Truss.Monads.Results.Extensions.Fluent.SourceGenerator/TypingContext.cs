@@ -13,7 +13,7 @@ public sealed class TypingContext
     {
         var inTypeArray = new List<string>();
 
-        for (int i = 1; i <= size; i++)
+        for (var i = 1; i <= size; i++)
         {
             inTypeArray.Add($"TSuccess{i}");
         }
@@ -28,10 +28,10 @@ public sealed class TypingContext
         if (Size is 1) return $"{PriorResultName}.SuccessValue";
      
         var values = new List<string> {
-            $"{PriorResultName}.SuccessValue.Item1"
+            $"{PriorResultName}.SuccessValue.Item1",
         };
 
-        for (int i = 2; i <= Size; i++)
+        for (var i = 2; i <= Size; i++)
         {
             values.Add($"{PriorResultName}.SuccessValue.Item{i}");
         }

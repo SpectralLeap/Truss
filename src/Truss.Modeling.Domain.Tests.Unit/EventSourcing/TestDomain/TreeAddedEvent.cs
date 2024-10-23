@@ -10,8 +10,8 @@ public sealed record TreeAddedEvent : ChangeEvent
 
     public TreeAddedEvent(OrchardId id, TreeId treeId, string treeType) : base(id.Value)
     {
-        this.TreeId = treeId;
-        this.TreeType = treeType;
+        TreeId = treeId;
+        TreeType = treeType;
     }
 
 }

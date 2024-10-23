@@ -6,9 +6,9 @@ package user;
 
 
 service UserService {
-  
+
   rpc Register(RegisterUserRequest) returns (RegisterUserResult) {}
-  
+
 }
 
 message RegisterUserRequest {

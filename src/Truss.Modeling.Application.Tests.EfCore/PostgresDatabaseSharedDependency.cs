@@ -25,7 +25,7 @@ public sealed class PostgresDatabaseSharedDependency
                 .WithEnvironment(new Dictionary<string, string>
                 {
                     { "POSTGRES_USER", username },
-                    { "POSTGRES_PASSWORD", password }
+                    { "POSTGRES_PASSWORD", password },
                 })
                 .WithPortBinding(5432, true)
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))

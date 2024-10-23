@@ -14,7 +14,7 @@ public sealed class EventSourcingAggregateRootTests
     private Orchard? _orchard;
 
     [Fact]
-    void
+    private void
         an_aggregates_id_can_be_rehydrated_using_its_creation_event
         ()
     {
@@ -24,7 +24,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         changes_on_aggregate_creation_are_rehydrated_using_its_creation_event
         ()
     {
@@ -34,7 +34,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         creation_events_not_from_internal_cannot_be_added
         ()
     {
@@ -45,7 +45,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         in_order_subsequent_change_events_are_applied_in_order
         ()
     {
@@ -60,7 +60,7 @@ public sealed class EventSourcingAggregateRootTests
     }
      
     [Fact]
-    void
+    private void
         out_of_order_subsequent_change_events_are_applied_in_order
         ()
     {
@@ -75,7 +75,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         if_events_are_missing_then_throws_exception
         ()
     {
@@ -88,7 +88,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         if_no_creation_event_then_fails
         ()
     {
@@ -101,7 +101,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         if_fake_creation_event_then_fails
         ()
     {
@@ -112,7 +112,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         more_than_one_creation_event_cannot_be_created
         ()
     {
@@ -122,7 +122,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         creation_events_have_aggregate_id
         ()
     {
@@ -132,7 +132,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         change_events_have_aggregate_id
         ()
     {
@@ -143,7 +143,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         rehydrating_an_aggregate_does_not_keep_events
         ()
     {
@@ -157,7 +157,7 @@ public sealed class EventSourcingAggregateRootTests
     private sealed record FakeEvent(Guid AggregateId) : ChangeEvent(AggregateId);
     
     [Fact]
-    void
+    private void
         applying_a_non_existing_event_type_throws
         ()
     {
@@ -169,7 +169,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         rehydrating_an_aggregate_without_events_is_handled
         ()
     {
@@ -177,7 +177,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         can_do_binding
         ()
     {
@@ -185,7 +185,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         an_exception_in_binding_is_handled
         ()
     {
@@ -193,7 +193,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         an_exception_in_binding_returns_the_message
         ()
     {
@@ -201,7 +201,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    async Task
+    private async Task
         exceptions_can_be_thrown
         ()
     {
@@ -210,7 +210,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         can_do_mapping
         ()
     {
@@ -221,7 +221,7 @@ public sealed class EventSourcingAggregateRootTests
     }
     
     [Fact]
-    void
+    private void
         exception_in_mapping_returns_exception_message
         ()
     {
@@ -235,7 +235,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         exception_in_mapping_is_not_successful
         ()
     {
@@ -250,7 +250,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         invalid_binding_works_without_exceptions
         ()
     {
@@ -258,7 +258,7 @@ public sealed class EventSourcingAggregateRootTests
     }
 
     [Fact]
-    void
+    private void
         invalid_binding_reports_invalidations
         ()
     {

@@ -19,7 +19,7 @@ app.MapGet("/", async (ICommandBus commandBus) =>
     {
         var x = await commandBus.SendCommand<GreetCommand, GreetResult>(new GreetCommand
         {
-            Subject = Guid.NewGuid().ToString()
+            Subject = Guid.NewGuid().ToString(),
         });
 
         return x.SuccessValue.Greeting;

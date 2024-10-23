@@ -45,7 +45,7 @@ public static class MappingExtensions
     {
         var resultMessage = new ResultGrpcMessage()
         {
-            Succeeded = result.Succeeded
+            Succeeded = result.Succeeded,
         };
 
         if (result.Failed) resultMessage.FailureReasons.AddRange(result.FailureDetails.FailureReasons);
@@ -63,7 +63,7 @@ public static class MappingExtensions
     {
         var resultMessage = new ResultGrpcMessage()
         {
-            Succeeded = result.Succeeded
+            Succeeded = result.Succeeded,
         };
     
         if (result.Failed) resultMessage.FailureReasons.AddRange(result.FailureDetails.FailureReasons);
