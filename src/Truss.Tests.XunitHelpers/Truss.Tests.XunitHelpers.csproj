@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Truss.Monads.Results\Truss.Monads.Results.csproj" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="xunit.assert" Version="[1, )" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Truss.Monads.Results\Truss.Monads.Results.csproj" />
   </ItemGroup>
 </Project>

@@ -4,9 +4,9 @@ using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Domain.Entities;
 using Truss.Monads.Results;
 
-namespace Truss.Tests.Infrastructure.InMemory.Events;
+namespace Truss.Infrastructure.InMemory.Events;
 
-public sealed class InMemoryEventStore : IEventStore
+internal sealed class InMemoryEventStore : IEventStore
 {
     private readonly Dictionary<string, Dictionary<Guid, List<string>>> _eventStreams = new();
 

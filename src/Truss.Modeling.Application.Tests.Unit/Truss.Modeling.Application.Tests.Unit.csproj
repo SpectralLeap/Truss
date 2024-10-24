@@ -1,12 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
-        <LangVersion>latest</LangVersion>
-        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net47;net48</TargetFrameworks>
-        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0;</TargetFrameworks>
-    </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net461' or '$(TargetFramework)' == 'net47' or '$(TargetFramework)' == 'net48'">
         <PackageReference Include="MediatR" Version="9.*" />
@@ -45,14 +37,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
-      <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
-      <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
-      <ProjectReference Include="..\Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj" />
-      <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
+        <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
+        <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure\Truss.Infrastructure.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure.InMemory\Truss.Infrastructure.InMemory.csproj" />
+        <ProjectReference Include="..\Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="ApplicationTestAreaInstaller.cs" />
+        <Compile Remove="ApplicationTestAreaInstaller.cs" />
     </ItemGroup>
 </Project>

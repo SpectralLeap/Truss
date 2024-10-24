@@ -6,4 +6,79 @@
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`.Modeling`))' == 'true'">
+        <TargetLayer>Modeling</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`.Monads`))' == 'true'">
+        <TargetLayer>Modeling</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Testing`))' == 'true'">
+        <TargetLayer>Modeling</TargetLayer>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).StartsWith(`ExampleApplication`))' == 'true'">
+        <TargetLayer>Infrastructure</TargetLayer>
+    </PropertyGroup>
+   
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Infrastructure`))' == 'true'">
+        <TargetLayer>Infrastructure</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).EndsWith(`.Protos`))' == 'true'">
+        <TargetLayer>Modeling</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Tests`))' == 'true'">
+        <TargetLayer>Tests</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).EndsWith(`SourceGenerator`))' == 'true'">
+        <TargetLayer>SourceGenerator</TargetLayer>
+    </PropertyGroup>
+   
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Protobuf'">
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Infrastructure'">
+        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Tests'">
+        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+    </ItemGroup>
+
 </Project>

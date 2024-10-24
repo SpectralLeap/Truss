@@ -2,9 +2,9 @@ using MediatR;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Installation.DefaultServices.Buses;
+namespace Truss.Infrastructure.DefaultServices.Buses;
 
-public sealed class QueryBus : IQueryBus
+internal sealed class QueryBus : IQueryBus
 {
     private readonly IMediator _mediator;
 

@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Installation;
 
@@ -7,56 +7,64 @@ namespace Truss.Modeling.Installation;
 
 public sealed class TrussServiceConfiguration
 {
-    internal bool IsEventSourcing => _eventStoreType is not null;
-    internal IConfiguration Configuration { get; private set; }
+    public IReadOnlyCollection<IModule> Modules => _modules;
+    public IReadOnlyCollection<IServiceInstallation> ServiceInstallations => _serviceInstallations;
     
-    private readonly List<Assembly> _moduleAssemblies = [];
-    private readonly List<Assembly> _infrastructureAssemblies = [];
-    private Type? _eventStoreType;
-    private Func<IEventStore>? _eventStoreFactory;
+    public ILogger? Logger { get; private set; }
 
-    public TrussServiceConfiguration UseConfiguration(IConfiguration configuration)
+    public bool IsEventSourcing => EventStoreType is not null;
+
+    public Type? EventStoreType { get; private set; }
+
+    public Func<IEventStore>? EventStoreFactory { get; private set; }
+
+    public IConfiguration Configuration { get; private set; } 
+        = new ConfigurationBuilder().Build();
+
+    private readonly List<IModule> _modules = [];
+    
+    private readonly List<IServiceInstallation> _serviceInstallations = [];
+
+    public TrussServiceConfiguration UseConfiguration(
+        IConfiguration configuration
+    )
     {
         Configuration = configuration;
         return this;
     }
+
+    public TrussServiceConfiguration UseLogger(
+        ILogger logger
+    )
+    {
+        Logger = logger;
+        return this;
+    }
     
     public TrussServiceConfiguration InstallModule<TModuleInstaller>()
-        where TModuleInstaller : IModule
+        where TModuleInstaller : IModule, new()
     {
-        _moduleAssemblies.Add(typeof(TModuleInstaller).Assembly);
+        var module = new TModuleInstaller();
+        _modules.Add(module);
         return this;
     }
 
-    public TrussServiceConfiguration SetEventStore<TEventStore>(
+    public TrussServiceConfiguration UsingEventStore<TEventStore>(
         Func<IEventStore>? factory = null
     )
         where TEventStore : IEventStore
     {
-        _eventStoreType = typeof(TEventStore);
-        _eventStoreFactory = factory;
+        EventStoreType = typeof(TEventStore);
+        EventStoreFactory = factory;
         
         return this;
     }
 
-    internal Assembly[] GetModuleAssemblies()
+    public TrussServiceConfiguration AddServiceInstallation<T>()
+        where T : IServiceInstallation, new()
     {
-        return _moduleAssemblies.ToArray();
+        var serviceInstallation = new T();
+        _serviceInstallations.Add(serviceInstallation);
+        return this;
     }
-
-    internal Assembly[] GetInfrastructureAssemblies()
-    {
-        return _infrastructureAssemblies.ToArray();
-    }
-
-    internal Type? GetEventStoreType()
-    {
-        return _eventStoreType;
-    }
-
-    internal Func<IEventStore>? GetEventStoreFactory()
-    {
-        return _eventStoreFactory;
-    }
-
 }

@@ -1,13 +1,13 @@
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.Events;
 
-namespace Truss.Modeling.Installation.DefaultServices.Buses;
+namespace Truss.Infrastructure.DefaultServices.Buses;
 
 /// <summary>
 /// Generally used to dispatch events stored on an
 /// aggregate after changes have been made.
 /// </summary>
-public sealed class DomainEventDispatcher : IDomainEventDispatcher
+internal sealed class DomainEventDispatcher : IDomainEventDispatcher
 {
     private readonly IDomainEventBus _domainEventBus;
 

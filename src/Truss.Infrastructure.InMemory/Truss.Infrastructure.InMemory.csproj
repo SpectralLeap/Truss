@@ -1,14 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
+      <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

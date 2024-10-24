@@ -14,7 +14,7 @@ internal sealed class GreetHandler
     {
         return Result.Success(new GreetResult
         {
-            Greeting = $"Hello {command.Subject}"
+            Greeting = $"Hello {command.Subject}",
         });
     }
 }

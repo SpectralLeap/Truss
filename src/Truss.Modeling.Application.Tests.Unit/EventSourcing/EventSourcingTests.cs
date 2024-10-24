@@ -1,11 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
+using Truss.Infrastructure;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Installation;
-using Truss.Tests.Infrastructure.InMemory;
-using Truss.Tests.Infrastructure.InMemory.Events;
+using Truss.Infrastructure.InMemory;
+using Truss.Infrastructure.InMemory.Events;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing;
 
@@ -81,7 +82,7 @@ public sealed class EventSourcingTests
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
             .AddTruss(c =>
-                c.SetEventStore<InMemoryEventStore>()
+                c.AddInMemoryEventHandling()
                     .InstallModule<ApplicationTestModule>()
                 )
             .BuildServiceProvider()

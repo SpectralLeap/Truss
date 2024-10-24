@@ -2,9 +2,9 @@ using MediatR;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Monads.Results;
 
-namespace Truss.Modeling.Installation.DefaultServices.Buses;
+namespace Truss.Infrastructure.DefaultServices.Buses;
 
-public sealed class CommandBus : ICommandBus
+internal sealed class CommandBus : ICommandBus
 {
     private readonly IMediator _mediator;
 

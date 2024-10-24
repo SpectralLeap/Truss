@@ -5,7 +5,7 @@ namespace ExampleApplication.WebApi.Services;
 public sealed record GreetCommand
     : ICommand<GreetResult>
 {
-    public required string Subject { get; init; }
+    public string Subject { get; init; }
 }
 
 // This is registered with a mediator

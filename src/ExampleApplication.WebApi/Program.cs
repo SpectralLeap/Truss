@@ -1,7 +1,8 @@
 using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
+using Truss.Infrastructure;
+using Truss.Infrastructure.InMemory;
 using Truss.Modeling.Application.Cqrs.Commands;
-using Truss.Modeling.Installation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,9 @@ builder.Services.AddGrpc();
 
 builder.Services
     .AddTruss(c => 
-        c.InstallModule<Module>());
+        c.InstallModule<Module>()
+            .AddInMemoryEventHandling()
+        );
 
 var app = builder.Build();
 

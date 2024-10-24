@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing", "Truss.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Testing.Tests", "Truss.Testing.Tests\Truss.Testing.Tests.csproj", "{4EF46403-F0B0-45DE-8483-006B90EBEE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.Protobufs", "ExampleApplication.Protobufs\ExampleApplication.Protobufs.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.Protos", "ExampleApplication.Protos\ExampleApplication.Protos.csproj", "{ADA21927-037D-4385-98AA-B522FFB0F3E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApplication.WebApi", "ExampleApplication.WebApi\ExampleApplication.WebApi.csproj", "{1D14CA1C-6942-4AE7-8BC1-C6F19C8F021F}"
 EndProject
@@ -32,7 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Domain", "Tr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Domain.Tests.Unit", "Truss.Modeling.Domain.Tests.Unit\Truss.Modeling.Domain.Tests.Unit.csproj", "{181BB16E-3B54-4823-ABEB-F112B11C2D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.Infrastructure.InMemory", "Truss.Tests.Infrastructure.InMemory\Truss.Tests.Infrastructure.InMemory.csproj", "{DB301789-7300-46FB-BDF0-197891A447CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Infrastructure.InMemory", "Truss.Infrastructure.InMemory\Truss.Infrastructure.InMemory.csproj", "{DB301789-7300-46FB-BDF0-197891A447CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Tests.XunitHelpers", "Truss.Tests.XunitHelpers\Truss.Tests.XunitHelpers.csproj", "{E9C5E357-CD0F-463E-9D59-36A3B328B7BB}"
 EndProject
@@ -48,11 +48,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Protos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Installation", "Truss.Modeling.Installation\Truss.Modeling.Installation.csproj", "{CA34B93D-DF79-42EE-83AE-2BCD736B282A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.EfFramework", "Truss.Modeling.Application.Tests.EfFramework\Truss.Modeling.Application.Tests.EfFramework.csproj", "{355F3409-83DA-4FB5-8C3C-E996391AF1C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Application.Tests.TestCore", "Truss.Modeling.Application.Tests.TestCore\Truss.Modeling.Application.Tests.TestCore.csproj", "{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EB9AFD7B-1D76-4342-9689-477A2E216ED5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{15FDA5F5-722A-46F8-B21A-038220B0063D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Infrastructure", "Truss.Infrastructure\Truss.Infrastructure.csproj", "{E03FAA2D-00ED-4C57-A898-A511AC849DBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,14 +142,14 @@ Global
 		{CA34B93D-DF79-42EE-83AE-2BCD736B282A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA34B93D-DF79-42EE-83AE-2BCD736B282A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA34B93D-DF79-42EE-83AE-2BCD736B282A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{355F3409-83DA-4FB5-8C3C-E996391AF1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{355F3409-83DA-4FB5-8C3C-E996391AF1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{355F3409-83DA-4FB5-8C3C-E996391AF1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{355F3409-83DA-4FB5-8C3C-E996391AF1C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03FAA2D-00ED-4C57-A898-A511AC849DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03FAA2D-00ED-4C57-A898-A511AC849DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03FAA2D-00ED-4C57-A898-A511AC849DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03FAA2D-00ED-4C57-A898-A511AC849DBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
@@ -167,9 +169,9 @@ Global
 		{CA34B93D-DF79-42EE-83AE-2BCD736B282A} = {47157AAD-7752-4754-89E1-BE970A1546D8}
 		{EB9AFD7B-1D76-4342-9689-477A2E216ED5} = {47157AAD-7752-4754-89E1-BE970A1546D8}
 		{5E987008-C6D6-45D3-88AB-E013C4B25CC4} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
-		{355F3409-83DA-4FB5-8C3C-E996391AF1C7} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
 		{D172D1D4-28D7-4E28-8FD8-3E1F7E4E2812} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
 		{9C51E1E9-2840-4ED1-9D71-B29A5C27C76A} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
 		{181BB16E-3B54-4823-ABEB-F112B11C2D2D} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
+		{E03FAA2D-00ED-4C57-A898-A511AC849DBD} = {15FDA5F5-722A-46F8-B21A-038220B0063D}
 	EndGlobalSection
 EndGlobal

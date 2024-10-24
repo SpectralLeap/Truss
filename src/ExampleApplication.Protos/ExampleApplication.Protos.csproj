@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Protobuf Include="*.proto" />
+      <Protobuf Include="**/*.proto" />
     </ItemGroup>
 
 </Project>
