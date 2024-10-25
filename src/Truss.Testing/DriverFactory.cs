@@ -13,7 +13,7 @@ public sealed class DriverFactory
 {
     private readonly ProxyGenerator _proxyGenerator = new();
 
-    private DriverManager? _driverManager;
+    private DriverManager _driverManager;
     private SharedDependencyManager? _sharedDependencyManager;
 
     private bool _disposing;
@@ -61,7 +61,7 @@ public sealed class DriverFactory
     {
         id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
 
-        return _driverManager!.ClassProxyWithTargetAsync<TDriver>(id, tags)
+        return _driverManager.ClassProxyWithTargetAsync<TDriver>(id, tags)
             .GetAwaiter()
             .GetResult();
     }
@@ -79,7 +79,7 @@ public sealed class DriverFactory
     {
         id ??= string.Join("", Guid.NewGuid().ToString().Take(5));
 
-        return await _driverManager!.ClassProxyWithTargetAsync<TDriver>(id, tags);
+        return await _driverManager.ClassProxyWithTargetAsync<TDriver>(id, tags);
     }
 
 

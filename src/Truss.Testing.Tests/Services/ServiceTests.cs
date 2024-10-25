@@ -30,28 +30,28 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsWhenTheDslRequestsADependencyItDidNotRegister()
     {
-       Assert.Throws<DslServicesNotRegisteredException>(() => _factoryDriver.GetDriver
+       Assert.Throws<DriverServicesNotRegisteredException>(() => _factoryDriver.GetDriver
        <DriverRequestingUnregisteredDependency>());
     }
 
     [Fact]
     public void ThrowsWhenBaseServiceDefinitionIsNotStatic()
     {
-       Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+       Assert.Throws<DriverServicesNotStaticException>(() => _factoryDriver.GetDriver
            <DriverWithNonStaticServices>());
     }
     
     [Fact]
     public void ThrowsWhenOverrideServiceDefinitionIsNotStatic()
     {
-        Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+        Assert.Throws<DriverServicesNotStaticException>(() => _factoryDriver.GetDriver
             <DriverWithNonStaticOverrideService>());
     }
     
     [Fact]
     public void GivesTheNameOfTheNonStaticMember()
     {
-        var msg = Assert.Throws<DslServicesNotStaticException>(() => _factoryDriver.GetDriver
+        var msg = Assert.Throws<DriverServicesNotStaticException>(() => _factoryDriver.GetDriver
                 <DriverWithNonStaticServices>())
             .Message;
 
@@ -61,14 +61,14 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsIfNotRightType()
     {
-        Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
+        Assert.Throws<DriverServiceDefinitionIsNotIServiceCollectionException>(() =>
             _factoryDriver.GetDriver<DriverWithWrongCollectionType>());
     }
     
     [Fact]
     public void GivesTheNameOfIncorrectlyTypedMember()
     {
-        var msg = Assert.Throws<DslServiceDefinitionIsNotIServiceCollectionException>(() =>
+        var msg = Assert.Throws<DriverServiceDefinitionIsNotIServiceCollectionException>(() =>
             _factoryDriver.GetDriver<DriverWithWrongCollectionType>())
             .Message;
 

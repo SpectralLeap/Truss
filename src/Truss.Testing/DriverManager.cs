@@ -65,7 +65,7 @@ internal sealed class DriverManager : IAsyncDisposable
         catch (InvalidOperationException ex)
         {
             if (ex.Message.ToLower().StartsWith("unable to resolve service"))
-                throw new DslServicesNotRegisteredException(typeof(TDsl));
+                throw new DriverServicesNotRegisteredException(typeof(TDsl));
 
             throw;
         }

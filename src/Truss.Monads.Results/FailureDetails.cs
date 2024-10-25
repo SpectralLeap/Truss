@@ -35,7 +35,11 @@ public sealed record FailureDetails
     public static FailureDetails From(Exception exception, params string[] reasons)
     {
         var reasonsList = reasons.ToList();
-        reasonsList.AddRange(new [] { exception.Message, exception.InnerException?.Message ?? "No inner exception" });
+        reasonsList.AddRange(new []
+        {
+            exception.Message,
+            exception.InnerException?.Message ?? "No inner exception",
+        });
         
         return new FailureDetails(exception, reasonsList.ToArray());
     }

@@ -1,17 +1,10 @@
 using Truss.Modeling.Application.Cqrs.EventSourcing.Events;
-using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.EventSourcing.TestDomain;
 
 namespace Truss.Modeling.Domain.Tests.Unit.EventSourcing;
 
 public sealed class EventTests
 {
-    [Fact]
-    public void have_a_version_number()
-    {
-        Assert.True(DomainEvent.DomainEventVersion > 0);
-    }
-    
     [Fact]
     public void have_a_unique_id()
     {

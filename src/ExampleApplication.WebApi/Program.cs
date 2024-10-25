@@ -12,7 +12,7 @@ builder.Services.AddGrpc();
 builder.Services
     .AddTruss(c => 
         c.InstallModule<Module>()
-            .AddInMemoryEventHandling()
+            .AddInMemoryEventSourcing()
         );
 
 var app = builder.Build();

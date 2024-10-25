@@ -12,6 +12,9 @@ public interface IDomainEventBus
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDomainEvent"></typeparam>
     /// <returns></returns>
-    Task Publish<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken) 
+    Task Publish<TDomainEvent>(
+        TDomainEvent domainEvent,
+        CancellationToken cancellationToken
+    ) 
         where TDomainEvent : IDomainEvent;
 }

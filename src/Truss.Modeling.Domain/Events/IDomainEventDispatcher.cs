@@ -12,5 +12,8 @@ public interface IDomainEventDispatcher
     /// </summary>
     /// <param name="rootWithEvents"></param>
     /// <param name="cancellationToken"></param>
-    Task DispatchAndClearDomainEvents(IAggregateRoot rootWithEvents, CancellationToken cancellationToken);
+    Task DispatchAndClearDomainEvents(
+        IAggregateRoot rootWithEvents,
+        CancellationToken cancellationToken
+    );
 }

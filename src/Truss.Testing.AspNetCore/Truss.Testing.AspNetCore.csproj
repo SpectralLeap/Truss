@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Title>Truss.Testing.Dsl.AspNetCore</Title>
         <Description>Support for testing AspNetCore web servers</Description>
-        <TargetFramework></TargetFramework>
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     </PropertyGroup>
 
    <ItemGroup>

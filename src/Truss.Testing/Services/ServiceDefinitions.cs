@@ -51,20 +51,20 @@ internal sealed class ServiceDefinitions
     private static bool AssertStatic(PropertyInfo propertyInfo)
     {
         if (propertyInfo.GetMethod.IsStatic) return true;
-        throw new DslServicesNotStaticException(propertyInfo);
+        throw new DriverServicesNotStaticException(propertyInfo);
     }
 
     private static bool AssertStatic(FieldInfo fieldInfo)
     {
         if (fieldInfo.IsStatic) return true;
         
-        throw new DslServicesNotStaticException(fieldInfo);
+        throw new DriverServicesNotStaticException(fieldInfo);
     }
 
     private static ServiceDefinition ParseDefinition(FieldInfo fieldInfo)
     {
         if (fieldInfo.FieldType != typeof(IServiceCollection))
-            throw new DslServiceDefinitionIsNotIServiceCollectionException(fieldInfo);
+            throw new DriverServiceDefinitionIsNotIServiceCollectionException(fieldInfo);
 
         var collection = (IServiceCollection)fieldInfo.GetValue(null);
 
@@ -77,7 +77,7 @@ internal sealed class ServiceDefinitions
     private static ServiceDefinition ParseDefinition(PropertyInfo propertyInfo)
     {
         if (propertyInfo.GetMethod.ReturnType != typeof(IServiceCollection))
-            throw new DslServiceDefinitionIsNotIServiceCollectionException(propertyInfo);
+            throw new DriverServiceDefinitionIsNotIServiceCollectionException(propertyInfo);
 
         var collection = (IServiceCollection)propertyInfo.GetValue(null);
         
@@ -108,9 +108,10 @@ internal sealed class ServiceDefinitions
         
         foreach (var tag in tags)
         {
-            if (!_serviceOverrides.ContainsKey(tag)) throw new DslTagNotFoundException(tag, _serviceOverrides.Keys);
+            if (!_serviceOverrides.TryGetValue(tag, out var @override))
+                throw new DriverTagNotFoundException(tag, _serviceOverrides.Keys);
             
-            descriptors.AddRange(_serviceOverrides[tag].Collection);
+            descriptors.AddRange(@override.Collection);
         }
 
         return descriptors;

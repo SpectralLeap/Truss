@@ -5,14 +5,16 @@ using Truss.Testing.Dsl;
 
 namespace Truss.Testing;
 
-internal sealed class DriverInterceptor(DriverDispatcher driverDispatcher) : IInterceptor
+internal sealed class DriverInterceptor(DriverDispatcher driverDispatcher) 
+    : IInterceptor
 {
     public void Intercept(IInvocation invocation)
     {
         invocation.Proceed();
         
         // only handle DslMethod attributed methods
-        if (invocation.MethodInvocationTarget.GetCustomAttribute<DslMethodAttribute>() is null) return;
+        if (invocation.MethodInvocationTarget.GetCustomAttribute<DslMethodAttribute>() is null) 
+            return;
 
         AsyncHandler(invocation);
     }

@@ -9,7 +9,7 @@ public sealed class DriverFactoryTests
     [Fact]
     public void ThrowsWhenTagNotFound()
     {
-        Assert.Throws<DslTagNotFoundException>(() => _driverFactory.GetDriver<RegisteredDriver>(tags: "not a tag"));
+        Assert.Throws<DriverTagNotFoundException>(() => _driverFactory.GetDriver<RegisteredDriver>(tags: "not a tag"));
     }
    
     [Fact]
@@ -38,7 +38,7 @@ public sealed class DriverFactoryTests
     [Fact]
     public void ThrowsWhenServiceDefinitionsNotStatic()
     {
-        Assert.Throws<DslServicesNotStaticException>(() => _driverFactory.GetDriver<RegisteredDriverWithNonStaticDefinitions>());
+        Assert.Throws<DriverServicesNotStaticException>(() => _driverFactory.GetDriver<RegisteredDriverWithNonStaticDefinitions>());
     }
 
 }

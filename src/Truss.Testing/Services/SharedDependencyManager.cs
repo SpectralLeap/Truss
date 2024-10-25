@@ -33,7 +33,7 @@ internal sealed class SharedDependencyManager : IAsyncDisposable
                     .Where(type => !type.IsAbstract
                                    && !type.IsInterface
                                    && typeof(ISharedDependency).IsAssignableFrom(type)))
-                .Select(type => Activator.CreateInstance(type))
+                .Select(Activator.CreateInstance)
                 .Cast<ISharedDependency>()
                 .ToList()
             ;

@@ -3,7 +3,7 @@ using Truss.Testing.Dsl;
 namespace Truss.Testing;
 
 /// <summary>
-/// Represents an abstract class for Domain Specific Language implementation.
+/// Represents an abstract class for Driver implementation.
 /// </summary>
 public abstract class Driver
 {

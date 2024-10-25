@@ -82,7 +82,7 @@ public sealed class EventSourcingTests
 
     private readonly IServiceProvider _serviceProvider = new ServiceCollection()
             .AddTruss(c =>
-                c.AddInMemoryEventHandling()
+                c.AddInMemoryEventSourcing()
                     .InstallModule<ApplicationTestModule>()
                 )
             .BuildServiceProvider()
