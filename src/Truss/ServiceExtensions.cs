@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure.ServiceInstallations;
 using Truss.Modeling.Installation;
+using Truss.ServiceInstallations;
 
-namespace Truss.Infrastructure;
+namespace Truss;
 
 public static class ServiceExtensions
 {

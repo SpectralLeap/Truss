@@ -1,30 +1,42 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Installation;
 
 namespace Truss.Modeling.Installation;
 
+/// <summary>
+/// Configuration for installing services for Truss
+/// </summary>
 public sealed class TrussServiceConfiguration
 {
+    /// <summary>
+    /// The <see cref="IModule"/>s to be installed
+    /// </summary>
     public IReadOnlyCollection<IModule> Modules => _modules;
+    /// <summary>
+    /// The <see cref="IServiceInstallation"/>s to be installed
+    /// </summary>
     public IReadOnlyCollection<IServiceInstallation> ServiceInstallations => _serviceInstallations;
-    
+    /// <summary>
+    /// If provided, will log install information
+    /// </summary>
     public ILogger? Logger { get; private set; }
-
-    public bool IsEventSourcing => EventStoreType is not null;
-
-    public Type? EventStoreType { get; private set; }
-
-    public Func<IEventStore>? EventStoreFactory { get; private set; }
-
-    public IConfiguration Configuration { get; private set; } 
-        = new ConfigurationBuilder().Build();
+    /// <summary>
+    /// The <see cref="IConfiguration"/> provided to all installations
+    /// </summary>
+    public IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().Build();
 
     private readonly List<IModule> _modules = [];
     
     private readonly List<IServiceInstallation> _serviceInstallations = [];
 
+    /// <summary>
+    /// Assigns an <see cref="IConfiguration"/> to read from
+    /// </summary>
+    /// <param name="configuration">
+    /// The configuration to use
+    /// </param>
+    /// <returns></returns>
     public TrussServiceConfiguration UseConfiguration(
         IConfiguration configuration
     )
@@ -33,6 +45,13 @@ public sealed class TrussServiceConfiguration
         return this;
     }
 
+    /// <summary>
+    /// Assigns an <see cref="ILogger"/> to log from
+    /// </summary>
+    /// <param name="logger">
+    /// The logger to use
+    /// </param>
+    /// <returns></returns>
     public TrussServiceConfiguration UseLogger(
         ILogger logger
     )
@@ -41,6 +60,13 @@ public sealed class TrussServiceConfiguration
         return this;
     }
     
+    /// <summary>
+    /// Register an <see cref="IModule"/> to be installed
+    /// </summary>
+    /// <typeparam name="TModuleInstaller">
+    /// The concrete implementation to install from
+    /// </typeparam>
+    /// <returns></returns>
     public TrussServiceConfiguration InstallModule<TModuleInstaller>()
         where TModuleInstaller : IModule, new()
     {
@@ -49,17 +75,13 @@ public sealed class TrussServiceConfiguration
         return this;
     }
 
-    public TrussServiceConfiguration UsingEventStore<TEventStore>(
-        Func<IEventStore>? factory = null
-    )
-        where TEventStore : IEventStore
-    {
-        EventStoreType = typeof(TEventStore);
-        EventStoreFactory = factory;
-        
-        return this;
-    }
-
+    /// <summary>
+    /// Register an <see cref="IServiceInstallation"/> to be installed
+    /// </summary>
+    /// <typeparam name="T">
+    /// The concrete implementation to install from
+    /// </typeparam>
+    /// <returns></returns>
     public TrussServiceConfiguration AddServiceInstallation<T>()
         where T : IServiceInstallation, new()
     {

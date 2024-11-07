@@ -16,7 +16,9 @@ public class AutoShopDriver
         .AddTestCore()
     ;
 
-    public AutoShopDriver(AutoShopService autoShopService)
+    public AutoShopDriver(
+        AutoShopService autoShopService
+    )
     {
         _autoShopService = autoShopService;
     }

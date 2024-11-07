@@ -1,7 +1,7 @@
 using Truss.Modeling.Domain.Entities;
 using Truss.Modeling.Domain.Events;
 
-namespace Truss.Infrastructure.DefaultServices.Buses;
+namespace Truss.BaseServices.Buses;
 
 /// <summary>
 /// Generally used to dispatch events stored on an

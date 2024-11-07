@@ -2,6 +2,7 @@ using Truss.Testing.Dsl;
 
 namespace Truss.Testing;
 
+
 /// <summary>
 /// Represents an abstract class for Driver implementation.
 /// </summary>

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 

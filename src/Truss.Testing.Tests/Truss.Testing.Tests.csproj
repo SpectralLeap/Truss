@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    
+
     <PropertyGroup>
         <TargetFramework></TargetFramework>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
@@ -20,7 +20,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Truss.Testing\Truss.Testing.csproj" />
+        <ProjectReference Include="..\Truss.Analyzer\Truss.Analyzer\Truss.Analyzer.csproj"
+                          OutputItemType="Analyzer" ReferenceOutputAssembly="true"/>
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <ProjectReference Include="..\Truss.Testing\Truss.Testing.csproj" />
+    </ItemGroup>
+
 </Project>

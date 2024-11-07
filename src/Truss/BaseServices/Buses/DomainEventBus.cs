@@ -1,7 +1,7 @@
 using MediatR;
 using Truss.Modeling.Domain.Events;
 
-namespace Truss.Infrastructure.DefaultServices.Buses;
+namespace Truss.BaseServices.Buses;
 
 internal sealed class DomainEventBus : IDomainEventBus
 {

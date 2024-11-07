@@ -2,7 +2,7 @@ using MediatR;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Monads.Results;
 
-namespace Truss.Infrastructure.DefaultServices.Buses;
+namespace Truss.BaseServices.Buses;
 
 internal sealed class CommandBus : ICommandBus
 {

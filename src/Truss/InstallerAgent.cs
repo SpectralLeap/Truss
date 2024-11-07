@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Truss.Modeling.Installation;
 
-namespace Truss.Infrastructure;
+namespace Truss;
 
 internal sealed class InstallerAgent
 {

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Truss.Modeling.Domain.EventSourcing;
 
-namespace Truss.Infrastructure.DefaultServices.EventSourcingServices;
+namespace Truss.BaseServices.EventSourcingServices;
 
 /// <summary>
 /// Serialization for streaming change events

@@ -18,12 +18,16 @@
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Testing`))' == 'true'">
         <TargetLayer>Modeling</TargetLayer>
     </PropertyGroup>
-    
-    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).StartsWith(`ExampleApplication`))' == 'true'">
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`AspNetCore`))' == 'true'">
         <TargetLayer>Infrastructure</TargetLayer>
     </PropertyGroup>
-   
+
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Infrastructure`))' == 'true'">
+        <TargetLayer>Infrastructure</TargetLayer>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Equals(`Truss`))' == 'true'">
         <TargetLayer>Infrastructure</TargetLayer>
     </PropertyGroup>
 
@@ -38,7 +42,11 @@
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).EndsWith(`SourceGenerator`))' == 'true'">
         <TargetLayer>SourceGenerator</TargetLayer>
     </PropertyGroup>
-   
+
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).StartsWith(`ExampleApplication`))' == 'true'">
+        <TargetLayer>ExampleApplication</TargetLayer>
+    </PropertyGroup>
+
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -58,6 +66,13 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Tests'">
+        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'ExampleApplication'">
         <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
         <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
         <IsPackable>false</IsPackable>

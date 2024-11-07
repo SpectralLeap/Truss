@@ -6,7 +6,10 @@ namespace Truss.Testing.AspNetCore;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddWebServer<T>(this IServiceCollection collection) where T : class
+    public static IServiceCollection AddWebServer<T>(
+        this IServiceCollection collection
+    )
+        where T : class
     {
         return collection
             .AddSingleton(provider => new WebApplicationFactory<T>()

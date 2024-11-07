@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Installation;
 using Truss.Monads.Results;
 
-namespace Truss.Infrastructure;
+namespace Truss.ServiceInstallations;
 
 internal sealed class MediatrServiceInstallation : IServiceInstallation
 {

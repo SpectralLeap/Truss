@@ -1,14 +1,14 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure.DefaultServices.Buses;
+using Truss.BaseServices.Buses;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Domain.Events;
 using Truss.Modeling.Installation;
 using Truss.Monads.Results;
 
-namespace Truss.Infrastructure.ServiceInstallations;
+namespace Truss.ServiceInstallations;
 
 internal sealed class BaseServiceInstallation : IServiceInstallation
 {

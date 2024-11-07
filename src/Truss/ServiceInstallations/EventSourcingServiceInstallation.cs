@@ -1,13 +1,13 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure.DefaultServices.EventSourcingServices;
+using Truss.BaseServices.EventSourcingServices;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Installation;
 using Truss.Monads.Results;
 
-namespace Truss.Infrastructure.ServiceInstallations;
+namespace Truss.ServiceInstallations;
 
 internal sealed class EventSourcingServiceInstallation : IServiceInstallation
 {

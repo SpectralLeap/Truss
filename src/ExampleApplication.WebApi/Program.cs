@@ -1,6 +1,6 @@
 using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
-using Truss.Infrastructure;
+using Truss;
 using Truss.Infrastructure.InMemory;
 using Truss.Modeling.Application.Cqrs.Commands;
 

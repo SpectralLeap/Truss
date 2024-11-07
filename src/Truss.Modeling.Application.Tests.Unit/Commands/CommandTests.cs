@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure;
+using Truss;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
 using Truss.Monads.Results;

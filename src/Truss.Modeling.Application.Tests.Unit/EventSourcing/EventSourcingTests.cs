@@ -1,10 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Infrastructure;
+using Truss.Infrastructure.InMemory;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
-using Truss.Infrastructure.InMemory;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing;
 
