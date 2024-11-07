@@ -5,5 +5,6 @@ namespace Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 public sealed record WordUpdatedEvent(string Word) : IDomainEvent
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
+    public string Word { get; } = Word;
 }
 

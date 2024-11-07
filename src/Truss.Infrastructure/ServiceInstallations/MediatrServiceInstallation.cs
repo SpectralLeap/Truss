@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Installation;
 using Truss.Monads.Results;
 
-namespace Truss.Infrastructure;
+namespace Truss.Infrastructure.ServiceInstallations;
 
 internal sealed class MediatrServiceInstallation : IServiceInstallation
 {
@@ -14,14 +14,9 @@ internal sealed class MediatrServiceInstallation : IServiceInstallation
         IReadOnlyCollection<Assembly> assemblies
     )
     {
-        
-#if NET461 || NET47 || NET48
-        services.AddMediatR(assemblies.ToArray());
-#else
         services.AddMediatR(c =>
             c.RegisterServicesFromAssemblies(assemblies.ToArray()));
-#endif
-        
+
         return Result.Success();
     }
 }

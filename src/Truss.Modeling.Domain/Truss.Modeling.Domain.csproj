@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="[9, )" />
+    <PackageReference Include="MediatR" Version="[12.0.1, )" />
     <PackageReference Include="Newtonsoft.Json" Version="[3.5.8, 14)" />
   </ItemGroup>
 

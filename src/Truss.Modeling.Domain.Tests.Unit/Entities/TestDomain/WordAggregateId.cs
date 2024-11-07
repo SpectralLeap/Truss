@@ -8,4 +8,6 @@ internal sealed record WordAggregateId(Guid value) : AggregateRootId<Guid>(value
     {
         return new WordAggregateId(Guid.NewGuid());
     }
+
+    public Guid value { get; } = value;
 };
