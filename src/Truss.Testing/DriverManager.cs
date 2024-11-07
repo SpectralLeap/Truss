@@ -1,7 +1,6 @@
 using System.Reflection;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Testing.Drivers;
 using Truss.Testing.Services;
 
 namespace Truss.Testing;
@@ -31,16 +30,13 @@ internal sealed class DriverManager : IAsyncDisposable
         _proxyGenerator = proxyGenerator;
     }
 
-    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) where TDsl : Driver
+    public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) 
+        where TDsl : Driver
     {
 
         var provider = _activeProviders.TryGetValue(id, out var activeProvider)
             ? activeProvider
             : Activate(GetServices<TDsl>(tags), id);
-
-        var interceptor = provider.GetService<DriverInterceptor>()!;
-
-        var constructorArguments = ResolveConstructorArgumentsFor<TDsl>(provider);
 
         try
         {
@@ -51,16 +47,7 @@ internal sealed class DriverManager : IAsyncDisposable
                 await asyncInitialized.InitializeAsync();
             }
 
-            if (typeof(TDsl).IsSealed) return instance;
-
-            var proxy = (TDsl) _proxyGenerator.CreateClassProxyWithTarget(
-                typeof(TDsl),
-                instance,
-                constructorArguments,
-                interceptor
-            );
-
-            return proxy;
+            return instance;
         }
         catch (InvalidOperationException ex)
         {
@@ -71,52 +58,20 @@ internal sealed class DriverManager : IAsyncDisposable
         }
     }
 
-    private object[] ResolveConstructorArgumentsFor<T>(IServiceProvider provider) where T : class
-    {
-        var constructorInfo = typeof(T).GetConstructors().OrderByDescending(c => c.GetParameters().Length)
-            .FirstOrDefault();
-        
-        if (constructorInfo == null)
-        {
-            return Array.Empty<object>();
-        }
-
-        return constructorInfo.GetParameters().Select(p => provider.GetService(p.ParameterType)).ToArray();
-    }
-
     private IServiceCollection GetServices<TDsl>(params string[] tags) where TDsl : class
     {
         var collectionCopy = new ServiceCollection()
-                .AddSingleton<DriverDispatcher>()
-                .AddSingleton<DriverInterceptor>()
-            ;
-
-        collectionCopy.AddSingleton<TDsl>();
+            .AddSingleton<TDsl>();
 
         var serviceDefinitions = ServiceDefinitions.For<TDsl>();
 
         if (_sharedDependencyManager is not null)
         {
-            collectionCopy.Load(_sharedDependencyManager!.SharedDependencyAdapters!);
+            collectionCopy.Load(_sharedDependencyManager!.SharedDependencyAdapters);
         }
 
         collectionCopy.Load(serviceDefinitions.GetBaseServices());
         collectionCopy.Load(serviceDefinitions.GetOverrideServices(tags));
-
-        var driverType = typeof(Driver<>);
-
-        var driverImplementations = typeof(TDsl).Assembly
-            .GetTypes()
-            .Where(type => type.BaseType is not null && type.BaseType.IsGenericType)
-            .Where(type => type.BaseType!.GetGenericTypeDefinition() == driverType)
-            .ToList();
-
-        foreach (var implementation in driverImplementations)
-        {
-            var type = implementation.BaseType!;
-
-            collectionCopy.AddTransient(type, implementation);
-        }
 
         return collectionCopy;
     }

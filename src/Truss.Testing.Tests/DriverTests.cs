@@ -1,5 +1,4 @@
 using Truss.Testing.Dsl;
-using Truss.Testing.Tests.Drivers;
 using Truss.Testing.Tests.Fixtures;
 
 namespace Truss.Testing.Tests;
@@ -129,11 +128,4 @@ public sealed class DriverTests
         Assert.Throws<DslValueDoesNotMatchPattern>(() => _dslDriver.AcceptsIntegersByPatternInList($"numbers: {data}"));
     }
      
-    [Fact]
-    public void ThrowsIfParametersNotSetOnDslArgs()
-    {
-        var args = DslArgs.ForAction<RegisterUserDriver>();
-        Assert.Throws<DslArgsDoNotHaveParametersSetException>(() => args[""]);
-    }
-      
 }

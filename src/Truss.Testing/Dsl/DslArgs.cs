@@ -5,17 +5,11 @@
 /// </summary>
 public sealed class DslArgs
 {
-    internal readonly Type ActionType;
     private Dictionary<string, DslParameter>? _parameterSet;
 
-    private DslArgs()
+    private DslArgs(Dictionary<string, DslParameter> parameterSet)
     {
-
-    }
-
-    private DslArgs(Type actionType)
-    {
-        ActionType = actionType;
+        _parameterSet = parameterSet;
     }
 
     /// <summary>
@@ -43,7 +37,7 @@ public sealed class DslArgs
     /// <param name="args">The arguments to parse.</param>
     /// <param name="parameters">The DSL parameters to set the values for.</param>
     /// <returns>A reference to the current instance of the class.</returns>
-    public DslArgs From(IEnumerable<string> args, params DslParameter[] parameters)
+    public static DslArgs From(IEnumerable<string> args, params DslParameter[] parameters)
     {
         var parameterSet = parameters.ToDictionary(p => p.Name);
         
@@ -74,20 +68,8 @@ public sealed class DslArgs
 
         if (unsetRequiredParams.Any())
             throw new DslRequiredParameterNotSetException(unsetRequiredParams.Select(p => p.Name).ToArray());
-        
-        _parameterSet = parameterSet;
-        
-        return this;
-    }
 
-    /// <summary>
-    /// Creates an instance of DslArgs for a specified action type.
-    /// </summary>
-    /// <typeparam name="TAction">The type of the action.</typeparam>
-    /// <returns>An instance of DslArgs.</returns>
-    public static DslArgs ForAction<TAction>()
-    {
-        return new DslArgs(typeof(TAction));
+        return new DslArgs(parameterSet: parameterSet);
     }
 }
 

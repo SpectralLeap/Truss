@@ -1,5 +1,4 @@
 using Truss.Testing.Dsl;
-using Truss.Testing.Tests.Drivers;
 
 namespace Truss.Testing.Tests.Fixtures;
 
@@ -10,7 +9,6 @@ public sealed class DslDriver
     public DslDriver AcceptOnlyNameAndValue(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Optional("name")
@@ -25,7 +23,6 @@ public sealed class DslDriver
     public DslDriver AcceptsNamesAndList(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Optional("names")
@@ -41,7 +38,6 @@ public sealed class DslDriver
     public DslDriver UsesDefaultValueOfValue(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Optional("name")
@@ -56,7 +52,6 @@ public sealed class DslDriver
     public DslDriver OptionalDefaultingToNull(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Optional("name")
@@ -70,7 +65,6 @@ public sealed class DslDriver
     public DslDriver RequiredParameter(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Required("name")
@@ -84,7 +78,6 @@ public sealed class DslDriver
     public DslDriver AcceptsIntegersByPattern(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Required("number")
@@ -99,7 +92,6 @@ public sealed class DslDriver
     public void AcceptsIntegersByPatternInList(params string[] args)
     {
         var parameters = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
             args,
             parameters: DslParameter.Required("numbers")
@@ -107,13 +99,6 @@ public sealed class DslDriver
                 .SetPattern(@"\d+")
         );
                 
-        Value = parameters["numbers"];
-    }
-
-    public void ThrowsIfNoParameters(params string[] args)
-    {
-        var parameters = DslArgs.ForAction<RegisterUserDriver>();
-
         Value = parameters["numbers"];
     }
 }

@@ -4,9 +4,7 @@ using Truss.Modeling.Application.Cqrs.EventSourcing.Reading;
 using Truss.Modeling.Application.Cqrs.EventSourcing.Writing;
 using Truss.Modeling.Application.Tests.Unit.EventSourcing.TestApplication;
 using Truss.Modeling.Domain.Events;
-using Truss.Modeling.Installation;
 using Truss.Infrastructure.InMemory;
-using Truss.Infrastructure.InMemory.Events;
 
 namespace Truss.Modeling.Application.Tests.Unit.EventSourcing;
 

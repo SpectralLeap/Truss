@@ -16,7 +16,6 @@ public class SutDriverOverridingAct(RegistrationStore store)
     public async Task RegisterUser(params string[] args)
     {
         var arguments = DslArgs
-            .ForAction<RegisterUserDriver>()
             .From(
                 args,
                 DslParameter.Optional("email")

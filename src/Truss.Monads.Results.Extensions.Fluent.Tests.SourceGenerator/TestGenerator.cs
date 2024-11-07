@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Truss.Monads.Results.Extensions.Fluent.Tests.SourceGenerator;
 
 
@@ -18,16 +20,27 @@ public sealed class TestGenerator
         {
             lines.AddRange(AndDoThen(i, "Sync"));
             lines.AddRange(AndDoThen(i, "Async"));
+            lines.AddRange(AndDoDispose(i, "Sync"));
+            lines.AddRange(AndDoDispose(i, "Async"));
             lines.AddRange(AndDoFailThen(i, "Sync"));
             lines.AddRange(AndDoFailThen(i, "Async"));
             lines.AddRange(AndThenFailThen(i, "Sync"));
             lines.AddRange(AndThenFailThen(i, "Async"));
             lines.AddRange(AndThenFailInResultThen(i, "Sync"));
+            
+            lines.AddRange(ConvertFailToException(AndDoFailThen(i, "Sync")));
+            lines.AddRange(ConvertFailToException(AndDoFailThen(i, "Async")));
+            lines.AddRange(ConvertFailToException(AndThenFailThen(i, "Sync")));
+            lines.AddRange(ConvertFailToException(AndThenFailThen(i, "Async")));
+            lines.AddRange(ConvertFailToException(AndThenFailInResultThen(i, "Sync")));
 
-            if (i > 1)
+            if (i != _size)
             {
                 lines.AddRange(AndFailThen(i, "Sync"));
                 lines.AddRange(AndFailThen(i, "Async"));
+            }
+            if (i > 1)
+            {
                 
                 // This is here because async is just seen as a task
                 // [Fact]
@@ -50,31 +63,44 @@ public sealed class TestGenerator
         return string.Join("\n", lines);
     }
 
-    private string GetFunctionArgument(int size, string fName)
+    private string GetFunctionArgument(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
 
-        return $"({p}) => new {nameof(DummyClass)}().Do{fName}({p})";
+        return $"({p}) => new {nameof(DummyClass)}().Do{sync}({p})";
     }
     
-    private string And(int size, string fName)
+    private string And(int size, string sync)
     {
-        return $".And({GetFunctionArgument(size, fName)})";
+        return $".And({GetFunctionArgument(size, sync)})";
     }
 
-    private string Then(int size, string fName)
+    private string Then(int size, string sync)
     {
-        return $".Then({GetFunctionArgument(size, fName)})";
+        return $".Then({GetFunctionArgument(size, sync)})";
     }
     
-    private string Do(int size, string fName)
+    private string Do(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
         
-        return $".Do(({p}) => doCount++)";
+        if (sync == "Sync")
+            return $".Do(({p}) => doCount++)";
+
+        return 
+            $$"""
+             .Do(async ({{p}}) => {
+                await Task.Delay(0);
+                doCount++;     
+             })
+             .Do(async ({{p}}) => {
+                await Task.Delay(0);
+                return Result.Success();
+             })
+             """;
     }
 
-    private string DoFail(int size, string fName)
+    private string DoFail(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
 
@@ -100,12 +126,44 @@ public sealed class TestGenerator
 
         lines.AddRange(CreateBlock(i, sync));
         lines.Add(";");
-        lines.Add($"Assert.Equal(doCount, 1);");
+        lines.Add("Assert.Equal(doCount, 1);");
         lines.Add("}");
 
         return lines;
     }
     
+    private List<string> AndDoDispose(int i, string sync)
+    {
+        var lines = new List<string>
+        {
+            $$"""
+              [Fact]
+              public {{(sync.Equals("Async") ? "async Task" : "void")}} AndDoDispose{{i}}{{sync}}()
+              {
+              var doCount = 0;
+              """,
+        };
+    
+        lines.AddRange(CreateAndDoBlock(i, sync));
+        lines.Add(";");
+        
+        switch (sync)
+        {
+            case "Sync":
+                lines.Add("result.Dispose();");
+                lines.Add("result.Dispose();");
+                break;
+            case "Async":
+                lines.Add("await result.DisposeAsync();");
+                break;
+        }
+
+        lines.Add("Assert.Equal(doCount, 1);");
+        lines.Add("}");
+    
+        return lines;
+    }
+     
     private List<string> AndThenFailThen(int i, string sync)
     {
         var lines = new List<string>
@@ -166,9 +224,9 @@ public sealed class TestGenerator
     private IEnumerable<string> CreateAndFailBlock(int size, string sync)
     {
         var lines = new List<string> {$"var result = {(sync.Equals("Async") ? "await" : "")} new {nameof(DummyClass)}().AsResult()"};
-        for (var i = 1; i < size; i++)
+        for (var i = 1; i <= size; i++)
         {
-            if (i == size - 1)
+            if (i == size)
             {
                 lines.Add(AndFail(i, sync));
                 continue;
@@ -177,7 +235,7 @@ public sealed class TestGenerator
             lines.Add(And(i, sync));
         }
         
-        lines.Add($".Then({GetFunctionArgument(size, sync)})");
+        lines.Add($".Then({GetFunctionArgument(size+1, sync)})");
             
         return lines;
     }
@@ -209,38 +267,38 @@ public sealed class TestGenerator
     }
 
 
-    private string ThenFailInResult(int size, string fName)
+    private string ThenFailInResult(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
         
         return $$"""
                  .Then(({{p}}) => {
                      if (1 > 0) return Result.Fail("fail");
-                     return Result.Success(new {{nameof(DummyClass)}}().Do{{fName}}({{p}}));
+                     return Result.Success(new {{nameof(DummyClass)}}().Do{{sync}}({{p}}));
                  })
                  """;
     }
     
-    private string ThenFail(int size, string fName)
+    private string ThenFail(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
             
         return $$"""
                  .Then(({{p}}) => {
                      if (1 > 0) throw new Exception("fail");
-                     return new {{nameof(DummyClass)}}().Do{{fName}}({{p}});
+                     return new {{nameof(DummyClass)}}().Do{{sync}}({{p}});
                  })
                  """;
     }
      
-    private string AndFail(int size, string fName)
+    private string AndFail(int size, string sync)
     {
         var p = string.Join(", ", _parameters.GetRange(0, size));
         
         return $$"""
-                 .And({{(fName.Equals("Async") ? "async" : "")}} ({{p}}) => {
+                 .And({{(sync.Equals("Async") ? "async" : "")}} ({{p}}) => {
                      if (1 > 0) return Result.Fail("fail");
-                     return Result.Success({{(fName.Equals("Async") ? "await" : "")}} new {{nameof(DummyClass)}}().Do{{fName}}({{p}}));
+                     return Result.Success({{(sync.Equals("Async") ? "await" : "")}} new {{nameof(DummyClass)}}().Do{{sync}}({{p}}));
                  })
                  """;
     }
@@ -277,6 +335,18 @@ public sealed class TestGenerator
         return lines;
     }
     
+    private List<string> CreateAndDoBlock(int size, string sync)
+    {
+        var lines = new List<string> {$"var result = {(sync.Equals("Async") ? "await" : "")} new {nameof(DummyClass)}().AsResult()"};
+        for (var i = 1; i < size; i++)
+        {
+            lines.Add(And(i, sync));
+        }
+        lines.Add(Do(size, sync));
+ 
+        return lines;
+    }
+     
     private List<string> CreateFailBlock(int size, string sync)
     {
         var lines = new List<string> {$"var result = {(sync.Equals("Async") ? "await" : "")} new {nameof(DummyClass)}().AsResult()"};
@@ -288,5 +358,20 @@ public sealed class TestGenerator
         lines.Add(Then(size, sync));
     
         return lines;
+    }
+
+    private List<string> ConvertFailToException(List<string> lines)
+    {
+        var failureResultRegex = new Regex(@"return\s+Result.Fail\(.*\)");
+        var retLines = new List<string>();
+
+        retLines.Add(lines[0].Replace("Fail", "Exception"));
+        
+        foreach (var line in lines.Skip(1))
+        {
+            retLines.Add(failureResultRegex.Replace(line, "throw new Exception(\"Bad\")"));
+        }
+
+        return retLines;
     }
 }
