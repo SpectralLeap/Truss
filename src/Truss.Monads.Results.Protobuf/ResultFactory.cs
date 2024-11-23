@@ -1,6 +1,7 @@
-using ResultProtos;
+using System;
+using System.Linq;
 
-namespace Truss.Monads.Results.Protos;
+namespace Truss.Monads.Results.Protobuf;
 
 /// <summary>
 /// Represents a factory class for creating result objects.
@@ -29,15 +30,15 @@ public sealed class ResultFactory<T>
         where TMsg : new()
     {
         var msg = new TMsg();
-        
-        var resultProperty = typeof(TMsg).GetProperties()
-            .FirstOrDefault(p => p.PropertyType == typeof(ResultGrpcMessage));
 
-        if (resultProperty is null) 
+        var resultProperty = typeof(TMsg).GetProperties()
+            .FirstOrDefault(p => p.PropertyType == typeof(global::Results.Protobuf.Result));
+
+        if (resultProperty is null)
             throw new InvalidOperationException("The gRpc type does not contain a result object");
-        
+
         resultProperty.SetValue(msg, _result.MapToGrpc());
-            
+
         if (_result.Succeeded)
         {
             mapping?.Invoke(_result.SuccessValue, msg);

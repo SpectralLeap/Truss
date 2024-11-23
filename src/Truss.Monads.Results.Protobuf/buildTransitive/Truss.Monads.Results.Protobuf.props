@@ -1,0 +1,30 @@
+<Project>
+    <PropertyGroup>
+        <ResultsProtobuf_ProtosPath>$(MSBuildThisFileDirectory)../protos</ResultsProtobuf_ProtosPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <_NotDefaultBuildWarning>
+Result protos may not be included because the default Protobuf build is not enabled.
+Enable default build by setting EnableDefaultItems and EnableDefaultProtobufItems to true.
+Otherwise, ensure you add ResultsProtobuf_ProtosPath to Protobuf AdditionalImportDirs:
+    &lt;Protobuf Update="**/*.proto"&gt;
+        &lt;AdditionalImportDirs&gt;(AdditionalImportDirs);(ResultsProtobuf_ProtosPath);&lt;/AdditionalImportDirs&gt;
+    &lt;/Protobuf&gt;
+Note: there should be $ before the parentheses
+        </_NotDefaultBuildWarning>
+        <_PathReferenceNotification>
+The results.proto file is located at:
+$(ResultsProtobuf_ProtosPath)
+You may need to add this to Protobuf import paths in your tooling to get proper proto completions.
+        </_PathReferenceNotification>
+    </PropertyGroup>
+
+    <Target Name="PrintHelpfulInformation" BeforeTargets="Build">
+        <Message Condition="'$(EnableDefaultItems)' != 'true' or '$(EnableDefaultProtobufItems)' != 'true'"
+                 Text="$(_NotDefaultBuildWarning)"
+                 Importance="High"
+        />
+        <Message Text="$(_PathReferenceNotification)" Importance="High" />
+    </Target>
+</Project>

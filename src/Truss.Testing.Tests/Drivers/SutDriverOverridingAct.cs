@@ -29,6 +29,8 @@ public class SutDriverOverridingAct(RegistrationStore store)
 
     protected override Task Act(DslArgs args)
     {
+        var x = args["password"];
+
         store.AddData(LocalEmail);
         
         return Task.CompletedTask;

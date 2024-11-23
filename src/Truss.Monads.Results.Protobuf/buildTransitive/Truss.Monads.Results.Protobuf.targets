@@ -1,0 +1,8 @@
+<Project>
+    <ItemGroup>
+        <!-- Append the contentFiles path to the AdditionalImportDirs -->
+        <Protobuf Update="**/*.proto">
+            <AdditionalImportDirs>$(AdditionalImportDirs);$(ResultsProtobuf_ProtosPath)</AdditionalImportDirs>
+        </Protobuf>
+    </ItemGroup>
+</Project>

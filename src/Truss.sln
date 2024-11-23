@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monads", "Monads", "{FFB1F6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{54ADBD45-2512-40D8-B9AD-A3D0A1DDD3B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Protos", "Truss.Monads.Results.Protos\Truss.Monads.Results.Protos.csproj", "{E76DB12D-FFC3-4B47-BBE1-25108584FF68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Monads.Results.Protobuf", "Truss.Monads.Results.Protobuf\Truss.Monads.Results.Protobuf.csproj", "{E76DB12D-FFC3-4B47-BBE1-25108584FF68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Installation", "Truss.Modeling.Installation\Truss.Modeling.Installation.csproj", "{CA34B93D-DF79-42EE-83AE-2BCD736B282A}"
 EndProject

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <EnableDefaultProtobufItems>true</EnableDefaultProtobufItems>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="[3.13.0, 4)" />
+        <PackageReference Include="Grpc.Tools" Version="2.62.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Truss.Monads.Results" Version="0.0.2-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="**/*.proto"
+              Pack="true"
+              PackagePath="protos/" 
+        />
+        <None Include="buildTransitive/Truss.Monads.Results.Protobuf.props" 
+              Pack="true" 
+              PackagePath="buildTransitive/" 
+        />
+        <None Include="buildTransitive/Truss.Monads.Results.Protobuf.targets"
+              Pack="true"
+              PackagePath="buildTransitive/"
+        />
+    </ItemGroup>
+
+</Project>

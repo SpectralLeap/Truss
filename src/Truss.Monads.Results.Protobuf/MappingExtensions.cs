@@ -1,16 +1,28 @@
-﻿using ResultProtos;
+﻿using System;
+using System.Linq;
 
-namespace Truss.Monads.Results.Protos;
+namespace Truss.Monads.Results.Protobuf;
 
+/// <summary>
+/// Extensions for mapping messages from grpc to Result types
+/// </summary>
 public static class MappingExtensions
 {
-    public static Result<Nil> MapFromGrpc<TGrpc>(this ResultGrpcMessage resultGrpcMessage)
+    /// <summary>
+    /// Maps from grpc to a nil result
+    /// </summary>
+    /// <param name="resultGrpcMessage"></param>
+    /// <typeparam name="TGrpc"></typeparam>
+    /// <returns></returns>
+    public static Result<Nil> MapFromGrpc<TGrpc>(
+        this global::Results.Protobuf.Result resultGrpcMessage
+    )
     {
         if (resultGrpcMessage.Succeeded)
         {
             return Result.Success();
         }
-    
+
         return Result.Fail(resultGrpcMessage.FailureReasons.ToArray());
     }
 
@@ -24,8 +36,11 @@ public static class MappingExtensions
     /// <param name="grpcMessage">The gRPC message to map.</param>
     /// <param name="responseMapper">The mapping function.</param>
     /// <returns>A result object containing the mapped object if successful, or a failure object containing the failure reasons.</returns>
-    public static Result<TOut> MapFromGrpc<TGrpc, TOut>(this ResultGrpcMessage resultGrpcMessage, TGrpc grpcMessage,
-        Func<TGrpc, TOut> responseMapper)
+    public static Result<TOut> MapFromGrpc<TGrpc, TOut>(
+        this global::Results.Protobuf.Result resultGrpcMessage,
+        TGrpc grpcMessage,
+        Func<TGrpc, TOut> responseMapper
+    )
     {
         if (resultGrpcMessage.Succeeded)
         {
@@ -36,37 +51,49 @@ public static class MappingExtensions
     }
 
     /// <summary>
-    /// Maps a generic Result object to a ResultGrpcMessage object.
+    /// Maps a generic Result object to a global::Results.Protobuf.Result object.
     /// </summary>
     /// <typeparam name="T">The type of the Result object.</typeparam>
     /// <param name="result">The Result object to be mapped.</param>
-    /// <returns>A ResultGrpcMessage object representing the mapped Result object.</returns>
-    internal static ResultGrpcMessage MapToGrpc<T>(this Result<T> result)
+    /// <returns>A global::Results.Protobuf.Result object representing the mapped Result object.</returns>
+    internal static global::Results.Protobuf.Result MapToGrpc<T>(
+        this Result<T> result
+    )
     {
-        var resultMessage = new ResultGrpcMessage()
+        var resultMessage = new global::Results.Protobuf.Result()
         {
             Succeeded = result.Succeeded,
         };
 
-        if (result.Failed) resultMessage.FailureReasons.AddRange(result.FailureDetails.FailureReasons);
+        if (result.Failed)
+        {
+            resultMessage.FailureReasons.AddRange(
+                result.FailureDetails.FailureReasons
+            );
+        }
 
         return resultMessage;
     }
-    
+
     /// <summary>
-    /// Maps a generic Result object to a ResultGrpcMessage object.
+    /// Maps a generic Result object to a global::Results.Protobuf.Result object.
     /// </summary>
     /// <typeparam name="T">The type of the Result object.</typeparam>
     /// <param name="result">The Result object to be mapped.</param>
-    /// <returns>A ResultGrpcMessage object representing the mapped Result object.</returns>
+    /// <returns>A global::Results.Protobuf.Result object representing the mapped Result object.</returns>
     public static ResultFactory<T> Map<T>(this Result<T> result)
     {
-        var resultMessage = new ResultGrpcMessage()
+        var resultMessage = new global::Results.Protobuf.Result()
         {
             Succeeded = result.Succeeded,
         };
-    
-        if (result.Failed) resultMessage.FailureReasons.AddRange(result.FailureDetails.FailureReasons);
+
+        if (result.Failed)
+        {
+            resultMessage.FailureReasons.AddRange(
+                result.FailureDetails.FailureReasons
+            );
+        }
 
         return new ResultFactory<T>(result);
     }
