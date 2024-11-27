@@ -20,8 +20,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!--
         <ProjectReference Include="..\Truss.Analyzer\Truss.Analyzer\Truss.Analyzer.csproj"
                           OutputItemType="Analyzer" ReferenceOutputAssembly="true"/>
+        -->
     </ItemGroup>
 
     <ItemGroup>
