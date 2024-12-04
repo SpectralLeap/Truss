@@ -64,6 +64,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Protoc.Cqrs.Generator.Plugin", "Truss.Modeling.Protoc.Cqrs.Generator.Plugin\Truss.Modeling.Protoc.Cqrs.Generator.Plugin.csproj", "{E5A7860C-AA63-4A2A-9EF0-1C7239337D97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Modeling.Protoc.Cqrs.Gernator.Plugin.Tests", "Truss.Modeling.Protoc.Cqrs.Gernator.Plugin.Tests\Truss.Modeling.Protoc.Cqrs.Gernator.Plugin.Tests.csproj", "{DBB19C38-9646-42A8-83B0-20F54DA9C776}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 		{E5A7860C-AA63-4A2A-9EF0-1C7239337D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5A7860C-AA63-4A2A-9EF0-1C7239337D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5A7860C-AA63-4A2A-9EF0-1C7239337D97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB19C38-9646-42A8-83B0-20F54DA9C776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB19C38-9646-42A8-83B0-20F54DA9C776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB19C38-9646-42A8-83B0-20F54DA9C776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB19C38-9646-42A8-83B0-20F54DA9C776}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
@@ -197,5 +203,6 @@ Global
 		{A2A770CC-8378-41E8-A85D-1DD269B0431F} = {D11A60DA-AC1E-4C41-A311-60C6D01263BE}
 		{1B5B6E12-C21B-4760-BA59-CB55000D7D57} = {D11A60DA-AC1E-4C41-A311-60C6D01263BE}
 		{E5A7860C-AA63-4A2A-9EF0-1C7239337D97} = {47157AAD-7752-4754-89E1-BE970A1546D8}
+		{DBB19C38-9646-42A8-83B0-20F54DA9C776} = {EB9AFD7B-1D76-4342-9689-477A2E216ED5}
 	EndGlobalSection
 EndGlobal

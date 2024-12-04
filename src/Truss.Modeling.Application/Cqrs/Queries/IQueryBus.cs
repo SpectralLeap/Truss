@@ -19,5 +19,5 @@ public interface IQueryBus
         TQuery query,
         CancellationToken cancellationToken = new()
     )
-        where TQuery : Query<TResult>;
+        where TQuery : IQuery<TResult>;
 }

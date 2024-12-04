@@ -109,7 +109,10 @@ public readonly struct Result<TResult> : IResult
     /// <exception cref="ArgumentNullException">If the success object is null</exception>
     private Result(TResult success)
     {
-        _successValue = success ?? throw new ArgumentNullException(nameof(success)); 
+        _successValue = success ?? throw new ArgumentNullException(
+            nameof(success),
+            $"A Result value of type {typeof(TResult).Name} cannot be null"
+        );
         Succeeded = true;
     }
     
