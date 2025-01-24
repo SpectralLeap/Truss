@@ -4,9 +4,15 @@ namespace Truss.Modeling.Domain.Tests.Unit.Entities;
 
 public sealed class EntityAndAggregateRootIdTests
 {
-    private sealed record FakeId(Guid value) : AggregateRootId<Guid>(value);
+    private sealed record FakeId(Guid value) : AggregateRootId<Guid>(value)
+    {
+        public Guid value { get; } = value;
+    }
 
-    private sealed record SomeId(Guid value) : EntityId<Guid>(value);
+    private sealed record SomeId(Guid value) : EntityId<Guid>(value)
+    {
+        public Guid value { get; } = value;
+    }
 
     [Fact]
     public void AggregateRootIdIsComparableToTId()

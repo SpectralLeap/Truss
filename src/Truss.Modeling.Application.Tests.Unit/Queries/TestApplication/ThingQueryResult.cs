@@ -1,3 +1,6 @@
 namespace Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
 
-public sealed record ThingQueryResult(int ThingGotten);
+public sealed record ThingQueryResult(int ThingGotten)
+{
+    public int ThingGotten { get; } = ThingGotten;
+}
