@@ -3,17 +3,35 @@ using Truss.Modeling.Domain.Events;
 namespace Truss.Modeling.Domain.Entities;
 
 /// <summary>
-/// An aggregate root per DDD
+/// And aggregate root per DDD
+/// </summary>
+/// <typeparam name="TId"></typeparam>
+public interface IAggregateRoot<out TId> : IAggregateRoot
+{
+    /// <summary>
+    /// The unique identifier of the aggregate
+    /// </summary>
+    public TId Id { get; }
+}
+
+
+/// <summary>
+/// And aggregate root per DDD
 /// </summary>
 public interface IAggregateRoot
 {
     /// <summary>
-    /// The domain events stored on the aggregate
+    /// The version of the aggregate
     /// </summary>
-    public IReadOnlyCollection<IDomainEvent> DomainEvents();
-    
+    public long Version { get; }
+
     /// <summary>
-    /// Clear the aggregate's domain events
+    /// The Aggregate's uncommitted domain events (deltas)
     /// </summary>
-    public void ClearEvents();
+    public IReadOnlyCollection<IDomainEvent> PendingEvents { get; }
+
+    /// <summary>
+    /// Clear the aggregate's pending domain events
+    /// </summary>
+    public void ClearPendingEvents();
 }

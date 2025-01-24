@@ -1,5 +1,4 @@
 using System.Reflection;
-using Castle.DynamicProxy;
 using Truss.Testing.Services;
 
 namespace Truss.Testing;
@@ -11,8 +10,6 @@ namespace Truss.Testing;
 public sealed class DriverFactory
     : IAsyncDisposable
 {
-    private readonly ProxyGenerator _proxyGenerator = new();
-
     private DriverManager _driverManager;
     private SharedDependencyManager? _sharedDependencyManager;
 
@@ -23,9 +20,7 @@ public sealed class DriverFactory
     /// </summary>
     public DriverFactory()
     {
-        _driverManager = new DriverManager(
-            _proxyGenerator
-        );
+        _driverManager = new DriverManager();
     }
 
     /// <summary>
@@ -34,15 +29,14 @@ public sealed class DriverFactory
     /// <param name="assemblies">The assemblies to scan for external dependencies.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     public async Task InitializeAsync(
-        IEnumerable<Assembly> assemblies
+        Assembly[] assemblies
     )
     {
         _sharedDependencyManager = new SharedDependencyManager(assemblies);
         await _sharedDependencyManager.Start();
 
         _driverManager = new DriverManager(
-            _sharedDependencyManager,
-            _proxyGenerator
+            _sharedDependencyManager
         );
     }
 

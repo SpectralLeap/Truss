@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Truss;
 using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Tests.Unit.Queries.TestApplication;
 

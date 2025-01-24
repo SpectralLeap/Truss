@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Truss;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Modeling.Application.Tests.Unit.Commands.TestApplication;
 using Truss.Monads.Results;
@@ -33,12 +32,12 @@ public sealed class CommandTests
 
     private async Task<Result<AddValueResult>> SendSuccessfulCommand()
     {
-        return await _commandBus.SendCommand<AddValueCommand, AddValueResult>(new AddValueCommand(2));
+        return await _commandBus.SendCommand(new AddValueCommand(2));
     }
 
     private async Task<Result<AddValueResult>> SendFailedCommand()
     {
-        return await _commandBus.SendCommand<AddValueCommand, AddValueResult>(new AddValueCommand(1));
+        return await _commandBus.SendCommand(new AddValueCommand(1));
     }
         
     [Fact]

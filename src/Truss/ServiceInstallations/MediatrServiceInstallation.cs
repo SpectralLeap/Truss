@@ -2,26 +2,25 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Modeling.Installation;
-using Truss.Monads.Results;
 
 namespace Truss.ServiceInstallations;
 
-internal sealed class MediatrServiceInstallation : IServiceInstallation
+internal sealed class MediatrServiceInstallation
+    : IServiceInstallation
 {
-    public Result<Nil> Install(
+    public void Install(
         IServiceCollection services,
         IConfiguration configuration,
         IReadOnlyCollection<Assembly> assemblies
     )
     {
-        
-#if NET461 || NET47 || NET48
-        services.AddMediatR(assemblies.ToArray());
-#else
+        if (assemblies.Count == 0)
+        {
+            assemblies = [GetType().Assembly];
+        }
+
         services.AddMediatR(c =>
-            c.RegisterServicesFromAssemblies(assemblies.ToArray()));
-#endif
-        
-        return Result.Success();
+            c.RegisterServicesFromAssemblies(assemblies.ToArray())
+        );
     }
 }

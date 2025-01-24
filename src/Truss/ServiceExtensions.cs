@@ -8,16 +8,14 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddTruss(
         this IServiceCollection services,
-        Action<TrussServiceConfiguration> configure
+        Action<TrussServiceConfiguration>? configure = null
     )
     {
         var serviceConfiguration = new TrussServiceConfiguration()
                 .AddServiceInstallation<MediatrServiceInstallation>()
-                .AddServiceInstallation<BaseServiceInstallation>()
-                .AddServiceInstallation<EventSourcingServiceInstallation>()
-            ;
+                .AddServiceInstallation<InternalServiceInstallation>();
 
-        configure(serviceConfiguration);
+        configure?.Invoke(serviceConfiguration);
 
         var installerAgent = new InstallerAgent(serviceConfiguration);
 

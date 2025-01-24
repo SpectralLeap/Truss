@@ -10,26 +10,33 @@ public interface ICommandBus
     /// <summary>
     /// Dispatch a command to the bus
     /// </summary>
-    /// <param name="command"></param>
-    /// <param name="cancellationToken"></param>
-    /// <typeparam name="TCommand"></typeparam>
-    /// <returns><see cref="Result"/></returns>
-    public Task<Result<Nil>> SendCommand<TCommand>(
-        TCommand command,
+    /// <param name="command">
+    /// The command to dispatch
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Optional cancellation token
+    /// </param>
+    /// <returns><see cref="Result"/>An empty result</returns>
+    public Task<Result<Nil>> SendCommand(
+        ICommand command,
         CancellationToken cancellationToken = new()
-     ) where TCommand : ICommand;
+     );
 
     /// <summary>
     /// Dispatch a command to the bus
     /// </summary>
-    /// <param name="command"></param>
-    /// <param name="cancellationToken"></param>
-    /// <typeparam name="TCommand"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
-    /// <returns>A specific type of <see cref="Result"/></returns>
-    public Task<Result<TResult>> SendCommand<TCommand, TResult>(
-        TCommand command,
+    /// <param name="command">
+    /// The command to dispatch
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Optional cancellation token
+    /// </param>
+    /// <typeparam name="TResult">
+    /// The type of result to return
+    /// </typeparam>
+    /// <returns>A <see cref="Result"/> of <see cref="TResult"/></returns>
+    public Task<Result<TResult>> SendCommand<TResult>(
+        ICommand<TResult> command,
         CancellationToken cancellationToken = new()
-    )
-        where TCommand : ICommand<TResult>;
+    );
 }

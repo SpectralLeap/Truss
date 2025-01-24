@@ -47,7 +47,6 @@
         <TargetLayer>ExampleApplication</TargetLayer>
     </PropertyGroup>
 
-
     <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -60,21 +59,18 @@
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(TargetLayer)' == 'Infrastructure'">
-        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
-        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0;</TargetFrameworks>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Tests'">
-        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
-        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0;</TargetFrameworks>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'ExampleApplication'">
-        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net6.0;net7.0;net8.0;net461;net48</TargetFrameworks>
-        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>

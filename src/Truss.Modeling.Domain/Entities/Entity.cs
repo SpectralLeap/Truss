@@ -12,6 +12,7 @@ public abstract class Entity<TId>
     /// </summary>
     public TId Id { get; }
 
+
     /// <summary>
     /// 
     /// </summary>

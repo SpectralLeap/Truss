@@ -1,13 +1,18 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Monads.Results;
 
 namespace Truss.Modeling.Installation;
 
 public interface IServiceInstallation
 {
-    public Result<Nil> Install(
+    /// <summary>
+    /// Install a service to the service collection
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <param name="assemblies"></param>
+    public void Install(
         IServiceCollection services,
         IConfiguration configuration,
         IReadOnlyCollection<Assembly> assemblies

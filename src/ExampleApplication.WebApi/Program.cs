@@ -1,7 +1,6 @@
 using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
 using Truss;
-using Truss.Infrastructure.InMemory;
 using Truss.Modeling.Application.Cqrs.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +10,7 @@ builder.Services.AddGrpc();
 
 builder.Services
     .AddTruss(c => 
-        c.InstallModule<Module>()
-            .AddInMemoryEventSourcing()
-        );
+        c.InstallModule<Module>());
 
 var app = builder.Build();
 
@@ -21,7 +18,7 @@ var app = builder.Build();
 app.MapGrpcService<GreeterService>();
 app.MapGet("/", async (ICommandBus commandBus) =>
     {
-        var x = await commandBus.SendCommand<GreetCommand, GreetResult>(new GreetCommand
+        var x = await commandBus.SendCommand(new GreetCommand
         {
             Subject = Guid.NewGuid().ToString(),
         });

@@ -30,7 +30,7 @@ public sealed class ServiceTests
     [Fact]
     public void ThrowsWhenTheDslRequestsADependencyItDidNotRegister()
     {
-       Assert.Throws<DriverServicesNotRegisteredException>(() => _factoryDriver.GetDriver
+       Assert.Throws<DriverServicesFailedResolvingException>(() => _factoryDriver.GetDriver
        <DriverRequestingUnregisteredDependency>());
     }
 

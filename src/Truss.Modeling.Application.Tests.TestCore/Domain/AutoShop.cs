@@ -1,8 +1,9 @@
+using System;
 using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Modeling.Application.Tests.TestCore.Domain;
 
-public sealed class AutoShop : AggregateRoot<AutoShopId, Guid>
+public sealed class AutoShop : AggregateRoot<AutoShopId>
 {
     public string Name { get; private set; }
     

@@ -1,5 +1,4 @@
 using System.Reflection;
-using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.Testing.Services;
 
@@ -10,24 +9,18 @@ internal sealed class DriverManager : IAsyncDisposable
     // This can change locations after dependency injection version 5.0 so using
     // reflection to get it
     private static MethodInfo? _serviceProviderBuilder;
-    private readonly ProxyGenerator _proxyGenerator;
     private readonly Dictionary<string, IServiceProvider> _activeProviders = [];
     private readonly SharedDependencyManager? _sharedDependencyManager;
 
-    public DriverManager(
-        ProxyGenerator proxyGenerator
-    )
+    public DriverManager()
     {
-        _proxyGenerator = proxyGenerator;
     }
 
     public DriverManager(
-        SharedDependencyManager sharedDependencyManager,
-        ProxyGenerator proxyGenerator
+        SharedDependencyManager sharedDependencyManager
     )
     {
         _sharedDependencyManager = sharedDependencyManager;
-        _proxyGenerator = proxyGenerator;
     }
 
     public async Task<TDsl> ClassProxyWithTargetAsync<TDsl>(string id, string[] tags) 
@@ -52,7 +45,12 @@ internal sealed class DriverManager : IAsyncDisposable
         catch (InvalidOperationException ex)
         {
             if (ex.Message.ToLower().StartsWith("unable to resolve service"))
-                throw new DriverServicesNotRegisteredException(typeof(TDsl));
+            {
+                throw new DriverServicesFailedResolvingException(
+                    typeof(TDsl),
+                    ex.Message
+                );
+            }
 
             throw;
         }

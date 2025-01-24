@@ -17,7 +17,9 @@ internal sealed class InstallerAgent
         _trussServiceConfiguration = trussServiceConfiguration;
     }
 
-    public void RunInstallation(IServiceCollection services)
+    public void RunInstallation(
+        IServiceCollection services
+    )
     {
         var configuration = _trussServiceConfiguration.Configuration;
         var modules = _trussServiceConfiguration.Modules;
@@ -42,21 +44,11 @@ internal sealed class InstallerAgent
                 moduleName
             );
            
-            var result = installation.Install(
+           installation.Install(
                 services,
                 _trussServiceConfiguration.Configuration,
                 _assemblies
             );
-
-            if (result.Failed)
-            {
-                _trussServiceConfiguration.Logger?.LogInformation(
-                    "Installation failed for {ModuleName}: {FailureMessage}",
-                    moduleName,
-                    result.FailureMessage
-                );
-            }
-            
         }
     }
 }

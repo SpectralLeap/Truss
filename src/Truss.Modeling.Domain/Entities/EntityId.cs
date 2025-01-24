@@ -21,6 +21,10 @@ public abstract record EntityId<TId>
         this.Value = Value;
     }
 
-    public static implicit operator TId(EntityId<TId> id) => id.Value;
+    /// <inheritdoc />
+    public override string? ToString()
+    {
+        return Value?.ToString();
+    }
 }
 

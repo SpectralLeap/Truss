@@ -14,5 +14,4 @@ public record AggregateRootId<TId> : EntityId<TId>
     protected AggregateRootId(TId Value) : base(Value)
     {
     }
-    
 }
