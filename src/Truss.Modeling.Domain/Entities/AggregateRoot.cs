@@ -9,8 +9,7 @@ namespace Truss.Modeling.Domain.Entities;
 /// <typeparam name="TId"></typeparam>
 /// <typeparam name="TIdType"></typeparam>
 public abstract class AggregateRoot<TId, TIdType> 
-    : Entity<TId>,
-        IAggregateRoot where TId : AggregateRootId<TIdType>
+    : Entity<TId>, IAggregateRoot
 {
    
     /// <inheritdoc/>>

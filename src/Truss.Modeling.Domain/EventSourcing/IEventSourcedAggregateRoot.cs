@@ -1,5 +1,3 @@
-using Truss.Modeling.Domain.Entities;
-
 namespace Truss.Modeling.Domain.EventSourcing;
 
 
@@ -8,7 +6,6 @@ namespace Truss.Modeling.Domain.EventSourcing;
 /// </summary>
 /// <typeparam name="TId"></typeparam>
 public interface IEventSourcedAggregateRoot<out TId>
-    where TId : AggregateRootId<Guid>
 {
     /// <summary>
     /// The event sourced aggregate root's Id

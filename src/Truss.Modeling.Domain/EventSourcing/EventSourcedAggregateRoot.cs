@@ -12,7 +12,6 @@ namespace Truss.Modeling.Domain.EventSourcing;
 /// </typeparam>
 /// <typeparam name="TId"><see cref="AggregateRootId{TId}"/> of the aggregate type. Must be a type of <see cref="Guid"/></typeparam>
 public abstract class EventSourcedAggregateRoot<TRoot, TId> : AggregateRoot<TId, Guid>, IEventSourcedAggregateRoot<TId>
-    where TId : AggregateRootId<Guid>
     where TRoot : EventSourcedAggregateRoot<TRoot, TId>
 {
     

@@ -5,12 +5,12 @@ namespace Truss.Modeling.Domain.Events;
 /// </summary>
 internal sealed class DomainEventAggregator
 {
-    private readonly Dictionary<Guid, IDomainEvent> _domainEvents = new();
+    private readonly HashSet<IDomainEvent> _domainEvents = new();
     
     /// <summary>
     /// Get all the events
     /// </summary>
-    public IReadOnlyCollection<IDomainEvent> Events => _domainEvents.Values.ToList().AsReadOnly();
+    public IReadOnlyCollection<IDomainEvent> Events => _domainEvents.ToArray();
 
     /// <summary>
     /// Add a new event
@@ -18,9 +18,7 @@ internal sealed class DomainEventAggregator
     /// <param name="event"></param>
     public void Add(IDomainEvent @event)
     {
-        var id = @event.Id;
-        if (_domainEvents.ContainsKey(id)) return;
-        _domainEvents.Add(id, @event);
+        _domainEvents.Add(@event);
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Modeling.Domain.EventSourcing;
 
@@ -9,7 +8,6 @@ namespace Truss.Modeling.Domain.EventSourcing;
 /// <typeparam name="TId"></typeparam>
 [ExcludeFromCodeCoverage]
 public abstract record CreationEvent<TId> : ChangeEvent 
-    where TId : AggregateRootId<Guid>
 {
     /// <summary>
     /// Represents a new aggregate entity that has been created.

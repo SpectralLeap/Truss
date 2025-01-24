@@ -1,4 +1,3 @@
-using Truss.Modeling.Domain.Entities;
 using Truss.Monads.Results;
 
 namespace Truss.Modeling.Domain.EventSourcing;
@@ -7,7 +6,6 @@ namespace Truss.Modeling.Domain.EventSourcing;
 /// Builds an Event Sourced Context provider
 /// </summary>
 internal sealed class ChangeEventHandlerRegistry<TRoot, TId> : IChangeEventHandlerRegistry<TRoot> 
-    where TId : AggregateRootId<Guid>
     where TRoot : EventSourcedAggregateRoot<TRoot, TId>
 {
     private readonly Dictionary<Type, Func<ChangeEvent, Result<TRoot>>> _changeEventHandlers = new();
