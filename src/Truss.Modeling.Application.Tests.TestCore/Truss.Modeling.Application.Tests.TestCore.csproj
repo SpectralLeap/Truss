@@ -1,12 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFrameworks></TargetFrameworks>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Truss.Modeling.Domain\Truss.Modeling.Domain.csproj" />
     </ItemGroup>
-
 </Project>
