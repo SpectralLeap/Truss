@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.Modeling.Installation;
 
+/// <summary>
+/// Interface for installing services
+/// </summary>
 public interface IServiceInstallation
 {
     /// <summary>

@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup>
+        <TargetFrameworks>net8.0;</TargetFrameworks>
         <BuildNumber>$([System.DateTime]::Now.ToString("yyyyMMddHHmm"))</BuildNumber>
         <Version>0.0.2-alpha.$(BuildNumber)</Version>
         <LangVersion>latest</LangVersion>
@@ -48,35 +49,32 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
+        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <TargetFramework>netstandard2.0</TargetFramework>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Protobuf'">
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(TargetLayer)' == 'Infrastructure'">
-        <TargetFrameworks>net6.0;net7.0;net8.0;</TargetFrameworks>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Tests'">
-        <TargetFrameworks>net6.0;net7.0;net8.0;</TargetFrameworks>
-        <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'ExampleApplication'">
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IsRoslynComponent>true</IsRoslynComponent>
         <IsPackable>false</IsPackable>
