@@ -13,10 +13,10 @@ internal sealed class QueryBus : IQueryBus
         _mediator = mediator;
     }
     
-    public async Task<Result<TResult>> SendQuery<TQuery, TResult>(
-        TQuery query,
+    public async Task<Result<TResult>> SendQuery<TResult>(
+        IQuery<TResult> query,
         CancellationToken cancellationToken
-    ) where TQuery : IQuery<TResult>
+    )
     {
         return await _mediator.Send(query, cancellationToken);
     }
