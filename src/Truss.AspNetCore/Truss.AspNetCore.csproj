@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="[8, )" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[8, )" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="[8, )" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[8, )" />
+        <PackageReference Include="Serilog" Version="4.2.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Truss\Truss.csproj" />
+    </ItemGroup>
+
+</Project>

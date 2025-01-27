@@ -1,18 +1,23 @@
+using ExampleApplication.Module1;
+using ExampleApplication.Module2;
 using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
-using Truss;
+using Truss.AspNetCore;
 using Truss.Modeling.Application.Cqrs.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.UseTruss(c =>
+        c.InstallModule<ExampleModule>()
+            .InstallModule<Module1>()
+            .InstallModule<Module2>()
+);
+
 builder.Services.AddGrpc();
 
-builder.Services
-    .AddTruss(c => 
-        c.InstallModule<Module>());
-
 var app = builder.Build();
+
+app.UseTruss();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();

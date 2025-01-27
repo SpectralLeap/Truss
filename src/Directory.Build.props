@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFrameworks>net8.0;</TargetFrameworks>
         <BuildNumber>$([System.DateTime]::Now.ToString("yyyyMMddHHmm"))</BuildNumber>
-        <Version>0.0.2-alpha.$(BuildNumber)</Version>
+        <Version>0.1.0-alpha.$(BuildNumber)</Version>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>

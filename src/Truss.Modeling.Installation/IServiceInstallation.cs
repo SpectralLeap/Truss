@@ -10,7 +10,7 @@ namespace Truss.Modeling.Installation;
 public interface IServiceInstallation
 {
     /// <summary>
-    /// Install a service to the service collection
+    /// ConfigureServices a service to the service collection
     /// </summary>
     /// <param name="services"></param>
     /// <param name="configuration"></param>

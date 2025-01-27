@@ -3,8 +3,6 @@
 using MediatR;
 using Truss.Monads.Results;
 
-#pragma warning disable CS0108, CS0114
-
 namespace Truss.Modeling.Application.Cqrs.Queries;
 
 /// <summary>
@@ -17,5 +15,11 @@ public interface IQueryHandler<in TQuery, TResult>
     where TQuery : IQuery<TResult>
 {
     
-    public Task<Result<TResult>> Handle(TQuery query, CancellationToken cancellationToken);
+    /// <summary>
+    /// Handles the query
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public new Task<Result<TResult>> Handle(TQuery query, CancellationToken cancellationToken);
 }

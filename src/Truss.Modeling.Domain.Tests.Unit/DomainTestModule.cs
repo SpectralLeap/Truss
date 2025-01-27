@@ -1,13 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Installation;
+using Truss.Modeling.Installation;
 
 namespace Truss.Modeling.Domain.Tests.Unit;
 
-#pragma warning disable CS8625
-public sealed class DomainTestModule : IModule
+public sealed class DomainTestModule : Module
 {
-    public void Define(IServiceCollection services, IConfiguration configuration)
+    public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
     }
 }

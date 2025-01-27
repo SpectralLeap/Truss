@@ -6,6 +6,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />
+        <ProjectReference Include="..\Truss\Truss.csproj" />
     </ItemGroup>
 </Project>

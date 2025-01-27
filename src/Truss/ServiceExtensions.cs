@@ -4,6 +4,14 @@ using Truss.ServiceInstallations;
 
 namespace Truss;
 
+public sealed class TrussBundledModule : Module
+{
+    public TrussBundledModule()
+    {
+        AddAssembly(GetType().Assembly);
+    }
+}
+
 public static class ServiceExtensions
 {
     public static IServiceCollection AddTruss(

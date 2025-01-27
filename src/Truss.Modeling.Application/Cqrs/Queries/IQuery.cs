@@ -3,5 +3,9 @@ using Truss.Monads.Results;
 
 namespace Truss.Modeling.Application.Cqrs.Queries;
 
-public interface IQuery<T> 
-    : IRequest<Result<T>>;
+/// <summary>
+/// Interface for a query
+/// </summary>
+/// <typeparam name="TResult"></typeparam>
+public interface IQuery<TResult> 
+    : IRequest<Result<TResult>>;

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Installation;
+using Truss.Modeling.Installation;
 
 namespace Truss.Modeling.Application.Tests.Unit;
 
-public sealed class ApplicationTestModule : IModule
+public sealed class ApplicationTestModule : Module
 {
-    public void Define(IServiceCollection services, IConfiguration configuration)
+    public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
     }
 }

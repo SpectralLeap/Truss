@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Truss.Modeling.Application.Installation;
+using Truss.Modeling.Installation;
 
-namespace Truss.Modeling.Installation;
+namespace Truss;
 
 /// <summary>
 /// Configuration for installing services for Truss
@@ -17,6 +17,12 @@ public sealed class TrussServiceConfiguration
     /// The <see cref="IServiceInstallation"/>s to be installed
     /// </summary>
     public IReadOnlyCollection<IServiceInstallation> ServiceInstallations => _serviceInstallations;
+
+    /// <summary>
+    /// The <see cref="IInstallationStep"/>s that will run in the installation pipeline
+    /// </summary>
+    public IReadOnlyCollection<Type> InstallationSteps => _installationSteps;
+    
     /// <summary>
     /// If provided, will log install information
     /// </summary>
@@ -26,9 +32,11 @@ public sealed class TrussServiceConfiguration
     /// </summary>
     public IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().Build();
 
+
     private readonly List<IModule> _modules = [];
     
     private readonly List<IServiceInstallation> _serviceInstallations = [];
+    private readonly List<Type> _installationSteps = [];
 
     /// <summary>
     /// Assigns an <see cref="IConfiguration"/> to read from
@@ -87,6 +95,13 @@ public sealed class TrussServiceConfiguration
     {
         var serviceInstallation = new T();
         _serviceInstallations.Add(serviceInstallation);
+        return this;
+    }
+
+    public TrussServiceConfiguration AddInstallationStep<TStep>()
+    where TStep : IInstallationStep
+    {
+        _installationSteps.Add(typeof(TStep));
         return this;
     }
 }

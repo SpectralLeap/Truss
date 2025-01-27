@@ -10,28 +10,26 @@ namespace Truss.Infrastructure.Marten.Tests.EventSourcing;
 
 public sealed class EventSourcingDriver(
     IAggregateRepository aggregateRepository
-)
-    : Driver
+) : Driver
 {
     [BaseServices]
     private static readonly IServiceCollection Services = new ServiceCollection()
-            .AddMarten(o =>
-            {
-                o.Connection(
-                    PostgresDatabaseSharedDependency.ConnectionString!
-                );
+        .AddMarten(o =>
+        {
+            o.Connection(
+                PostgresDatabaseSharedDependency.ConnectionString!
+            );
 
-                o.CreateDatabasesForTenants(
-                    c => c.MaintenanceDatabase(
+            o.CreateDatabasesForTenants(
+                c => c.MaintenanceDatabase(
                         PostgresDatabaseSharedDependency.ConnectionString!
                     ).ForTenant()
                     .CheckAgainstPgDatabase()
-                );
-            })
-            .ApplyAllDatabaseChangesOnStartup()
-            .Services
-            .AddTruss(c => c.AddMartenServices())
-        ;
+            );
+        })
+        .ApplyAllDatabaseChangesOnStartup()
+        .Services
+        .AddTruss(c => c.AddMartenServices());
 
 
     public async Task AssertWrites()
