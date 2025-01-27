@@ -2,7 +2,7 @@ using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Infrastructure.Marten.Tests.EventSourcing.TestApplication;
 
-public sealed class Counter : AggregateRoot<Guid>
+public sealed class Counter : Aggregate<Guid>
 {
     public int Number { get; private set; }
 

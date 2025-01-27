@@ -18,7 +18,7 @@ public interface IAggregateRepository
     public Task<Result<Nil>> StoreAsync<TId>(
         IAggregateRoot<TId> aggregate,
         CancellationToken ct = default
-    ) where TId : AggregateRootId<Guid>;
+    ) where TId : AggregateId<Guid>;
 
     /// <summary>
     /// Store an aggregate to the event stream
@@ -55,7 +55,7 @@ public interface IAggregateRepository
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     public Task<Result<T>> LoadAsync<T>(
-        AggregateRootId<Guid> id,
+        AggregateId<Guid> id,
         int? version = null,
         CancellationToken ct = default
     ) where T : class, IAggregateRoot;

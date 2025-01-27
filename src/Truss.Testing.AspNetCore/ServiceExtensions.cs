@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.Testing.AspNetCore;
@@ -7,41 +9,37 @@ namespace Truss.Testing.AspNetCore;
 public static class ServiceExtensions
 {
     public static IServiceCollection AddWebServer<T>(
-        this IServiceCollection collection
-    )
-        where T : class
+        this IServiceCollection injectedServices,
+        Action<IConfigurationBuilder>? testApplicationConfiguration = null,
+        Action<IServiceCollection>? testServiceConfiguration = null
+    ) where T : class
     {
-        return collection
-            .AddSingleton(provider => new WebApplicationFactory<T>()
-                .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
+        return injectedServices
+            .AddSingleton(_ => new WebApplicationFactory<T>()
+                .WithWebHostBuilder(builder =>
                 {
-                    // Ignore self-referential services
-                    foreach (var serviceDescriptor in collection.Where(service => 
-                                 service.ServiceType != typeof(WebApplicationFactory<T>) 
-                                 && service.ServiceType  != typeof(HttpClient)))
+                    if (testApplicationConfiguration is not null)
                     {
-                        var serviceInstance = provider.GetService(serviceDescriptor.ServiceType)!;
-
-                        // Check the lifetime of the service and add it accordingly
-                        switch (serviceDescriptor.Lifetime)
+                        builder.ConfigureAppConfiguration((_, configurationBuilder) =>
                         {
-                            case ServiceLifetime.Singleton:
-                                services.AddSingleton(serviceDescriptor.ServiceType, serviceInstance);
-                                break;
-                            case ServiceLifetime.Scoped:
-                                services.AddScoped(serviceDescriptor.ServiceType, _ => serviceInstance);
-                                break;
-                            case ServiceLifetime.Transient:
-                                services.AddTransient(serviceDescriptor.ServiceType, _ => serviceInstance);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                            testApplicationConfiguration.Invoke(configurationBuilder);
+                        });
                     }
-                }))
+
+                    builder.ConfigureTestServices(servicesUnderTest =>
+                        {
+                            foreach (var service in injectedServices)
+                            {
+                                servicesUnderTest.Add(service);
+                            }
+
+                            testServiceConfiguration?.Invoke(servicesUnderTest);
+                        });
+                })
             )
-            .AddSingleton<HttpClient>(p => p.GetService<WebApplicationFactory<T>>()!.CreateClient()!)
-            ;
+            .AddSingleton<HttpClient>(p => p
+                .GetRequiredService<WebApplicationFactory<T>>()
+                .CreateClient()
+            );
     }
-                        
 }

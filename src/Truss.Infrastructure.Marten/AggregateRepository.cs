@@ -24,7 +24,7 @@ internal sealed class AggregateRepository
     public async Task<Result<Nil>> StoreAsync<TId>(
         IAggregateRoot<TId> aggregate,
         CancellationToken ct = default
-    ) where TId : AggregateRootId<Guid>
+    ) where TId : AggregateId<Guid>
     {
         ArgumentNullException.ThrowIfNull(aggregate);
         ArgumentNullException.ThrowIfNull(aggregate.Id);
@@ -107,7 +107,7 @@ internal sealed class AggregateRepository
     }
 
     public async Task<Result<T>> LoadAsync<T>(
-        AggregateRootId<Guid> id,
+        AggregateId<Guid> id,
         int? version = null,
         CancellationToken ct = default
     ) where T : class, IAggregateRoot

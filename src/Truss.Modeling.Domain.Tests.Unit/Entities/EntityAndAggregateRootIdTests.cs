@@ -4,7 +4,7 @@ namespace Truss.Modeling.Domain.Tests.Unit.Entities;
 
 public sealed class EntityAndAggregateRootIdTests
 {
-    private sealed record FakeId(Guid value) : AggregateRootId<Guid>(value)
+    private sealed record FakeId(Guid value) : AggregateId<Guid>(value)
     {
         public Guid value { get; } = value;
     }

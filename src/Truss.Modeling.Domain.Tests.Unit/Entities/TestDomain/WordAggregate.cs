@@ -3,7 +3,7 @@ using Truss.Modeling.Domain.Entities;
 namespace Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 
 internal sealed class WordAggregate 
-    : AggregateRoot<WordAggregateId>
+    : Aggregate<WordAggregateId>
 {
     public WordAggregate(WordAggregateId id) : base(id)
     {
