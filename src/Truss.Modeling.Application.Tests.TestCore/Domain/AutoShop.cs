@@ -3,7 +3,7 @@ using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Modeling.Application.Tests.TestCore.Domain;
 
-public sealed class AutoShop : AggregateRoot<AutoShopId>
+public sealed class AutoShop : Aggregate<AutoShopId>
 {
     public string Name { get; private set; }
     

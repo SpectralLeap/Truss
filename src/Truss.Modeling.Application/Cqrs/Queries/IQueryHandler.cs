@@ -16,10 +16,14 @@ public interface IQueryHandler<in TQuery, TResult>
 {
     
     /// <summary>
-    /// Handles the query
+    /// Handle a query
     /// </summary>
-    /// <param name="query"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="query">
+    /// The query to handle
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Cancellation token
+    /// </param>
     /// <returns></returns>
     public new Task<Result<TResult>> Handle(TQuery query, CancellationToken cancellationToken);
 }

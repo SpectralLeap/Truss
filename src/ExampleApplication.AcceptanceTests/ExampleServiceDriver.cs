@@ -11,8 +11,7 @@ public class ExampleServiceDriver(HttpClient client) : Driver
 {
     [BaseServices]
     public static IServiceCollection ServiceProvider => new ServiceCollection()
-        .AddWebServer<Program>()
-    ;
+        .AddWebServer<Program>();
 
     public async Task AssertHeartbeat()
     {

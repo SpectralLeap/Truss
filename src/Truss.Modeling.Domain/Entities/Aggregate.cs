@@ -6,15 +6,14 @@ using Truss.Modeling.Domain.EventSourcing;
 namespace Truss.Modeling.Domain.Entities;
 
 /// <summary>
-/// An aggregate root per DDD
+/// An aggregate per DDD
+///
+/// https://martinfowler.com/bliki/DDD_Aggregate.html
 /// </summary>
 /// <typeparam name="TId"></typeparam>
-public abstract class AggregateRoot<TId>
-    : IAggregateRoot<TId>
+public abstract class Aggregate<TId>
+    : Entity<TId>, IAggregateRoot<TId>
 {
-    /// <inheritdoc />
-    public TId Id { get; protected set; }
-
     /// <inheritdoc/>>
     public IReadOnlyCollection<IDomainEvent> PendingEvents => _pendingEvents;
 
@@ -33,7 +32,8 @@ public abstract class AggregateRoot<TId>
     /// Requires an Id for consistency with the underlying event systems
     /// </summary>
     /// <param name="id"></param>
-    protected AggregateRoot(TId id)
+    protected Aggregate(TId id)
+        : base(id)
     {
         if (id is null)
         {
@@ -106,25 +106,5 @@ public abstract class AggregateRoot<TId>
         _eventHandlerRegistry.Handle(@event);
 
         Version++;
-    }
-
-    /// <inheritdoc />
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode();
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-
-        if (obj.GetType() != GetType()) return false;
-
-        if (obj is not AggregateRoot<TId> otherAggregate) return false;
-
-        if (otherAggregate.Id is not TId otherId) return false;
-
-        return Id.Equals(otherId);
     }
 }

@@ -10,7 +10,7 @@ public abstract class Entity<TId>
     /// <summary>
     /// The unique Id of the entity
     /// </summary>
-    public TId Id { get; }
+    public TId Id { get; protected set; }
 
 
     /// <summary>

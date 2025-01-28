@@ -4,7 +4,7 @@ using Truss.Monads.Results;
 namespace Truss.Modeling.Application.Cqrs.Commands;
 
 /// <summary>
-/// Command for CQRS that returns a Nil result
+/// Command for CQRS
 /// </summary>
 public interface ICommand : IRequest<Result<Nil>>;
 

@@ -25,7 +25,7 @@ public sealed class QueryTests
 
     private async Task<int> RunGoodQuery()
     {
-        var result = await _serviceProvider.GetService<IQueryBus>()!.SendQuery<ThingQuery, ThingQueryResult>(new ThingQuery(0));
+        var result = await _serviceProvider.GetService<IQueryBus>()!.SendQuery(new ThingQuery(0));
         return result.SuccessValue.ThingGotten;
     }
 
