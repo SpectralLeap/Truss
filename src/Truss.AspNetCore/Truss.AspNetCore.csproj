@@ -8,7 +8,6 @@
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[8, )" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="[8, )" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[8, )" />
-
     </ItemGroup>
 
     <ItemGroup>

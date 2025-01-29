@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Truss.Modeling.Application.Cqrs;
 using Truss.Monads.Results;
 
 namespace Truss.Infrastructure.FluentValidation;

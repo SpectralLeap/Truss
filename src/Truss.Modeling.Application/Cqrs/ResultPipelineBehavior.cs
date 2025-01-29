@@ -2,15 +2,52 @@ using System.Reflection;
 using MediatR;
 using Truss.Monads.Results;
 
-namespace Truss;
+namespace Truss.Modeling.Application.Cqrs;
 
+/// <summary>
+/// A pipeline behavior that allows handling results
+/// </summary>
+/// <typeparam name="TRequest">
+/// A request type
+/// </typeparam>
+/// <typeparam name="TResult">
+/// The result type
+/// </typeparam>
 public abstract class ResultPipelineBehavior<TRequest, TResult>
     : IPipelineBehavior<TRequest, TResult>
     where TRequest : notnull
     where TResult : IResult
 {
+    /// <summary>
+    /// Handles the request
+    /// </summary>
+    /// <param name="request">
+    /// The request to handle
+    /// </param>
+    /// <param name="next">
+    /// The next handler in the pipeline
+    /// </param>
+    /// <param name="cancellationToken">
+    /// The cancellation token
+    /// </param>
+    /// <returns></returns>
     public abstract Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Explicitly fail a result
+    /// </summary>
+    /// <param name="failureType">
+    /// The <see cref="FailureType"/> to fail for
+    /// </param>
+    /// <param name="reasons">
+    /// The reasons for failure
+    /// </param>
+    /// <returns>
+    /// A failed result
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// If the result is malformed
+    /// </exception>
     protected TResult Fail(
         FailureType failureType,
         params string[] reasons
@@ -43,6 +80,21 @@ public abstract class ResultPipelineBehavior<TRequest, TResult>
             : throw new InvalidOperationException($"Could not construct a failure of type {typeof(TResult)}");
     }
 
+    /// <summary>
+    /// Parses a result and performs actions on success or failure
+    /// </summary>
+    /// <param name="result">
+    /// The result to parse
+    /// </param>
+    /// <param name="onSuccess">
+    /// The action to perform on success
+    /// </param>
+    /// <param name="onFailure">
+    /// The action to perform on failure
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    /// If the result is malformed
+    /// </exception>
     protected async ValueTask ParseResult(
         TResult result,
         Func<ValueTask> onSuccess,
@@ -56,7 +108,6 @@ public abstract class ResultPipelineBehavior<TRequest, TResult>
             return;
         }
 
-
         if (result.FailureDetails is null)
         {
             throw new InvalidOperationException($"FailureDetails are null for {typeof(TResult).Name}");
@@ -65,6 +116,21 @@ public abstract class ResultPipelineBehavior<TRequest, TResult>
         await onFailure(result.FailureDetails).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Parses a result and performs actions on success or failure
+    /// </summary>
+    /// <param name="result">
+    /// The result to parse
+    /// </param>
+    /// <param name="onSuccess">
+    /// The action to perform on success
+    /// </param>
+    /// <param name="onFailure">
+    /// The action to perform on failure
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    /// If the result was malformed
+    /// </exception>
     protected async ValueTask ParseResult(
         TResult result,
         Func<object, ValueTask> onSuccess,

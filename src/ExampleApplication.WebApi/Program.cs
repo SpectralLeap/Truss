@@ -60,7 +60,6 @@ app.MapGet("/heartbeat", () => "OK");
 
 app.Run();
 
-
 // Exposes the program class for testing.
 //
 // Preferable to InternalsVisibleTo
