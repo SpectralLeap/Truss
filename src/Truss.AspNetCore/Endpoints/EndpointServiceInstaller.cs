@@ -1,12 +1,11 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Persistence;
 using Truss.Modeling.Installation;
 
-namespace Truss.Infrastructure.Marten;
+namespace Truss.AspNetCore.Endpoints;
 
-public sealed class MartenServiceInstallation : IServiceInstallation
+public sealed class EndpointServiceInstaller : IServiceInstaller
 {
     public void Install(
         IServiceCollection services,
@@ -14,6 +13,7 @@ public sealed class MartenServiceInstallation : IServiceInstallation
         IReadOnlyCollection<Assembly> assemblies
     )
     {
-        services.AddScoped<IAggregateRepository, AggregateRepository>();
+        services.AddHttpContextAccessor();
+        services.AddSingleton<EndpointHandler>();
     }
 }

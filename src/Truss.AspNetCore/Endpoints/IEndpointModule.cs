@@ -6,7 +6,7 @@ using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Installation;
 using Truss.Modeling.Installation;
 
-namespace Truss.AspNetCore;
+namespace Truss.AspNetCore.Endpoints;
 
 public interface IEndpointModule : IModule
 {

@@ -9,8 +9,8 @@ using Truss.Modeling.Installation;
 
 namespace Truss.ServiceInstallations;
 
-internal sealed class InternalServiceInstallation
-    : IServiceInstallation
+internal sealed class InternalServiceInstaller
+    : IServiceInstaller
 {
     public void Install(
         IServiceCollection services,

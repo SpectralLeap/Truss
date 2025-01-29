@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace Truss.AspNetCore;
 
-internal sealed class InstallationManifestGenerator
+public sealed class InstallationManifestGenerator
 {
     private readonly TrussServiceConfiguration _configuration;
     private readonly List<ModuleManifest> _moduleManifests = [];
@@ -33,7 +33,7 @@ internal sealed class InstallationManifestGenerator
                 Name = string.IsNullOrEmpty(module.Name) 
                     ? module.GetType().Name 
                     : module.Name,
-                module = module,
+                Module = module,
                 Assemblies = module.Assemblies,
                 Types = types
             });

@@ -1,6 +1,7 @@
 using ExampleApplication.WebApi.Services;
 using MediatR;
 using Truss.AspNetCore;
+using Truss.AspNetCore.Endpoints;
 
 namespace ExampleApplication.WebApi;
 

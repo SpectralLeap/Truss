@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Truss.AspNetCore;
 
-internal sealed class InstallationPipeline
+public sealed class InstallationPipeline
 {
     private readonly ILogger<InstallationPipeline> _logger;
     private readonly InstallationManifest _installationManifest;

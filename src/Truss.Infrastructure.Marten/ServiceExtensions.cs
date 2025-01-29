@@ -1,5 +1,3 @@
-using Truss.Modeling.Installation;
-
 namespace Truss.Infrastructure.Marten;
 
 public static class ServiceExtensions
@@ -8,7 +6,7 @@ public static class ServiceExtensions
         this TrussServiceConfiguration trussServiceConfiguration
     )
     {
-        trussServiceConfiguration.AddServiceInstallation<MartenServiceInstallation>();
+        trussServiceConfiguration.AddServiceInstallation<MartenServiceInstaller>();
 
         return trussServiceConfiguration;
     }

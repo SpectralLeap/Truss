@@ -5,8 +5,8 @@ using Truss.Modeling.Installation;
 
 namespace Truss.ServiceInstallations;
 
-internal sealed class MediatrServiceInstallation
-    : IServiceInstallation
+internal sealed class MediatrServiceInstaller
+    : IServiceInstaller
 {
     public void Install(
         IServiceCollection services,

@@ -7,16 +7,16 @@ namespace Truss;
 /// <summary>
 /// Configuration for installing services for Truss
 /// </summary>
-public sealed class TrussServiceConfiguration
+public class TrussServiceConfiguration
 {
     /// <summary>
     /// The <see cref="IModule"/>s to be installed
     /// </summary>
     public IReadOnlyCollection<IModule> Modules => _modules;
     /// <summary>
-    /// The <see cref="IServiceInstallation"/>s to be installed
+    /// The <see cref="IServiceInstaller"/>s to be installed
     /// </summary>
-    public IReadOnlyCollection<IServiceInstallation> ServiceInstallations => _serviceInstallations;
+    public IReadOnlyCollection<IServiceInstaller> ServiceInstallations => _serviceInstallations;
 
     /// <summary>
     /// The <see cref="IInstallationStep"/>s that will run in the installation pipeline
@@ -32,10 +32,9 @@ public sealed class TrussServiceConfiguration
     /// </summary>
     public IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().Build();
 
-
     private readonly List<IModule> _modules = [];
     
-    private readonly List<IServiceInstallation> _serviceInstallations = [];
+    private readonly List<IServiceInstaller> _serviceInstallations = [];
     private readonly List<Type> _installationSteps = [];
 
     /// <summary>
@@ -45,7 +44,7 @@ public sealed class TrussServiceConfiguration
     /// The configuration to use
     /// </param>
     /// <returns></returns>
-    public TrussServiceConfiguration UseConfiguration(
+    public virtual TrussServiceConfiguration UseConfiguration(
         IConfiguration configuration
     )
     {
@@ -84,14 +83,14 @@ public sealed class TrussServiceConfiguration
     }
 
     /// <summary>
-    /// Register an <see cref="IServiceInstallation"/> to be installed
+    /// Register an <see cref="IServiceInstaller"/> to be installed
     /// </summary>
     /// <typeparam name="T">
     /// The concrete implementation to install from
     /// </typeparam>
     /// <returns></returns>
     public TrussServiceConfiguration AddServiceInstallation<T>()
-        where T : IServiceInstallation, new()
+        where T : IServiceInstaller, new()
     {
         var serviceInstallation = new T();
         _serviceInstallations.Add(serviceInstallation);

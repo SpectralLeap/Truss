@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Truss.AspNetCore.Endpoints;
 
 namespace Truss.AspNetCore;
 
@@ -11,7 +12,7 @@ public static class ServiceExtensions
     
     public static WebApplicationBuilder UseTruss(
         this WebApplicationBuilder builder,
-        Action<TrussServiceConfiguration>? trussServiceConfiguration = null
+        Action<TrussWebServiceConfiguration>? trussServiceConfiguration = null
     )
     {
         Log.Logger = new LoggerConfiguration()
@@ -20,19 +21,21 @@ public static class ServiceExtensions
 
         builder.Host.UseSerilog();
 
-        var config = new TrussServiceConfiguration()
-            .InstallModule<TrussBundledModule>();
+        var config = new TrussWebServiceConfiguration()
+                .InstallModule<TrussBundledModule>()
+                .InstallModule<TrussWebBundledModule>()
+                .AddInstallationStep<ModuleServiceRegistryInstallationStep>()
+                .AddInstallationStep<EndpointInstallationStep>()
+                .UseConfiguration(builder.Configuration)
+            as TrussWebServiceConfiguration;
 
-        config.AddInstallationStep<ModuleServiceRegistryInstallationStep>()
-            .AddInstallationStep<EndpointInstallationStep>();
-        
-        config.UseConfiguration(builder.Configuration);
+        if (config is null) throw new InvalidOperationException("Unable to create TrussWebServiceConfiguration");
 
         trussServiceConfiguration?.Invoke(config);
 
         var installerServices = new ServiceCollection()
             .AddLogging(c => c.AddSerilog())
-            .AddSingleton(config)
+            .AddSingleton<TrussServiceConfiguration>(config)
             .AddSingleton<InstallationPipeline>()
             .AddSingleton<WebInstallationPipeline>()
             .AddSingleton<InstallationManifestGenerator>()
@@ -51,12 +54,7 @@ public static class ServiceExtensions
 
         _installerServices = installerServices
             .BuildServiceProvider();
-       
-        var logger = _installerServices
-            .GetRequiredService<ILogger<InstallationPipeline>>();
-        
-        logger.LogDebug("Truss installation started");
-        
+
         var installer = _installerServices
             .GetRequiredService<InstallationPipeline>();
 
@@ -86,7 +84,6 @@ public static class ServiceExtensions
             .GetRequiredService<WebInstallationPipeline>();
         
         pipeline.Run(app);
-        
 
         logger.LogDebug("Disposing Truss installation services");
         _installerServices.Dispose();

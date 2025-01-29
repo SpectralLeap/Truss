@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Truss.Modeling.Installation;
 
-namespace Truss.AspNetCore;
+namespace Truss.AspNetCore.Endpoints;
 
 public abstract class EndpointModule : Module,
     IEndpointModule

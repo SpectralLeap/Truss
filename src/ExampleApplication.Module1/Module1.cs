@@ -1,4 +1,5 @@
 ﻿using Truss.AspNetCore;
+using Truss.AspNetCore.Endpoints;
 
 namespace ExampleApplication.Module1;
 

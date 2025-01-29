@@ -1,16 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Installation;
 using Truss.ServiceInstallations;
 
 namespace Truss;
-
-public sealed class TrussBundledModule : Module
-{
-    public TrussBundledModule()
-    {
-        AddAssembly(GetType().Assembly);
-    }
-}
 
 public static class ServiceExtensions
 {
@@ -20,8 +11,8 @@ public static class ServiceExtensions
     )
     {
         var serviceConfiguration = new TrussServiceConfiguration()
-                .AddServiceInstallation<MediatrServiceInstallation>()
-                .AddServiceInstallation<InternalServiceInstallation>();
+                .AddServiceInstallation<MediatrServiceInstaller>()
+                .AddServiceInstallation<InternalServiceInstaller>();
 
         configure?.Invoke(serviceConfiguration);
 
