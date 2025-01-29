@@ -44,7 +44,9 @@ public class TrussServiceOptions
     /// <param name="configuration">
     /// The configuration to use
     /// </param>
-    /// <returns></returns>
+    /// <returns>
+    /// The <see cref="TrussServiceOptions"/> for chaining
+    /// </returns>
     public virtual TrussServiceOptions UseConfiguration(
         IConfiguration configuration
     )
@@ -54,12 +56,20 @@ public class TrussServiceOptions
     }
     
     /// <summary>
+    /// <p>
     /// Register an <see cref="Module"/> to be installed
+    /// </p>
+    /// <p>
+    /// Any <see cref="ServiceInstaller"/> colocated with the <see cref="Module"/> will automatically be installed,
+    /// as will any <see cref="ServiceInstaller"/> in assemblies that are referenced by the <see cref="Module"/>
+    /// </p>
     /// </summary>
     /// <typeparam name="TModuleInstaller">
     /// The concrete implementation to install from
     /// </typeparam>
-    /// <returns></returns>
+    /// <returns>
+    /// The <see cref="TrussServiceOptions"/> for chaining
+    /// </returns>
     public TrussServiceOptions InstallModule<TModuleInstaller>()
         where TModuleInstaller : Module, new()
     {

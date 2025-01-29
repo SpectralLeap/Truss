@@ -1,3 +1,4 @@
+using FluentValidation;
 using Truss.Modeling.Application.Cqrs.Commands;
 using Truss.Monads.Results;
 
@@ -12,6 +13,16 @@ public sealed record DoThingCommand
 public sealed class DoThingCommandResult
 {
     public required string Thing { get; init; }
+}
+
+public sealed class DoThingValidator : AbstractValidator<DoThingCommand>
+{
+    public DoThingValidator()
+    {
+        RuleFor(x => x.Thing)
+            .Must(x => Guid.TryParse(x, out _))
+            .WithMessage("Thing must be a guid obviously");
+    }
 }
 
 

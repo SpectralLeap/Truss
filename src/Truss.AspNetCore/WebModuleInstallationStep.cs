@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.AspNetCore;
 
-public abstract class WebInstallationStep 
+public abstract class WebModuleInstallationStep
     : IInstallationStep
 {
     public virtual void Run(

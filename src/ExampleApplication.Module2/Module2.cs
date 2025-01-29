@@ -1,8 +1,9 @@
-﻿using Truss.AspNetCore.Endpoints;
+﻿using Truss.AspNetCore;
 
 namespace ExampleApplication.Module2;
 
-public sealed class Module2 : EndpointModule
+public sealed class Module2 : WebModule
 {
     public override string Name => "QueryModule";
+    public override bool AutoMapMessagesAsEndpoints => true;
 }

@@ -16,6 +16,10 @@
         <ProjectReference Include="..\ExampleApplication.Module2\ExampleApplication.Module2.csproj" />
         <ProjectReference Include="..\ExampleApplication.Protos\ExampleApplication.Protos.csproj" />
         <ProjectReference Include="..\Truss.AspNetCore\Truss.AspNetCore.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure.FluentValidation\Truss.Infrastructure.FluentValidation.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure.Marten\Truss.Infrastructure.Marten.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure.OpenTelemetry\Truss.Infrastructure.OpenTelemetry.csproj" />
+        <ProjectReference Include="..\Truss.Infrastructure.Serilog\Truss.Infrastructure.Serilog.csproj" />
         <ProjectReference Include="..\Truss\Truss.csproj" />
         <ProjectReference Include="..\Truss.Modeling.Application\Truss.Modeling.Application.csproj" />
         <ProjectReference Include="..\Truss.Modeling.Installation\Truss.Modeling.Installation.csproj" />

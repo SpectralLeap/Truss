@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Truss.AspNetCore.Endpoints;
+using Truss.AspNetCore.MessageToEndpointMapping;
 
 namespace Truss.AspNetCore;
 
@@ -15,27 +14,51 @@ public static class ServiceExtensions
         Action<TrussWebServiceOptions>? optionsBuilder = null
     )
     {
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .CreateLogger();
-
-        builder.Host.UseSerilog();
-
         var options = new TrussWebServiceOptions()
-            .InstallModule<TrussWebBundledModule>()
-            .AddInstallationStep<EndpointInstallationStep>()
-            .UseConfiguration(builder.Configuration);
+                .InstallModule<TrussBundledModule>()
+                .InstallModule<TrussWebBundledModule>()
+                .AddInstallationStep<AppModuleInstallationStep>()
+                .AddInstallationStep<MessageToEndpointMappingInstallationStep>()
+                .UseConfiguration(builder.Configuration)
+            as TrussWebServiceOptions;
+
+        if (options is null)
+        {
+            throw new InvalidOperationException(
+                "Failed to cast TrussWebServiceOptions"
+            );
+        }
 
         options.InstallerServices
-            .AddLogging(c => c.AddSerilog())
-            .AddSingleton<WebInstallationPipeline>();
+            .AddLogging()
+            .AddSingleton(options)
+            .AddSingleton<TrussServiceOptions>(options)
+            .AddSingleton<InstallationPipeline>()
+            .AddSingleton<WebInstallationPipeline>()
+            .AddSingleton<InstallationManifestGenerator>()
+            .AddSingleton<InstallationManifest>(p => p
+                .GetRequiredService<InstallationManifestGenerator>()
+                .GenerateManifestAsync()
+            );
 
-        builder.Services.InstallTruss(
-            options,
-            a => optionsBuilder?.Invoke((TrussWebServiceOptions)a)
-        );
+        foreach (var installationStep in options.InstallationSteps)
+        {
+            options.InstallerServices.AddSingleton(
+                typeof(IInstallationStep),
+                installationStep
+            );
+        }
 
-        _installerServices = options.InstallationServiceProvider;
+        optionsBuilder?.Invoke(options);
+
+        options.BuildServiceProvider();
+
+        _installerServices = options.InstallationServiceProvider!;
+
+        var pipeline = _installerServices
+            .GetRequiredService<WebInstallationPipeline>();
+
+        pipeline.Run(builder);
 
         return builder;
     }

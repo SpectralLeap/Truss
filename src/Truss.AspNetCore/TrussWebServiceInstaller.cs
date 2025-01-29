@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.AspNetCore.Endpoints;
+using Truss.AspNetCore.MessageToEndpointMapping;
 using Truss.Modeling.Installation;
 
 namespace Truss.AspNetCore;
@@ -13,6 +13,6 @@ public sealed class TrussWebServiceInstaller : ServiceInstaller
     )
     {
         services.AddHttpContextAccessor()
-            .AddSingleton<EndpointHandler>();
+            .AddSingleton<MessageToEndpointHandler>();
     }
 }

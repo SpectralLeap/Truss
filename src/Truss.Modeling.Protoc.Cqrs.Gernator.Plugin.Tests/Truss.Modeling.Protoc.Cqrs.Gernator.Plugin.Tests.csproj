@@ -28,7 +28,7 @@
     </ItemGroup>
     
     <Target Name="CopyPluginExecutable" AfterTargets="Build"> 
-        <Copy SourceFiles="../Truss.Modeling.Protoc.Cqrs.Generator.Plugin/bin/$(Configuration)/net8.0/Truss.Modeling.Protoc.Cqrs.Generator.Plugin"
+        <Copy SourceFiles="../Truss.Modeling.Protoc.Cqrs.Generator.Plugin/bin/$(Configuration)/net8.0/Truss.Modeling.Protoc.Cqrs.Generator.Plugin.exe"
               DestinationFolder="$(OutputPath)" />
     </Target>
 

@@ -4,6 +4,9 @@ using ExampleApplication.WebApi;
 using ExampleApplication.WebApi.Services;
 using Microsoft.OpenApi.Models;
 using Truss.AspNetCore;
+using Truss.Infrastructure.FluentValidation;
+using Truss.Infrastructure.OpenTelemetry;
+using Truss.Infrastructure.Serilog;
 using Truss.Modeling.Application.Cqrs.Commands;
 
 const string title = "Auth.Api";
@@ -15,6 +18,9 @@ builder.UseTruss(c => c
     .InstallModule<ExampleModule>()
     .InstallModule<Module1>()
     .InstallModule<Module2>()
+    .AddFluentValidation()
+    .AddSerilog()
+    .AddOpenTelemetry()
 );
 
 builder.Services.AddGrpc();

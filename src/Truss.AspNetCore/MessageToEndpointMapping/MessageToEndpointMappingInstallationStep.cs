@@ -8,16 +8,16 @@ using Truss.Modeling.Application.Cqrs.Queries;
 using Truss.Modeling.Application.Installation;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Truss.AspNetCore.Endpoints;
+namespace Truss.AspNetCore.MessageToEndpointMapping;
 
-public sealed class EndpointInstallationStep 
-    : WebInstallationStep
+public sealed class MessageToEndpointMappingInstallationStep
+    : WebModuleInstallationStep
 {
-    private readonly ILogger<EndpointInstallationStep> _logger;
+    private readonly ILogger<MessageToEndpointMappingInstallationStep> _logger;
     private readonly TrussServiceOptions _options;
 
-    public EndpointInstallationStep(
-        ILogger<EndpointInstallationStep> logger,
+    public MessageToEndpointMappingInstallationStep(
+        ILogger<MessageToEndpointMappingInstallationStep> logger,
         TrussServiceOptions options
     )
     {
@@ -32,7 +32,7 @@ public sealed class EndpointInstallationStep
     {
         var endpointPrefix = GetEndpointPrefix(moduleManifest);
 
-        if (moduleManifest.Module is EndpointModule { AutoMapMessagesAsEndpoints: true })
+        if (moduleManifest.Module is WebModule { AutoMapMessagesAsEndpoints: true })
         {
             // Get all the types to scan excluding internal messages
             var types = moduleManifest.Types
@@ -136,7 +136,7 @@ public sealed class EndpointInstallationStep
         var funcType = typeof(Func<,,,>).MakeGenericType(
             commandType,
             typeof(ICommandBus),
-            typeof(EndpointHandler),
+            typeof(MessageToEndpointHandler),
             typeof(Task<IResult>)
         );
 
@@ -155,7 +155,7 @@ public sealed class EndpointInstallationStep
         var funcType = typeof(Func<,,,>).MakeGenericType(
             commandType,
             typeof(ICommandBus),
-            typeof(EndpointHandler),
+            typeof(MessageToEndpointHandler),
             typeof(Task<IResult>)
         );
 
@@ -174,7 +174,7 @@ public sealed class EndpointInstallationStep
         var funcType = typeof(Func<,,,>).MakeGenericType(
             queryType,
             typeof(IQueryBus),
-            typeof(EndpointHandler),
+            typeof(MessageToEndpointHandler),
             typeof(Task<IResult>)
         );
 
@@ -184,11 +184,11 @@ public sealed class EndpointInstallationStep
     private async Task<IResult> HandleCommand<TCommand>(
         [FromBody] TCommand command,
         [FromServices] ICommandBus commandBus,
-        [FromServices] EndpointHandler endpointHandler
+        [FromServices] MessageToEndpointHandler messageToEndpointHandler
     )
         where TCommand : ICommand
     {
-        return await endpointHandler.SendMessage(
+        return await messageToEndpointHandler.SendMessage(
             command,
             // We want to send the command to the bus via arguments
             // so we don't build a closure around this method
@@ -200,11 +200,11 @@ public sealed class EndpointInstallationStep
     private async Task<IResult> HandleTransaction<TCommand, TResponse>(
         [FromBody] TCommand command,
         [FromServices] ICommandBus commandBus,
-        [FromServices] EndpointHandler endpointHandler
+        [FromServices] MessageToEndpointHandler messageToEndpointHandler
     )
         where TCommand : ICommand<TResponse>
     {
-        return await endpointHandler.SendMessage(
+        return await messageToEndpointHandler.SendMessage(
             command,
             // We want to send the command to the bus via arguments
             // so we don't build a closure around this method
@@ -216,11 +216,11 @@ public sealed class EndpointInstallationStep
     private async Task<IResult> HandleQuery<TQuery, TResponse>(
         [AsParameters] TQuery query,
         [FromServices] IQueryBus queryBus,
-        [FromServices] EndpointHandler endpointHandler
+        [FromServices] MessageToEndpointHandler messageToEndpointHandler
     )
         where TQuery :IQuery<TResponse>
     {
-        return await endpointHandler.SendMessage(
+        return await messageToEndpointHandler.SendMessage(
             query,
             // We want to send the query to the bus via arguments
             // so we don't build a closure around this method

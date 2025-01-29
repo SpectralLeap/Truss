@@ -4,15 +4,15 @@ using Microsoft.Extensions.Logging;
 using Truss.Monads.Results;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Truss.AspNetCore.Endpoints;
+namespace Truss.AspNetCore.MessageToEndpointMapping;
 
-internal sealed class EndpointHandler
+internal sealed class MessageToEndpointHandler
 {
-    private readonly ILogger<EndpointHandler> _logger;
+    private readonly ILogger<MessageToEndpointHandler> _logger;
     private readonly IHttpContextAccessor _contextAccessor;
 
-    public EndpointHandler(
-        ILogger<EndpointHandler> logger,
+    public MessageToEndpointHandler(
+        ILogger<MessageToEndpointHandler> logger,
         IHttpContextAccessor contextAccessor
     )
     {

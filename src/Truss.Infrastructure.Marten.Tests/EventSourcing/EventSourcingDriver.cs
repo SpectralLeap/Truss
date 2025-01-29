@@ -29,7 +29,7 @@ public sealed class EventSourcingDriver(
         })
         .ApplyAllDatabaseChangesOnStartup()
         .Services
-        .AddTruss(c => c.AddMartenServices());
+        .AddTruss(c => c.AddMarten());
 
 
     public async Task AssertWrites()

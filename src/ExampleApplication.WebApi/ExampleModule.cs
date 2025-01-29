@@ -1,5 +1,8 @@
-using Truss.AspNetCore.Endpoints;
+using Truss.AspNetCore;
 
 namespace ExampleApplication.WebApi;
 
-public sealed class ExampleModule : EndpointModule;
+public sealed class ExampleModule : WebModule
+{
+    public override bool AutoMapMessagesAsEndpoints => true;
+}
