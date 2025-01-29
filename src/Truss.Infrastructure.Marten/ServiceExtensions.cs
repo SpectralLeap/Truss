@@ -1,14 +1,19 @@
+using Truss.Modeling.Installation;
+
 namespace Truss.Infrastructure.Marten;
 
 public static class ServiceExtensions
 {
-    public static TrussServiceConfiguration AddMartenServices(
-        this TrussServiceConfiguration trussServiceConfiguration
+    public static TrussServiceOptions AddMartenServices(
+        this TrussServiceOptions trussServiceOptions
     )
     {
-        trussServiceConfiguration.AddServiceInstallation<MartenServiceInstaller>();
-
-        return trussServiceConfiguration;
+        return trussServiceOptions
+            .InstallModule<MartenModule>();
     }
+}
 
+public sealed class MartenModule : Module
+{
+    public override string Name => "Marten";
 }

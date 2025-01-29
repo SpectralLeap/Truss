@@ -12,7 +12,7 @@ public static class ServiceExtensions
     
     public static WebApplicationBuilder UseTruss(
         this WebApplicationBuilder builder,
-        Action<TrussWebServiceConfiguration>? trussServiceConfiguration = null
+        Action<TrussWebServiceOptions>? optionsBuilder = null
     )
     {
         Log.Logger = new LoggerConfiguration()
@@ -21,47 +21,21 @@ public static class ServiceExtensions
 
         builder.Host.UseSerilog();
 
-        var config = new TrussWebServiceConfiguration()
-                .InstallModule<TrussBundledModule>()
-                .InstallModule<TrussWebBundledModule>()
-                .AddInstallationStep<ModuleServiceRegistryInstallationStep>()
-                .AddInstallationStep<EndpointInstallationStep>()
-                .UseConfiguration(builder.Configuration)
-            as TrussWebServiceConfiguration;
+        var options = new TrussWebServiceOptions()
+            .InstallModule<TrussWebBundledModule>()
+            .AddInstallationStep<EndpointInstallationStep>()
+            .UseConfiguration(builder.Configuration);
 
-        if (config is null) throw new InvalidOperationException("Unable to create TrussWebServiceConfiguration");
-
-        trussServiceConfiguration?.Invoke(config);
-
-        var installerServices = new ServiceCollection()
+        options.InstallerServices
             .AddLogging(c => c.AddSerilog())
-            .AddSingleton<TrussServiceConfiguration>(config)
-            .AddSingleton<InstallationPipeline>()
-            .AddSingleton<WebInstallationPipeline>()
-            .AddSingleton<InstallationManifestGenerator>()
-            .AddSingleton<InstallationManifest>(p => p
-                .GetRequiredService<InstallationManifestGenerator>()
-                .GenerateManifestAsync()
-            );
+            .AddSingleton<WebInstallationPipeline>();
 
-        foreach (var installationStep in config.InstallationSteps)
-        {
-            installerServices.AddSingleton(
-                typeof(IInstallationStep),
-                installationStep
-            );
-        }
-
-        _installerServices = installerServices
-            .BuildServiceProvider();
-
-        var installer = _installerServices
-            .GetRequiredService<InstallationPipeline>();
-
-        installer.Run(
-            builder.Services,
-            builder.Configuration
+        builder.Services.InstallTruss(
+            options,
+            a => optionsBuilder?.Invoke((TrussWebServiceOptions)a)
         );
+
+        _installerServices = options.InstallationServiceProvider;
 
         return builder;
     }
@@ -76,7 +50,7 @@ public static class ServiceExtensions
         if (_installerServices is null)
         {
             throw new InvalidOperationException(
-                "Truss has not been initialized. Use the UseTruss method on WebApplicationBuilder to initialize Truss."
+                "Truss has not been initialized. Call UseTruss on the WebApplicationBuilder to initialize Truss."
             );
         }
         

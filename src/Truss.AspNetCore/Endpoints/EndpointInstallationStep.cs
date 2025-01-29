@@ -14,15 +14,15 @@ public sealed class EndpointInstallationStep
     : WebInstallationStep
 {
     private readonly ILogger<EndpointInstallationStep> _logger;
-    private readonly TrussServiceConfiguration _configuration;
+    private readonly TrussServiceOptions _options;
 
     public EndpointInstallationStep(
         ILogger<EndpointInstallationStep> logger,
-        TrussServiceConfiguration configuration
+        TrussServiceOptions options
     )
     {
         _logger = logger;
-        _configuration = configuration;
+        _options = options;
     }
 
     public override void Run(
@@ -32,7 +32,7 @@ public sealed class EndpointInstallationStep
     {
         var endpointPrefix = GetEndpointPrefix(moduleManifest);
 
-        if (moduleManifest.Module is IEndpointModule { AutoMapMessagesAsEndpoints: true })
+        if (moduleManifest.Module is EndpointModule { AutoMapMessagesAsEndpoints: true })
         {
             // Get all the types to scan excluding internal messages
             var types = moduleManifest.Types
@@ -97,7 +97,7 @@ public sealed class EndpointInstallationStep
 
                 var route = $"{endpointPrefix}/{query.Name.Replace("Query", "")}";
 
-                app.MapPost(route, BuildQueryHandler(query, responseType))
+                app.MapGet(route, BuildQueryHandler(query, responseType))
                     .WithTags("Queries")
                     .Produces(StatusCodes.Status200OK, responseType)
                     .ProducesProblem(StatusCodes.Status500InternalServerError)
@@ -110,7 +110,7 @@ public sealed class EndpointInstallationStep
         ModuleManifest moduleManifest
     )
     {
-        if (_configuration is not TrussWebServiceConfiguration webServiceConfiguration)
+        if (_options is not TrussWebServiceOptions webServiceConfiguration)
         {
             return "";
         }
@@ -214,7 +214,7 @@ public sealed class EndpointInstallationStep
     }
 
     private async Task<IResult> HandleQuery<TQuery, TResponse>(
-        [FromBody] TQuery query,
+        [AsParameters] TQuery query,
         [FromServices] IQueryBus queryBus,
         [FromServices] EndpointHandler endpointHandler
     )

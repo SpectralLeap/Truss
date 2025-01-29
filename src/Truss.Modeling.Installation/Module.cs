@@ -1,41 +1,38 @@
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Truss.Modeling.Installation;
 
 /// <summary>
 /// Base class for a module to be installed by Truss
 /// </summary>
-public abstract class Module : IModule
+public abstract class Module
 {
-    /// <inheritdoc />
-    public virtual string Name { get; } = "";
-
-    /// <inheritdoc />
-    public  IReadOnlyCollection<Assembly> Assemblies => _assemblies;
-    
-    private readonly List<Assembly> _assemblies = new();
+    /// <summary>
+    /// The name of the module
+    /// </summary>
+    public virtual string Name => "";
 
     /// <summary>
-    /// Adds an assembly to be scanned for installation.
-    ///
-    /// The assembly declaring the module is automatically added.
+    /// The assemblies to be scanned for installation
     /// </summary>
-    /// <param name="assembly"></param>
-    protected void AddAssembly(Assembly assembly)
-    {
-        _assemblies.Add(assembly);
-    }
+    public virtual IReadOnlyCollection<Assembly> AdditionalAssemblies => [];
     
     /// <inheritdoc />
-    public virtual void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    public sealed override bool Equals(object? obj)
     {
-        
+        return obj is Module module &&
+               Name == module.Name;
     }
-    
+
     /// <inheritdoc />
-    public void Initialize(IServiceProvider serviceProvider)
+    public sealed override int GetHashCode()
     {
+        return Name.GetHashCode();
+    }
+
+    /// <inheritdoc />
+    public sealed override string ToString()
+    {
+        return Name;
     }
 }

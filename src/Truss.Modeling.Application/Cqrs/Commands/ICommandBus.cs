@@ -34,7 +34,7 @@ public interface ICommandBus
     /// <typeparam name="TResult">
     /// The type of result to return
     /// </typeparam>
-    /// <returns>A <see cref="Result"/> of <see cref="TResult"/></returns>
+    /// <returns>A <see cref="Result"/> of TResult</returns>
     public Task<Result<TResult>> SendCommand<TResult>(
         ICommand<TResult> command,
         CancellationToken cancellationToken = new()

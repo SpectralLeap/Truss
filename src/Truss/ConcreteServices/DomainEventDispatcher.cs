@@ -25,12 +25,12 @@ internal sealed class DomainEventDispatcher : IDomainEventDispatcher
     /// <summary>
     /// Dispatch and clear the events from an aggregate
     /// </summary>
-    /// <param name="rootWithEvents"></param>
+    /// <param name="withEvents"></param>
     /// <param name="cancellationToken"></param>
-    public async Task DispatchAndClearDomainEvents(IAggregateRoot rootWithEvents, CancellationToken cancellationToken)
+    public async Task DispatchAndClearDomainEvents(IAggregate withEvents, CancellationToken cancellationToken)
     {
         await DispatchAndClearDomainEvents(
-            [rootWithEvents],
+            [withEvents],
             cancellationToken
         ).ConfigureAwait(false);
     }
@@ -41,7 +41,7 @@ internal sealed class DomainEventDispatcher : IDomainEventDispatcher
     /// <param name="rootsWithEvents"></param>
     /// <param name="cancellationToken"></param>
     private async Task DispatchAndClearDomainEvents(
-        IReadOnlyCollection<IAggregateRoot> rootsWithEvents,
+        IReadOnlyCollection<IAggregate> rootsWithEvents,
         CancellationToken cancellationToken
     )
     {

@@ -12,7 +12,7 @@ namespace Truss.Modeling.Domain.Entities;
 /// </summary>
 /// <typeparam name="TId"></typeparam>
 public abstract class Aggregate<TId>
-    : Entity<TId>, IAggregateRoot<TId>
+    : Entity<TId>, IAggregate<TId>
 {
     /// <inheritdoc/>>
     public IReadOnlyCollection<IDomainEvent> PendingEvents => _pendingEvents;

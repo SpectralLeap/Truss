@@ -1,16 +1,14 @@
 namespace Truss.Modeling.Domain.Entities;
 
 /// <summary>
-/// The Id for an Aggregate Root
+/// A typed Id for an Aggregate Root
 /// </summary>
-/// <typeparam name="TId"></typeparam>
+/// <typeparam name="TId">
+/// The type of the Id
+/// </typeparam>
 public record AggregateId<TId> : EntityId<TId>
 {
-    /// <summary>
-    /// The Id for an Aggregate Root
-    /// </summary>
-    /// <param name="Value"></param>
-    /// <typeparam name="TId"></typeparam>
+    /// <inheritdoc />
     protected AggregateId(TId Value) : base(Value)
     {
     }

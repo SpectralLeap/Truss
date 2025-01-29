@@ -6,9 +6,9 @@ using Truss.Modeling.Installation;
 namespace Truss.ServiceInstallations;
 
 internal sealed class MediatrServiceInstaller
-    : IServiceInstaller
+    : ServiceInstaller
 {
-    public void Install(
+    public override void Install(
         IServiceCollection services,
         IConfiguration configuration,
         IReadOnlyCollection<Assembly> assemblies

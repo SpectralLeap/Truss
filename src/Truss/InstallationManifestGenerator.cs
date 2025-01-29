@@ -1,32 +1,46 @@
 using System.Reflection;
+using Truss.Modeling.Installation;
 
-namespace Truss.AspNetCore;
+namespace Truss;
 
 public sealed class InstallationManifestGenerator
 {
-    private readonly TrussServiceConfiguration _configuration;
+    private readonly TrussServiceOptions _options;
     private readonly List<ModuleManifest> _moduleManifests = [];
 
     public InstallationManifestGenerator(
-        TrussServiceConfiguration configuration
+        TrussServiceOptions options
     )
     {
-        _configuration = configuration;
+        _options = options;
     }
     
     public InstallationManifest GenerateManifestAsync()
     {
-        foreach (var module in _configuration.Modules)
+        var serviceInstallers = new List<ServiceInstaller>();
+        var globalAssemblies = new List<Assembly>();
+        
+        foreach (var module in _options.Modules)
         {
-            Assembly[] assemblies =
+            IReadOnlyCollection<Assembly> assemblies =
             [
                 module.GetType().Assembly,
-                ..module.Assemblies
+                ..module.AdditionalAssemblies
             ];
             
             var types = assemblies.SelectMany(
-                    assm => assm.GetTypes()
-                ).ToArray();
+                assm => assm.GetTypes()
+            ).ToArray();
+            
+            serviceInstallers.AddRange(
+                types
+                    .Where(t => typeof(ServiceInstaller).IsAssignableFrom(t))
+                    .Select(t => Activator.CreateInstance(t) as ServiceInstaller)
+                    .Where(t => t is not null)
+                    .Select(t => t!)
+            );
+            
+            globalAssemblies.AddRange(assemblies);
             
             _moduleManifests.Add(new ModuleManifest
             {
@@ -34,14 +48,16 @@ public sealed class InstallationManifestGenerator
                     ? module.GetType().Name 
                     : module.Name,
                 Module = module,
-                Assemblies = module.Assemblies,
-                Types = types
+                Assemblies = assemblies,
+                Types = types,
             });
         }
 
-        return new InstallationManifest()
+        return new InstallationManifest
         {
-            ModuleManifests = _moduleManifests
+            ModuleManifests = _moduleManifests,
+            ServiceInstallers = serviceInstallers,
+            Assemblies = globalAssemblies
         };
     }
 }

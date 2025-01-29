@@ -57,49 +57,34 @@ public static class Result
     public static Result<Nil> Fail(FailureDetails details) => Result<Nil>.Fail(details);
 }
 
-/// <summary>
-/// A basic result that provides a value or failure reasons
-/// </summary>
-/// <typeparam name="TResult"></typeparam>
-public readonly struct Result<TResult> : IResult
+/// <inheritdoc />
+public readonly struct Result<TSuccess> : IResult
 {
-    private readonly TResult? _successValue;
+    private readonly TSuccess? _successValue;
     private readonly FailureDetails? _failureDetails;
 
-    /// <summary>
-    /// True if the operation succeeded
-    /// </summary>
+    /// <inheritdoc />
     public bool Succeeded { get; }
 
-    /// <summary>
-    /// True if the operation failed
-    /// </summary>
+    /// <inheritdoc />
     public bool Failed => !Succeeded;
 
     /// <summary>
     /// Get the success value if succeeded
     /// </summary>
     /// <exception cref="InvalidOperationException">If retrieving success value on a failed operation</exception>
-    public TResult SuccessValue =>
+    public TSuccess SuccessValue =>
         _successValue ?? throw new InvalidOperationException($"Tried to get success value on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
     
-    /// <summary>
-    /// Get the success value as an object if succeeded
-    /// </summary>
-    /// <exception cref="InvalidOperationException">If retrieving success value on a failed operation</exception>
+    /// <inheritdoc />
     public object SuccessObject =>
         _successValue ?? throw new InvalidOperationException($"Tried to get success object on a failed operation. Failure reason was {FailureDetails.GetMessage()}", FailureDetails.Exception);
      
-    /// <summary>
-    /// Get the failure details if failed else throws
-    /// </summary>
-    /// <exception cref="InvalidOperationException">If retrieving failure value on a successful operation</exception>
+    /// <inheritdoc />
     public FailureDetails FailureDetails => 
         _failureDetails ?? throw new InvalidOperationException($"Tried to get failure value on successful operation");
 
-    /// <summary>
-    /// Get the failure message if failed else throws
-    /// </summary>
+    /// <inheritdoc />
     public string FailureMessage => FailureDetails.GetMessage();
 
     /// <summary>
@@ -107,11 +92,11 @@ public readonly struct Result<TResult> : IResult
     /// </summary>
     /// <param name="success"></param>
     /// <exception cref="ArgumentNullException">If the success object is null</exception>
-    private Result(TResult success)
+    private Result(TSuccess success)
     {
         _successValue = success ?? throw new ArgumentNullException(
             nameof(success),
-            $"A Result value of type {typeof(TResult).Name} cannot be null"
+            $"A Result value of type {typeof(TSuccess).Name} cannot be null"
         );
         Succeeded = true;
     }
@@ -127,8 +112,21 @@ public readonly struct Result<TResult> : IResult
         _failureDetails = failure ?? throw new ArgumentNullException(nameof(failure));
     }
 
+    /// <summary>
+    /// Resolve the result and return a value
+    /// </summary>
+    /// <param name="onSuccess">
+    /// The function to call if the operation succeeded
+    /// </param>
+    /// <param name="onFailure">
+    /// The function to call if the operation failed
+    /// </param>
+    /// <typeparam name="TOut">
+    /// The type of the output
+    /// </typeparam>
+    /// <returns></returns>
     public TOut Resolve<TOut>(
-        Func<TResult, TOut> onSuccess,
+        Func<TSuccess, TOut> onSuccess,
         Func<FailureDetails, TOut> onFailure
     )
     {
@@ -136,8 +134,17 @@ public readonly struct Result<TResult> : IResult
         return onFailure(FailureDetails);
     }
     
+    /// <summary>
+    /// Resolve the result
+    /// </summary>
+    /// <param name="onSuccess">
+    /// The function to call if the operation succeeded
+    /// </param>
+    /// <param name="onFailure">
+    /// The function to call if the operation failed
+    /// </param>
     public void Resolve(
-        Action<TResult> onSuccess,
+        Action<TSuccess> onSuccess,
         Action<FailureDetails> onFailure
     )
     {
@@ -167,14 +174,14 @@ public readonly struct Result<TResult> : IResult
     /// </summary>
     /// <param name="reasons"></param>
     /// <returns></returns>
-    public static Result<TResult> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
+    public static Result<TSuccess> Fail(params string[] reasons) => new(FailureDetails.From(reasons));
 
     /// <summary>
     /// Create failure from exception
     /// </summary>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<TResult> Fail(Exception ex) => new(FailureDetails.From(ex));
+    public static Result<TSuccess> Fail(Exception ex) => new(FailureDetails.From(ex));
 
     /// <summary>
     /// Create failure from exception with a message
@@ -182,14 +189,14 @@ public readonly struct Result<TResult> : IResult
     /// <param name="message"></param>
     /// <param name="ex"></param>
     /// <returns></returns>
-    public static Result<TResult> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
+    public static Result<TSuccess> Fail(string message, Exception ex) => new(FailureDetails.From(ex, message));
 
     /// <summary>
     /// Create failure from details
     /// </summary>
     /// <param name="details"></param>
     /// <returns></returns>
-    public static Result<TResult> Fail(FailureDetails details) => new(details);
+    public static Result<TSuccess> Fail(FailureDetails details) => new(details);
          
     /// <summary>
     /// Returns the success value or a default value
@@ -197,7 +204,7 @@ public readonly struct Result<TResult> : IResult
     /// <param name="result"></param>
     /// <param name="defaultValue"></param>
     /// <returns></returns>
-    public static TResult? operator | (in Result<TResult> result, TResult? defaultValue)
+    public static TSuccess? operator | (in Result<TSuccess> result, TSuccess? defaultValue)
     {
         if (result.Succeeded) return result.SuccessValue;
         
@@ -208,10 +215,10 @@ public readonly struct Result<TResult> : IResult
     /// Implicit cast for readability
     /// </summary>
     /// <returns></returns>   
-    public static implicit operator Result<TResult>(Result<Nil> value)
+    public static implicit operator Result<TSuccess>(Result<Nil> value)
     {
-        if (value.Succeeded) throw new InvalidCastException($"Cannot cast {nameof(Nil)} to {nameof(TResult)}");
+        if (value.Succeeded) throw new InvalidCastException($"Cannot cast {nameof(Nil)} to {nameof(TSuccess)}");
 
-        return new Result<TResult>(value.FailureDetails);
+        return new Result<TSuccess>(value.FailureDetails);
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Truss.Monads.Results.Protobuf;
 
 /// <summary>
@@ -11,6 +8,10 @@ public sealed class ResultFactory<T>
 {
     private readonly Result<T> _result;
 
+    /// <summary>
+    /// Create a new instance of the factory.
+    /// </summary>
+    /// <param name="result"></param>
     public ResultFactory(Result<T> result)
     {
         _result = result;

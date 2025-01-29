@@ -3,8 +3,9 @@ using Truss.Monads.Results;
 
 namespace ExampleApplication.WebApi.Services;
 
-public sealed class GreeterPipelineBehavior<TRequest, _> 
+public sealed class GreeterPipelineBehavior<TRequest, TResponse> 
     : IPipelineBehavior<TRequest, Result<GreetResult>>
+    where TResponse : IResult<GreetResult> where TRequest : notnull
 {
     public async Task<Result<GreetResult>> Handle(TRequest request, RequestHandlerDelegate<Result<GreetResult>> next, CancellationToken cancellationToken)
     {

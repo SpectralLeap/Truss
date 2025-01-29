@@ -1,17 +1,18 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Application.Cqrs.EventSourcing.Persistence;
+using Truss.AspNetCore.Endpoints;
 using Truss.Modeling.Installation;
 
-namespace Truss.Infrastructure.Marten;
+namespace Truss.AspNetCore;
 
-public sealed class MartenServiceInstaller : ServiceInstaller
+public sealed class TrussWebServiceInstaller : ServiceInstaller
 {
     public override void Install(
         IServiceCollection services,
         IConfiguration configuration
     )
     {
-        services.AddScoped<IAggregateRepository, AggregateRepository>();
+        services.AddHttpContextAccessor()
+            .AddSingleton<EndpointHandler>();
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Truss.AspNetCore;
+namespace Truss;
 
 public sealed class InstallationPipeline
 {
@@ -40,6 +40,20 @@ public sealed class InstallationPipeline
                     moduleManifest
                 );
             }
+        }
+
+        foreach (var serviceInstaller in _installationManifest.ServiceInstallers)
+        {
+            serviceInstaller.Install(
+                services,
+                configuration
+            );
+            
+            serviceInstaller.Install(
+                services,
+                configuration,
+                _installationManifest.Assemblies
+            );
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Truss.ConcreteServices;
@@ -10,12 +9,11 @@ using Truss.Modeling.Installation;
 namespace Truss.ServiceInstallations;
 
 internal sealed class InternalServiceInstaller
-    : IServiceInstaller
+    : ServiceInstaller
 {
-    public void Install(
+    public override void Install(
         IServiceCollection services,
-        IConfiguration configuration,
-        IReadOnlyCollection<Assembly> assemblies
+        IConfiguration configuration
     )
     {
         services

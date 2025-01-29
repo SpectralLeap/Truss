@@ -6,5 +6,8 @@
 /// </summary>
 public struct Nil
 {
+    /// <summary>
+    /// The value of the Nil type
+    /// </summary>
     public static Nil Value { get; } = new();
 };

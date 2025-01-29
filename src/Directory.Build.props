@@ -52,25 +52,29 @@
         <TargetFrameworks>netstandard2.0;</TargetFrameworks>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IsPackable>true</IsPackable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Protobuf'">
         <TargetFrameworks>netstandard2.0;</TargetFrameworks>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
-    
+
     <PropertyGroup Condition="'$(TargetLayer)' == 'Infrastructure'">
         <IsPackable>true</IsPackable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Tests'">
         <IsTestProject>true</IsTestProject>
         <IsPackable>false</IsPackable>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'ExampleApplication'">
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
@@ -79,7 +83,7 @@
         <IsRoslynComponent>true</IsRoslynComponent>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
-    
+
     <ItemGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">

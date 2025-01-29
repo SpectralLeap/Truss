@@ -14,9 +14,11 @@ public interface IAggregateRepository
     /// <param name="aggregate"></param>
     /// <param name="ct"></param>
     /// <typeparam name="TId"></typeparam>
-    /// <returns></returns>
+    /// <returns>
+    /// A <see cref="Result{T}"/> indicating success or failure
+    /// </returns>
     public Task<Result<Nil>> StoreAsync<TId>(
-        IAggregateRoot<TId> aggregate,
+        IAggregate<TId> aggregate,
         CancellationToken ct = default
     ) where TId : AggregateId<Guid>;
 
@@ -25,38 +27,59 @@ public interface IAggregateRepository
     /// </summary>
     /// <param name="aggregate"></param>
     /// <param name="ct"></param>
-    /// <typeparam name="TId"></typeparam>
-    /// <returns></returns>
+    /// <returns>
+    /// A <see cref="Result{T}"/> indicating success or failure
+    /// </returns>
     public Task<Result<Nil>> StoreAsync(
-        IAggregateRoot<Guid> aggregate,
+        IAggregate<Guid> aggregate,
         CancellationToken ct = default
     );
 
     /// <summary>
     /// Load an aggregate by its id
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="version"></param>
-    /// <param name="ct"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public Task<Result<T>> LoadAsync<T>(
+    /// <param name="id">
+    /// The id of the aggregate to load
+    /// </param>
+    /// <param name="version">
+    /// The version of the aggregate to load
+    /// </param>
+    /// <param name="ct">
+    /// The cancellation token
+    /// </param>
+    /// <typeparam name="TAggregate">
+    /// The type of the aggregate
+    /// </typeparam>
+    /// <returns>
+    /// A <see cref="Result{T}"/> indicating success or failure with the loaded aggregate on success
+    /// </returns>
+    public Task<Result<TAggregate>> LoadAsync<TAggregate>(
         Guid id,
         int? version = null,
         CancellationToken ct = default
-    ) where T : class, IAggregateRoot<Guid>;
+    ) where TAggregate : class, IAggregate<Guid>;
 
     /// <summary>
     /// Load an aggregate by its id
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="version"></param>
-    /// <param name="ct"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public Task<Result<T>> LoadAsync<T>(
+    /// <param name="id">
+    /// The id of the aggregate to load
+    /// </param>
+    /// <param name="version">
+    /// The version of the aggregate to start from
+    /// </param>
+    /// <param name="ct">
+    /// The cancellation token
+    /// </param>
+    /// <typeparam name="TAggregate">
+    /// The type of the aggregate
+    /// </typeparam>
+    /// <returns>
+    /// A <see cref="Result{T}"/> indicating success or failure with the loaded aggregate on success
+    /// </returns>
+    public Task<Result<TAggregate>> LoadAsync<TAggregate>(
         AggregateId<Guid> id,
         int? version = null,
         CancellationToken ct = default
-    ) where T : class, IAggregateRoot;
+    ) where TAggregate : class, IAggregate;
 }

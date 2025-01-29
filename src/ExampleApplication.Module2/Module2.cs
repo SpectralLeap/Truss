@@ -1,15 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Truss.Modeling.Installation;
+﻿using Truss.AspNetCore.Endpoints;
 
 namespace ExampleApplication.Module2;
 
-public sealed class Module2 : Module
+public sealed class Module2 : EndpointModule
 {
-    public override void ConfigureServices(
-        IServiceCollection services,
-        IConfiguration configuration
-    )
-    {
-    }
+    public override string Name => "QueryModule";
 }

@@ -6,7 +6,7 @@ namespace Truss.Modeling.Domain.Entities;
 /// And aggregate root per DDD
 /// </summary>
 /// <typeparam name="TId"></typeparam>
-public interface IAggregateRoot<out TId> : IAggregateRoot
+public interface IAggregate<out TId> : IAggregate
 {
     /// <summary>
     /// The unique identifier of the aggregate
@@ -18,7 +18,7 @@ public interface IAggregateRoot<out TId> : IAggregateRoot
 /// <summary>
 /// And aggregate root per DDD
 /// </summary>
-public interface IAggregateRoot
+public interface IAggregate
 {
     /// <summary>
     /// The version of the aggregate

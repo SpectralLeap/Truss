@@ -1,9 +1,11 @@
 namespace Truss.Modeling.Domain.Entities;
 
 /// <summary>
-/// Base object for ids used by entity types
+/// A typed Id for an Entity
 /// </summary>
-/// <typeparam name="TId"></typeparam>
+/// <typeparam name="TId">
+/// The type of the Id
+/// </typeparam>
 public abstract record EntityId<TId>
 {
     /// <summary>
@@ -14,8 +16,9 @@ public abstract record EntityId<TId>
     /// <summary>
     /// Base object for ids used by entity types
     /// </summary>
-    /// <param name="Value"></param>
-    /// <typeparam name="TId"></typeparam>
+    /// <param name="Value">
+    /// The Id Value
+    /// </param>
     protected EntityId(TId Value)
     {
         this.Value = Value;
