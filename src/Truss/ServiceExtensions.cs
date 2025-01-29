@@ -34,6 +34,7 @@ public static class ServiceExtensions
         options.InstallModule<TrussBundledModule>();
         
         options.InstallerServices
+            .AddLogging()
             .AddSingleton(options)
             .AddSingleton<InstallationPipeline>()
             .AddSingleton<InstallationManifestGenerator>()
