@@ -97,7 +97,7 @@ public sealed class MessageToEndpointMappingInstallationStep
 
                 var route = $"{endpointPrefix}/{query.Name.Replace("Query", "")}";
 
-                app.MapGet(route, BuildQueryHandler(query, responseType))
+                app.MapPost(route, BuildQueryHandler(query, responseType))
                     .WithTags("Queries")
                     .Produces(StatusCodes.Status200OK, responseType)
                     .ProducesProblem(StatusCodes.Status500InternalServerError)
