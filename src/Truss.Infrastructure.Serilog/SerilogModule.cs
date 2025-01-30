@@ -18,9 +18,4 @@ public sealed class SerilogModule : WebModule
 
         builder.Host.UseSerilog();
     }
-
-    public override void ConfigureApplication(WebApplication app)
-    {
-        app.UseSerilogRequestLogging();
-    }
 }
