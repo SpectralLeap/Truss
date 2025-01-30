@@ -214,7 +214,7 @@ public sealed class MessageToEndpointMappingInstallationStep
     }
 
     private async Task<IResult> HandleQuery<TQuery, TResponse>(
-        [AsParameters] TQuery query,
+        [FromBody] TQuery query,
         [FromServices] IQueryBus queryBus,
         [FromServices] MessageToEndpointHandler messageToEndpointHandler
     )
