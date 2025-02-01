@@ -14,25 +14,25 @@ public abstract class Aggregate<TId>
     : Entity<TId>, IAggregate<TId>
 {
     // ReSharper disable once StaticMemberInGenericType -- This is appropriate because each concrete type will have its own registry
-    private static readonly EventHandlerRegistry EventHandlerRegistry = new();
+    private static readonly EventHandlerRegistry _eventHandlerRegistry = new();
 
     /// <inheritdoc/>>
-    public IReadOnlyCollection<object> PendingEvents => _pendingEvents;
+    public IReadOnlyCollection<IDomainEvent> PendingEvents => _pendingEvents;
 
     /// <inheritdoc/>>
     // ReSharper disable once MemberCanBePrivate.Global -- Version is used by the event store
     public long Version { get; set; }
 
-    private readonly List<object> _pendingEvents = [];
+    private readonly List<IDomainEvent> _pendingEvents = [];
 
     /// <summary>
     /// Requires an Id for consistency with the underlying event systems
     /// </summary>
     protected Aggregate()
     {
-        if (EventHandlerRegistry.AggregateIsRegistered(this)) return;
+        if (_eventHandlerRegistry.AggregateIsRegistered(this)) return;
 
-        EventHandlerRegistry.Register(this);
+        _eventHandlerRegistry.Register(this);
     }
 
     /// <inheritdoc/>>
@@ -47,7 +47,7 @@ public abstract class Aggregate<TId>
     /// </summary>
     /// <param name="event"></param>
     protected void ApplyAndAddPendingEvent(
-        object @event
+        IDomainEvent @event
     )
     {
         Apply(@event);
@@ -59,9 +59,9 @@ public abstract class Aggregate<TId>
     /// Applies the registered event handler
     /// </summary>
     /// <param name="event"></param>
-    private void Apply(object @event)
+    private void Apply(IDomainEvent @event)
     {
-        EventHandlerRegistry.Handle(this, @event);
+        _eventHandlerRegistry.Handle(this, @event);
 
         Version++;
     }

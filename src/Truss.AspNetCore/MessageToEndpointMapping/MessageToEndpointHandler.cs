@@ -25,23 +25,45 @@ internal sealed class MessageToEndpointHandler
         Func<TRequest, Task<Result<TResponse>>> call
     )
     {
-        if (request is null)
+        try
         {
-            _logger.LogWarning("No request was provided");
-            throw new ArgumentNullException(nameof(request));
+            if (request is null)
+            {
+                _logger.LogWarning("No request was provided");
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (call is null)
+            {
+                _logger.LogWarning("No action was provided");
+                throw new ArgumentNullException(nameof(call));
+            }
+
+            var context = _contextAccessor.HttpContext;
+
+            if (context is null)
+            {
+                _logger.LogCritical("The HTTP context was not available");
+
+                return Results.Json(
+                    new ProblemDetails
+                    {
+                        Title = "Internal Server Error",
+                        Status = StatusCodes.Status500InternalServerError,
+                        Detail = "Internal server error",
+                    }
+                );
+            }
+
+            var result = await call(request);
+
+            if (result.Succeeded) return Results.Ok(result.SuccessValue);
+
+            return MapFailureToProblem(result);
         }
-
-        if (call is null)
+        catch (Exception ex)
         {
-            _logger.LogWarning("No action was provided");
-            throw new ArgumentNullException(nameof(call));
-        }
-
-        var context = _contextAccessor.HttpContext;
-
-        if (context is null)
-        {
-            _logger.LogCritical("The HTTP context was not available");
+            _logger.LogCritical(ex, "An error occurred while sending a message");
 
             return Results.Json(
                 new ProblemDetails
@@ -52,12 +74,6 @@ internal sealed class MessageToEndpointHandler
                 }
             );
         }
-
-        var result = await call(request);
-
-        if (result.Succeeded) return Results.Ok(result.SuccessValue);
-
-        return MapFailureToProblem(result);
     }
 
     private static IResult MapFailureToProblem<TResponse>(Result<TResponse> result)

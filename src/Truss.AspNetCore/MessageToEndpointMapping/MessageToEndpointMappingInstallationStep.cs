@@ -32,7 +32,7 @@ public sealed class MessageToEndpointMappingInstallationStep
     {
         var endpointPrefix = GetEndpointPrefix(moduleManifest);
 
-        if (moduleManifest.Module is WebModule { AutoMapMessagesAsEndpoints: true })
+        if (moduleManifest.Module is WebModule { MapMessagesToEndpoints: true })
         {
             // Get all the types to scan excluding internal messages
             var types = moduleManifest.Types

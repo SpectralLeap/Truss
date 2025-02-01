@@ -3,7 +3,8 @@ using Truss.Modeling.Domain.Events;
 
 namespace Truss.ConcreteServices;
 
-internal sealed class DomainEventBus : IDomainEventBus
+internal sealed class DomainEventBus 
+    : IDomainEventBus
 {
     private readonly IMediator _mediator;
 
@@ -15,7 +16,7 @@ internal sealed class DomainEventBus : IDomainEventBus
     public async Task Publish<TDomainEvent>(
         TDomainEvent domainEvent,
         CancellationToken cancellationToken
-    ) where TDomainEvent : notnull
+    ) where TDomainEvent : IDomainEvent
     {
         await _mediator.Publish(domainEvent, cancellationToken);
     }

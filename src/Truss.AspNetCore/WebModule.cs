@@ -4,15 +4,23 @@ using Truss.Modeling.Installation;
 
 namespace Truss.AspNetCore;
 
+public interface IWebModule : IModule
+{
+    /// <summary>
+    /// If true, the module will automatically map messages, such as commands and queries, as endpoints.
+    /// </summary>
+    bool MapMessagesToEndpoints { get; }
+}
+
 /// <summary>
 /// A module that will be installed in a web hosted context (i.e. web app)
 /// </summary>
-public abstract class WebModule : Module
+public abstract class WebModule : Module, IWebModule
 {   
     /// <summary>
     /// If true, the module will automatically map messages, such as commands and queries, as endpoints.
     /// </summary>
-    public virtual bool AutoMapMessagesAsEndpoints => false;
+    public virtual bool MapMessagesToEndpoints => false;
 
     /// <summary>
     /// Gives the module access to configure the application builder
@@ -44,3 +52,4 @@ public abstract class WebModule : Module
     {
     }
 }
+

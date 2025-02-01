@@ -5,7 +5,7 @@ namespace Truss.Modeling.Installation;
 /// <summary>
 /// Base class for a module to be installed by Truss
 /// </summary>
-public abstract class Module
+public abstract class Module : IModule
 {
     /// <summary>
     /// The name of the module

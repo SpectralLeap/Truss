@@ -4,5 +4,5 @@ namespace ExampleApplication.WebApi;
 
 public sealed class ExampleModule : WebModule
 {
-    public override bool AutoMapMessagesAsEndpoints => true;
+    public override bool MapMessagesToEndpoints => true;
 }

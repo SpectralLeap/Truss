@@ -12,7 +12,7 @@ public class TrussServiceOptions
     /// <summary>
     /// The <see cref="Module"/>s to be installed
     /// </summary>
-    public IReadOnlyCollection<Module> Modules => _modules;
+    public IReadOnlyCollection<IModule> Modules => _modules;
 
     /// <summary>
     /// The <see cref="IServiceCollection"/> that will be used to install services
@@ -34,7 +34,7 @@ public class TrussServiceOptions
     /// </summary>
     public IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().Build();
 
-    private readonly List<Module> _modules = [];
+    private readonly List<IModule> _modules = [];
     
     private readonly List<Type> _installationSteps = [];
 

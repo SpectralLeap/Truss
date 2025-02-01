@@ -15,5 +15,5 @@ public interface IDomainEventBus
     Task Publish<TDomainEvent>(
         TDomainEvent domainEvent,
         CancellationToken cancellationToken
-    ) where TDomainEvent : notnull;
+    ) where TDomainEvent : IDomainEvent;
 }
