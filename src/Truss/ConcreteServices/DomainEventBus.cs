@@ -15,7 +15,7 @@ internal sealed class DomainEventBus : IDomainEventBus
     public async Task Publish<TDomainEvent>(
         TDomainEvent domainEvent,
         CancellationToken cancellationToken
-    ) where TDomainEvent : IDomainEvent
+    ) where TDomainEvent : notnull
     {
         await _mediator.Publish(domainEvent, cancellationToken);
     }

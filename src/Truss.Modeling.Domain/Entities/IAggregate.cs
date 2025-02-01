@@ -28,7 +28,7 @@ public interface IAggregate
     /// <summary>
     /// The Aggregate's uncommitted domain events (deltas)
     /// </summary>
-    public IReadOnlyCollection<IDomainEvent> PendingEvents { get; }
+    public IReadOnlyCollection<object> PendingEvents { get; }
 
     /// <summary>
     /// Clear the aggregate's pending domain events

@@ -9,7 +9,7 @@ namespace Truss.Modeling.Domain.Entities;
 /// </summary>
 internal sealed class EventHandlerRegistry
 {
-    private readonly ConcurrentDictionary<Type, Dictionary<Type, Action<IAggregate, IDomainEvent>>> _domainEventHandlers = new();
+    private readonly ConcurrentDictionary<Type, Dictionary<Type, Action<IAggregate, object>>> _domainEventHandlers = new();
 
     public bool AggregateIsRegistered(
         IAggregate aggregate
@@ -25,7 +25,7 @@ internal sealed class EventHandlerRegistry
     /// <returns></returns>
     public void Handle(
         IAggregate aggregate,
-        IDomainEvent @event
+        object @event
     )
     {
         var aggregateType = aggregate.GetType();
@@ -72,7 +72,7 @@ internal sealed class EventHandlerRegistry
                 })
             .ToArray();
 
-        var handlers = new Dictionary<Type, Action<IAggregate, IDomainEvent>>();
+        var handlers = new Dictionary<Type, Action<IAggregate, object>>();
 
         foreach (var handlerMethod in handlerMethods)
         {
