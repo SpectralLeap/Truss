@@ -14,11 +14,7 @@ public sealed class AutoShopConfiguration
 
         builder.HasMany(autoShop => autoShop.Garages);
 
-        builder.Property(autoShop => autoShop.Id)
-            .HasConversion(
-                id => id.Value,
-                value => new AutoShopId(value)
-            );
+        builder.Property(autoShop => autoShop.Id);
 
         builder.Property(autoShop => autoShop.Name);
     }

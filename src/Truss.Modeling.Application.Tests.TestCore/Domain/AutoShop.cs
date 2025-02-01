@@ -3,7 +3,7 @@ using Truss.Modeling.Domain.Entities;
 
 namespace Truss.Modeling.Application.Tests.TestCore.Domain;
 
-public sealed class AutoShop : Aggregate<AutoShopId>
+public sealed class AutoShop : Aggregate<Guid>
 {
     public string Name { get; private set; }
     
@@ -11,8 +11,18 @@ public sealed class AutoShop : Aggregate<AutoShopId>
     
     private List<Garage> _garages = new();
     
-    public AutoShop(AutoShopId id, string name) : base(id)
+    public AutoShop(string name)
     {
         Name = name;
+    }
+
+    public static AutoShop CreateAutoShop(string name)
+    {
+        var shop = new AutoShop(name)
+        {
+            Id = Guid.NewGuid()
+        };
+
+        return shop;
     }
 }

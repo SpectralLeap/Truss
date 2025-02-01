@@ -22,7 +22,7 @@ public sealed class AutoShopService
         return Result.Success();
     }
 
-    public Result<AutoShop> GetAutoShop(AutoShopId autoShopId)
+    public Result<AutoShop> GetAutoShop(Guid autoShopId)
     {
         var shop = _context.AutoShops
             .FirstOrDefault(autoShop => autoShop.Id == autoShopId);

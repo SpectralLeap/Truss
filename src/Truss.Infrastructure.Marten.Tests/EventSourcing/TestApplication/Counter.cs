@@ -6,11 +6,13 @@ public sealed class Counter : Aggregate<Guid>
 {
     public int Number { get; private set; }
 
-    private Counter() : base(Guid.NewGuid()) { }
+    private Counter() { }
 
     public void IncrementNumber()
     {
-        ApplyAndAddPendingEvent(new NumberIncrementedEvent());
+        var @event = new NumberIncrementedEvent();
+
+        ApplyAndAddPendingEvent(@event);
     }
     
     private void Apply(NumberIncrementedEvent @event)
@@ -20,6 +22,9 @@ public sealed class Counter : Aggregate<Guid>
 
     public static Counter New()
     {
-        return new Counter();
+        return new Counter
+        {
+            Id = Guid.NewGuid()
+        };
     }
 }

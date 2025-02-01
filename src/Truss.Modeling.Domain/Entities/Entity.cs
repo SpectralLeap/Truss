@@ -10,21 +10,7 @@ public abstract class Entity<TId>
     /// <summary>
     /// The unique Id of the entity
     /// </summary>
-    public TId Id { get; protected set; }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id">The strictly typed Id</param>
-    /// <exception cref="ArgumentNullException">If the id is null</exception>
-    /// <exception cref="ArgumentNullException">If the eventAggregator is null</exception>
-    protected Entity(TId id)
-    {
-        if (id is null) throw new ArgumentNullException(nameof(id));
-        
-        Id = id;
-    }
+    public required TId Id { get; init; }
 
     /// <summary>
     /// Determines if entities are the same.

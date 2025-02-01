@@ -13,8 +13,8 @@ public sealed class AggregateRootAndEntityTests
     public void SameGuidAreEqual()
     {
         var guid = Guid.NewGuid();
-        var a = new WordAggregate(new WordAggregateId(guid));
-        var b = new WordAggregate(new WordAggregateId(guid));
+        var a = new WordAggregate { Id = new WordAggregateId(guid) };
+        var b = new WordAggregate { Id = new WordAggregateId(guid) };
 
         Assert.Equal(a, b);
     }
@@ -22,8 +22,8 @@ public sealed class AggregateRootAndEntityTests
     [Fact]
     public void DifferentGuidAreNotEqual()
     {
-        var a = new WordAggregate(new WordAggregateId(Guid.NewGuid()));
-        var b = new WordAggregate(new WordAggregateId(Guid.NewGuid()));
+        var a = new WordAggregate { Id = new WordAggregateId(Guid.NewGuid()) };
+        var b = new WordAggregate { Id = new WordAggregateId(Guid.NewGuid()) };
     
         Assert.NotEqual(a, b);
     }
@@ -32,8 +32,8 @@ public sealed class AggregateRootAndEntityTests
     public void SameGuidAndSameTypeHaveSameHashCode()
     {
         var guid = Guid.NewGuid();
-        var a = new WordAggregate(new WordAggregateId(guid)).GetHashCode();
-        var b = new WordAggregate(new WordAggregateId(guid)).GetHashCode();
+        var a = new WordAggregate { Id = new WordAggregateId(guid) }.GetHashCode();
+        var b = new WordAggregate { Id = new WordAggregateId(guid) }.GetHashCode();
         
         Assert.Equal(a, b);
     }
@@ -42,8 +42,16 @@ public sealed class AggregateRootAndEntityTests
     public void SameGuidAndDifferentTypeHaveDifferentHashCode()
     {
         var guid = Guid.NewGuid();
-        var a = new WordAggregate(new WordAggregateId(guid)).GetHashCode();
-        var b = new NotWordAggregate(new NotWordAggregateId(guid)).GetHashCode();
+        var a = new WordAggregate
+        {
+            Id = new WordAggregateId(guid)
+        }.GetHashCode() ;
+
+        var b = new NotWordAggregate()
+        {
+            Id = new NotWordAggregateId(guid)
+
+        }.GetHashCode();
             
         Assert.NotEqual(a, b);
     }
@@ -51,22 +59,16 @@ public sealed class AggregateRootAndEntityTests
     [Fact]
     public void DifferentGuidAndSameTypeHaveDifferentHashCode()
     {
-        var a = new WordAggregate(new WordAggregateId(Guid.NewGuid())).GetHashCode();
-        var b = new WordAggregate(new WordAggregateId(Guid.NewGuid())).GetHashCode();
+        var a = new WordAggregate { Id = new WordAggregateId(Guid.NewGuid()) }.GetHashCode();
+        var b = new WordAggregate { Id = new WordAggregateId(Guid.NewGuid()) }.GetHashCode();
             
         Assert.NotEqual(a, b);
     }
-     
-    [Fact]
-    public void EntitiesCannotBeInstantiatedWithoutAnId()
-    {
-        Assert.Throws<ArgumentNullException>(() => new WordAggregate(null).GetHashCode());
-    }
-    
+
     [Fact]
     public async Task DomainEventsCanBeHandled()
     {
-        var aggregate = new WordAggregate(WordAggregateId.New());
+        var aggregate = new WordAggregate { Id = WordAggregateId.New() };
         
         aggregate.UpdateWord("something");
         
@@ -78,7 +80,7 @@ public sealed class AggregateRootAndEntityTests
     [Fact]
     public async Task DomainEventsOnEntityCanBeHandledThroughAggregate()
     {
-        var aggregate = new WordAggregate(WordAggregateId.New());
+        var aggregate = new WordAggregate { Id = WordAggregateId.New() };
 
         aggregate.AnnounceNumber(1);
 
@@ -90,7 +92,7 @@ public sealed class AggregateRootAndEntityTests
     [Fact]
     public async Task DomainEventsAreOrdered()
     {
-        var aggregate = new WordAggregate(WordAggregateId.New());
+        var aggregate = new WordAggregate { Id = WordAggregateId.New() };
 
         aggregate.AnnounceNumber(1);
         aggregate.AnnounceNumber(2);

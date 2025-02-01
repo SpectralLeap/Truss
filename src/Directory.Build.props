@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <TargetFrameworks>net8.0;</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <BuildNumber>$([System.DateTime]::Now.ToString("yyyyMMddHHmm"))</BuildNumber>
         <Version>0.1.0-alpha.$(BuildNumber)</Version>
         <LangVersion>latest</LangVersion>
@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`.Monads`))' == 'true'">
-        <TargetLayer>Modeling</TargetLayer>
+        <TargetLayer>Monads</TargetLayer>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Testing`))' == 'true'">
@@ -49,14 +49,20 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
-        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>true</IsPackable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Monads'">
+        <TargetFramework>netstandard2.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IsPackable>true</IsPackable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Protobuf'">
-        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -78,7 +84,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
-        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IsRoslynComponent>true</IsRoslynComponent>
         <IsPackable>false</IsPackable>

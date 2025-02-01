@@ -42,12 +42,11 @@ public class AutoShopDriver
 
     public void AddAndGetShopOnDsl()
     {
-        var id = new AutoShopId(Guid.NewGuid());
-        var shop = new AutoShop(id, "Monkey People Auto");
+        var shop = AutoShop.CreateAutoShop("Monkey People Auto");
  
         _autoShopService.AddAutoShop(shop);
  
-        var shopAgain = _autoShopService.GetAutoShop(id).SuccessValue;
+        var shopAgain = _autoShopService.GetAutoShop(shop.Id).SuccessValue;
              
         Assert.Equal(shop.Name, shopAgain.Name);       
     }

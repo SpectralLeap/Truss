@@ -4,7 +4,8 @@ namespace Truss.Modeling.Application.Tests.TestCore.Domain;
 
 public sealed class Car : Entity<CarId>
 {
-    public Car(CarId id) : base(id)
+    public Car(CarId id)
     {
+        Id = id;
     }
 }

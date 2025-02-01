@@ -5,10 +5,6 @@ namespace Truss.Modeling.Domain.Tests.Unit.Entities.TestDomain;
 internal sealed class WordAggregate 
     : Aggregate<WordAggregateId>
 {
-    public WordAggregate(WordAggregateId id) : base(id)
-    {
-    }
- 
     public void UpdateWord(string word)
     {
         ApplyAndAddPendingEvent(new WordUpdatedEvent(word));
@@ -16,7 +12,11 @@ internal sealed class WordAggregate
 
     public void AnnounceNumber(int i)
     {
-        var entity = new NumberEntity();
+        var entity = new NumberEntity
+        {
+            Id = Guid.NewGuid()
+        };
+
         entity.UpdateNumber(i);
         ApplyAndAddPendingEvent(new NumberUpdatedEvent(i));
     }

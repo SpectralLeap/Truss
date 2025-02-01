@@ -9,7 +9,7 @@ public sealed class NumberEntity : Entity<Guid>
         
     }
     
-    private NumberEntity(Guid id) : base(id)
+    private NumberEntity(Guid id)
     {
     }
 

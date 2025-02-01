@@ -87,7 +87,7 @@ internal sealed class DriverManager : IAsyncDisposable
             .Select(type => type.GetMethod("BuildServiceProvider", [typeof(IServiceCollection)]))
             .FirstOrDefault();
 
-        var provider = (IServiceProvider)_serviceProviderBuilder!.Invoke(services, [services]);
+        var provider = (IServiceProvider)_serviceProviderBuilder!.Invoke(services, [services])!;
 
         _activeProviders.Add(id, provider);
 

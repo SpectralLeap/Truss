@@ -41,7 +41,7 @@ internal sealed class SharedDependencyManager : IAsyncDisposable
 
     private async Task StartTheInstances()
     {
-        var startTasks = _sharedDependencies
+        var startTasks = _sharedDependencies!
             .Select(dependency => dependency.StartAsync());
                     
         // need to get the adapters after the

@@ -50,7 +50,7 @@ internal sealed class ServiceDefinitions
 
     private static bool AssertStatic(PropertyInfo propertyInfo)
     {
-        if (propertyInfo.GetMethod.IsStatic) return true;
+        if (propertyInfo.GetMethod!.IsStatic) return true;
         throw new DriverServicesNotStaticException(propertyInfo);
     }
 
@@ -66,7 +66,7 @@ internal sealed class ServiceDefinitions
         if (fieldInfo.FieldType != typeof(IServiceCollection))
             throw new DriverServiceDefinitionIsNotIServiceCollectionException(fieldInfo);
 
-        var collection = (IServiceCollection)fieldInfo.GetValue(null);
+        var collection = (IServiceCollection)fieldInfo.GetValue(null)!;
 
         if (fieldInfo.GetCustomAttribute<ServiceOverrideAttribute>() is { } overrideServicesAttribute)
             return new ServiceDefinition(collection, overrideServicesAttribute.Tag);
@@ -76,10 +76,10 @@ internal sealed class ServiceDefinitions
     
     private static ServiceDefinition ParseDefinition(PropertyInfo propertyInfo)
     {
-        if (propertyInfo.GetMethod.ReturnType != typeof(IServiceCollection))
+        if (propertyInfo.GetMethod!.ReturnType != typeof(IServiceCollection))
             throw new DriverServiceDefinitionIsNotIServiceCollectionException(propertyInfo);
 
-        var collection = (IServiceCollection)propertyInfo.GetValue(null);
+        var collection = (IServiceCollection)propertyInfo.GetValue(null)!;
         
         if (propertyInfo.GetCustomAttribute<ServiceOverrideAttribute>() is { } overrideServicesAttribute)
             return new ServiceDefinition(collection, overrideServicesAttribute.Tag);
