@@ -34,7 +34,47 @@ public abstract class ResultPipelineBehavior<TRequest, TResult>
     public abstract Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Explicitly fail a result
+    /// Map a failed result to the current result type
+    /// </summary>
+    /// <param name="result">
+    /// A failed result to copy from
+    /// </param>
+    /// <returns>
+    /// A failed result
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// If the result is malformed
+    /// </exception>
+    protected TResult Fail(
+        IResult result
+    )
+    {
+        if (result.Succeeded) throw new InvalidOperationException("Cannot fail a successful result");
+
+        var innerType = typeof(TResult).GetGenericArguments()[0];
+
+        var resultType = typeof(Result<>).MakeGenericType(innerType);
+
+        var failMethod = resultType.GetMethod(
+            "Fail",
+            BindingFlags.Static | BindingFlags.Public,
+            null,
+            [typeof(FailureDetails)],
+            null
+        );
+
+        if (failMethod == null)
+        {
+            throw new InvalidOperationException("Fail method not found on Result type.");
+        }
+
+        return failMethod.Invoke(null, [result.FailureDetails]) is TResult
+            ? (TResult)failMethod.Invoke(null, [result.FailureDetails])!
+            : throw new InvalidOperationException($"Could not construct a failure of type {typeof(TResult)}");
+    }
+
+    /// <summary>
+    /// Create a new failed result
     /// </summary>
     /// <param name="failureType">
     /// The <see cref="FailureType"/> to fail for
