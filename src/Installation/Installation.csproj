@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Installation.Abastractions.Endpoints\Installation.Abastractions.Endpoints.csproj" />
+      <ProjectReference Include="..\Installation.Abstractions.Services\Installation.Abstractions.Services.csproj" />
+    </ItemGroup>
+    
+</Project>

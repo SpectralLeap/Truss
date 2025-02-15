@@ -80,6 +80,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Infrastructure.OpenTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Truss.Infrastructure.Serilog", "Truss.Infrastructure.Serilog\Truss.Infrastructure.Serilog.csproj", "{7296F3C3-5A65-457A-B0C9-81E6CC39695A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation", "Installation\Installation.csproj", "{2476749F-1AFA-414F-A2B2-27AF2623715B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Abstractions.Services", "Installation.Abstractions.Services\Installation.Abstractions.Services.csproj", "{19AFAA8C-44CA-4EA0-A408-2397EA4CF04E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Abastractions.Endpoints", "Installation.Abastractions.Endpoints\Installation.Abastractions.Endpoints.csproj", "{0D657D39-24AF-4087-89F2-4E729FB5638F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -218,6 +224,18 @@ Global
 		{7296F3C3-5A65-457A-B0C9-81E6CC39695A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7296F3C3-5A65-457A-B0C9-81E6CC39695A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7296F3C3-5A65-457A-B0C9-81E6CC39695A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2476749F-1AFA-414F-A2B2-27AF2623715B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2476749F-1AFA-414F-A2B2-27AF2623715B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2476749F-1AFA-414F-A2B2-27AF2623715B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2476749F-1AFA-414F-A2B2-27AF2623715B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19AFAA8C-44CA-4EA0-A408-2397EA4CF04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19AFAA8C-44CA-4EA0-A408-2397EA4CF04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19AFAA8C-44CA-4EA0-A408-2397EA4CF04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19AFAA8C-44CA-4EA0-A408-2397EA4CF04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D657D39-24AF-4087-89F2-4E729FB5638F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D657D39-24AF-4087-89F2-4E729FB5638F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D657D39-24AF-4087-89F2-4E729FB5638F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D657D39-24AF-4087-89F2-4E729FB5638F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80B7AA57-422C-44F7-B23D-04C0EF20AF74} = {217B9A39-EF8E-41CB-AEB9-7F334D763F45}
