@@ -36,10 +36,12 @@ internal sealed class EventHandlerRegistry
             out var handlers
         );
 
-        var handler = handlers?
-            .GetValueOrDefault(eventType);
+        if (handlers is null) return;
 
-        handler?.Invoke(aggregate, @event);
+        if (handlers.TryGetValue(eventType, out var handler))
+        {
+            handler.Invoke(aggregate, @event);
+        }
     }
 
     /// <summary>

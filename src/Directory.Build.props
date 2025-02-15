@@ -49,6 +49,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'Modeling'">
+        <TargetFramework>netstandard2.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IsPackable>true</IsPackable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
