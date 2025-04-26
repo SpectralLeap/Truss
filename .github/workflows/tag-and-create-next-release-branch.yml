@@ -61,7 +61,7 @@ jobs:
             -f ref="refs/heads/releases/$NEXT_RELEASE" \
             -f sha="${{ github.sha }}"
           
-      - name: Re-dispatch enforce workflow for feature branches
+      - name: Re-run all workflow runs for open feature PRs
         uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
@@ -69,25 +69,33 @@ jobs:
             const owner = context.repo.owner;
             const repo  = context.repo.repo;
             
-            // 1) list open PRs
+            // 1) List all open feature PRs
             const { data: prs } = await github.rest.pulls.list({
-              owner,
-              repo,
-              state: "open",
-              per_page: 100
+              owner, repo, state: "open", per_page: 100
             });
             
             for (const pr of prs) {
               const head = pr.head.ref;
               if (!head.startsWith("features/")) continue;
             
-              console.log(`↻ Re-dispatching enforce-workflow on ${head}`);
+              console.log(`\n🔄 Revalidating workflows on branch: ${head}`);
             
-              // 2) dispatch the enforce workflow on that branch
-              await github.rest.actions.createWorkflowDispatch({
+              // 2) List completed workflow runs for that branch
+              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
                 owner,
                 repo,
-                workflow_id: "enforce-branch-strategy.yml",
-                ref: head
+                branch: head,
+                status: "completed",
+                per_page: 100,
               });
-            }
+            
+              // 3) Re-run each one
+              for (const run of runs.workflow_runs) {
+                console.log(`  ↻ Re-running '${run.name}' (#${run.id})`);
+                await github.rest.actions.reRunWorkflow({
+                  owner,
+                  repo,
+                  run_id: run.id
+                });
+              }
+            } 
