@@ -47,14 +47,14 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release --no-restore -p:Version=${{ steps.version_step.outputs.semVer }}
-        
+
       - name: Run Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
       - name: Pack Release
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:Version=${{ steps.version_step.outputs.majorMinorPatch }} 
-        
+
       - name: Pack Pre-Release
         if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:PackageVersion=${{ steps.version_step.outputs.SemVer }}
