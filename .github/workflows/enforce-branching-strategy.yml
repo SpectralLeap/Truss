@@ -4,7 +4,7 @@ on:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  enforce:
+  enforce-correct-base-branch:
     name: Ensure features -> releases -> main or hotfixes -> main
     runs-on: ubuntu-latest
     steps:
@@ -38,3 +38,42 @@ jobs:
           fi
 
           echo "✅ Branch strategy OK: $HEAD → $BASE"
+
+  enforce-features-targe-latest-release-branch:
+    name: Ensure feature branches target the latest release branch
+    if: startsWith(github.head_ref, 'features/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest release branch
+        id: branches
+        run: |
+          # Fetch all branches
+          git fetch --all
+
+          # Find highest release/x.y branch
+          RELEASE_BRANCH=$(git branch -r | grep 'origin/release/' | sed 's#origin/##' | sort -V | tail -n1)
+          echo "Latest release branch is: $RELEASE_BRANCH"
+          echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Check PR base matches release branch
+        run: |
+          PR_BRANCH="${{ github.head_ref }}"
+          BASE_BRANCH="${{ github.base_ref }}"
+          RELEASE_BRANCH="${{ steps.branches.outputs.release-branch }}"
+
+          echo "PR branch: $PR_BRANCH"
+          echo "PR base: $BASE_BRANCH"
+          echo "Latest release branch: $RELEASE_BRANCH"
+
+          # Only enforce for feature branches
+          if [[ "$PR_BRANCH" == feature/* ]]; then
+            if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
+              echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
+              exit 1
+            else
+              echo "✅ Feature branch correctly targeting $RELEASE_BRANCH."
+            fi
+          else
+            echo "✅ Not a feature branch. Skipping check."
+          fi
+
