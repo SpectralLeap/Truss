@@ -5,6 +5,7 @@ on:
 
 jobs:
   enforce:
+    name: Ensure PR base/head branches follow the branching strategy feature -> release -> main
     runs-on: ubuntu-latest
     steps:
       - name: Validate head/base naming
