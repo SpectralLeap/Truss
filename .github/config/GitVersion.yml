@@ -24,7 +24,7 @@ branches:
     mode: ContinuousDelivery
     label: 'rc.{CommitsSinceVersionSource}'
     increment: Minor
-    regex: ^releases?[\/-](?<BranchName>.+)
+    regex: ^release?[\/-](?<BranchName>.+)
     source-branches:
       - main
       - feature
@@ -37,7 +37,7 @@ branches:
     label: 'beta.{CommitsSinceVersionSource}'
     # Don't increment, just tag with beta + time
     increment: Patch
-    regex: ^features?[\/-](?<BranchName>.+)
+    regex: ^feature?[\/-](?<BranchName>.+)
     source-branches:
       - main
       - release
