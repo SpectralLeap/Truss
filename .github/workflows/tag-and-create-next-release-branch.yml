@@ -71,33 +71,41 @@ jobs:
             });
             console.log(data.workflows.map(w => w.path));
 
-      - name: Re-dispatch enforce workflow for feature branches
+      - name: Re-request check suites for open feature PRs
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+          github-token: ${{ github.token }}
           script: |
             const owner = context.repo.owner;
             const repo  = context.repo.repo;
-            
-            // 1) list open PRs
+
+            // 1) List all open PRs
             const { data: prs } = await github.rest.pulls.list({
-              owner,
-              repo,
-              state: "open",
-              per_page: 100
+              owner, repo, state: "open", per_page: 100
             });
-            
+
             for (const pr of prs) {
               const head = pr.head.ref;
+              const sha  = pr.head.sha;
               if (!head.startsWith("features/")) continue;
-            
-              console.log(`↻ Re-dispatching enforce-workflow on ${head}`);
-            
-              // 2) dispatch the enforce workflow on that branch
-              await github.rest.actions.createWorkflowDispatch({
+
+              console.log(`\n🔄 Re-requesting checks on ${head}@${sha}`);
+
+              // 2) List all check suites for that commit
+              const { data: suites } = await github.rest.checks.listSuitesForRef({
                 owner,
                 repo,
-                workflow_id: "enforce-branching-strategy.yml",
-                ref: head
+                ref: sha,
+                per_page: 100
               });
+
+              // 3) Re-request each suite
+              for (const suite of suites.check_suites) {
+                console.log(`  ↻ Re-requesting suite #${suite.id}`);
+                await github.rest.checks.rerequestSuite({
+                  owner,
+                  repo,
+                  check_suite_id: suite.id
+                });
+              }
             }
