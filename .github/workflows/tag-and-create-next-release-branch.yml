@@ -1,0 +1,112 @@
+name: Tag and Create Next Release Branch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write    # for creating the branch
+  checks: write
+
+jobs:
+  bump-and-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.2.0
+        with:
+          versionSpec: '6.3.x'
+
+      - name: Determine Version
+        id: gitversion # step id used as a reference for output values
+        uses: gittools/actions/gitversion/execute@v3.2.0
+        with:
+          useConfigFile: true
+          configFilePath: './.github/config/GitVersion.yml'
+     
+      - name: Tag this commit
+        run: |
+          TAG=${{ steps.gitversion.outputs.majorMinorPatch }}
+          echo "Tagging main with $TAG"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Determine next minor version
+        id: next
+        run: |
+          MAJOR=${{ steps.gitversion.outputs.major }}
+          MINOR=${{ steps.gitversion.outputs.minor }}
+          PATCH=${{ steps.gitversion.outputs.patch }}
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_RELEASE="$MAJOR.$MINOR.$NEXT_PATCH"
+          echo "next-release=$NEXT_RELEASE" >> $GITHUB_OUTPUT
+
+      - name: Create releases/$NEXT branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEXT_RELEASE: ${{ steps.next.outputs.next-release }}
+        run: |
+          echo "Creating branch: releases/$NEXT_RELEASE"
+          gh api \
+            -X POST /repos/${{ github.repository }}/git/refs \
+            -f ref="refs/heads/releases/$NEXT_RELEASE" \
+            -f sha="${{ github.sha }}"
+          
+      - name: List workflows on default branch
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.rest.actions.listRepoWorkflows({
+              owner: context.repo.owner,
+              repo:  context.repo.repo
+            });
+            console.log(data.workflows.map(w => w.path));
+
+      - name: Re-request check suites for open feature PRs
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // 1) List all open PRs
+            const { data: prs } = await github.rest.pulls.list({
+              owner, repo, state: "open", per_page: 100
+            });
+
+            for (const pr of prs) {
+              const head = pr.head.ref;
+              const sha  = pr.head.sha;
+              if (!head.startsWith("features/")) continue;
+
+              console.log(`\n🔄 Re-requesting checks on ${head}@${sha}`);
+
+              // 2) List all check suites for that commit
+              const { data: suites } = await github.rest.checks.listSuitesForRef({
+                owner,
+                repo,
+                ref: sha,
+                per_page: 100
+              });
+
+              // 3) Re-request each suite
+              for (const suite of suites.check_suites) {
+                console.log(`  ↻ Re-requesting suite #${suite.id}`);
+                await github.rest.checks.rerequestSuite({
+                  owner,
+                  repo,
+                  check_suite_id: suite.id
+                });
+              }
+            }

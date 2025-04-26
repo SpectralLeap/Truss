@@ -7,6 +7,7 @@ on:
       - master
       - releases/*
       - features/*
+      - hotfixes/*
     paths:
       - 'src/**/*.cs'
       - 'src/**/*.fs'
@@ -85,15 +86,3 @@ jobs:
               --api-key "${{ secrets.PRERELEASE_NUGET_API_KEY }}"  \
               --skip-duplicate
           done
-
-
-      - name: Create Git Tag when Release
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          TAG=${{ steps.version_step.outputs.majorMinorPatch }}
-          echo "Tagging commit with $TAG"
-          git tag $TAG
-          git push origin $TAG
