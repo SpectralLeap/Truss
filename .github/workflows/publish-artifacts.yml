@@ -7,36 +7,18 @@ on:
       - master
       - releases/*
       - features/*
+    paths:
+      - 'src/**/*.cs'
+      - 'src/**/*.fs'
+      - 'src/**/*.vb'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      src: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Detect source changes
-        uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            src:
-              - 'src/**/*.cs'
-              - 'src/**/*.fs'
-              - 'src/**/*.vb'
-
   publish:
     runs-on: ubuntu-latest
-    needs: 
-      - detect-changes
-    if: needs.detect-changes.outputs.src == 'true'
     defaults: 
       run: 
         shell: bash
