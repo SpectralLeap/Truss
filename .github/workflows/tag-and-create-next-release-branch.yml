@@ -60,6 +60,17 @@ jobs:
             -f ref="refs/heads/releases/$NEXT_RELEASE" \
             -f sha="${{ github.sha }}"
           
+      - name: List workflows on default branch
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.rest.actions.listRepoWorkflows({
+              owner: context.repo.owner,
+              repo:  context.repo.repo
+            });
+            console.log(data.workflows.map(w => w.path));
+
       - name: Re-dispatch enforce workflow for feature branches
         uses: actions/github-script@v6
         with:
