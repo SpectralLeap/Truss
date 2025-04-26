@@ -2,6 +2,7 @@ name: Enforce Branching Strategy
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
+  workflow_dispatch:
 
 jobs:
   enforce-correct-base-branch:
