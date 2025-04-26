@@ -7,6 +7,9 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   pack:
     runs-on: ubuntu-latest
@@ -49,7 +52,22 @@ jobs:
         run: dotnet test --configuration Release --no-build --verbosity normal
 
       - name: Pack Release
-        run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:Version=${{ steps.version_step.outputs.semVer }} 
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:Version=${{ steps.version_step.outputs.majorMinorPatch }} 
+        
+      - name: Pack Pre-Release
+        if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
+        run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:PackageVersion=${{ steps.version_step.outputs.SemVer }}
+
+      - name: Verify NuGet packages exist
+        run: |
+          echo "Checking for built NuGet packages..."
+          if ls ./nupkgs/*.nupkg 1> /dev/null 2>&1; then
+            echo "✅ Found NuGet packages."
+          else
+            echo "🚨 No NuGet packages found. Failing build."
+            exit 1
+          fi
 
       - name: Upload NuGet packages (Artifact)
         uses: actions/upload-artifact@v4
@@ -63,7 +81,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          TAG=${{ steps.version_step.outputs.semVer }}
+          TAG=${{ steps.version_step.outputs.majorMinorPatch }}
           echo "Tagging commit with $TAG"
           git tag $TAG
           git push origin $TAG
