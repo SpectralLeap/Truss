@@ -52,8 +52,6 @@ jobs:
       - name: Get latest release branch
         id: branches
         run: |
-          git fetch --all
-          
           RELEASE_BRANCH=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ | sort -V | tail -n1)
           echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
 
