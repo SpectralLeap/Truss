@@ -11,6 +11,11 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     
+    defaults: 
+      run: 
+        shell: bash
+        working-directory: './src'
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
