@@ -59,3 +59,28 @@ jobs:
             -X POST /repos/${{ github.repository }}/git/refs \
             -f ref="refs/heads/releases/$NEXT_RELEASE" \
             -f sha="${{ github.sha }}"
+          
+      - name: Re-dispatch enforce workflow for feature branches
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+            // 1) list open PRs
+            const { data: prs } = await github.pulls.list({
+              owner, repo, state: "open", per_page: 100
+            });
+            for (const pr of prs) {
+              const head = pr.head.ref;
+              if (!head.startsWith("features/")) continue;
+              console.log(`↻ Re-dispatching enforce-workflow on ${head}`);
+              // 2) dispatch the enforce workflow on that branch
+              await github.actions.createWorkflowDispatch({
+                owner,
+                repo,
+                // filename or ID of your enforce workflow
+                workflow_id: "enforce-branch-strategy.yml",
+                ref: head
+              });
+            }
