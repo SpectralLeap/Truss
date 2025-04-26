@@ -63,7 +63,7 @@ jobs:
       - name: Re-dispatch enforce workflow for feature branches
         uses: actions/github-script@v6
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           script: |
             const owner = context.repo.owner;
             const repo  = context.repo.repo;
