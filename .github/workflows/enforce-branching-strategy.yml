@@ -49,28 +49,31 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0      # get all branches & tags
-          
-      - name: Get latest release branch
+
+      - name: Determine latest release branch
         id: branches
         run: |
-          RELEASE_BRANCH=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ | sort -V | tail -n1)
+          # List all remote release branches, sorted semver, pick highest
+          REMOTE_REF=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ \
+            | sort -V \
+            | tail -n1)
+          # Strip "origin/" → yields "releases/X.Y"
+          RELEASE_BRANCH=${REMOTE_REF#origin/}
           echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
 
-      - name: Check PR base matches release branch
+      - name: Check PR base matches latest release
         run: |
-          PR_BRANCH="${{ github.head_ref }}"
-          BASE_BRANCH="${{ github.base_ref }}"
-          RELEASE_BRANCH="${{ steps.branches.outputs.release-branch }}"
-
-          echo "PR branch: $PR_BRANCH"
-          echo "PR base: $BASE_BRANCH"
-          echo "Latest release branch: $RELEASE_BRANCH"
-
-          # Only enforce for feature branches
-          if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
-            echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
+          PR="${{ github.head_ref }}"
+          BASE="${{ github.base_ref }}"
+          REL="${{ steps.branches.outputs.release-branch }}"
+          
+          echo "PR branch: $PR"
+          echo "PR base:   $BASE"
+          echo "Latest release branch: $REL"
+          
+          if [[ "$BASE" != "$REL" ]]; then
+            echo "::error::🚨 Feature branches must target the latest release branch ($REL), not $BASE."
             exit 1
-          else
-            echo "✅ Feature branch correctly targeting latest $RELEASE_BRANCH."
           fi
-  
+
+          echo "✅ OK: $PR → $BASE"
