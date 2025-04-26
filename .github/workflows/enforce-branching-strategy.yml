@@ -1,0 +1,75 @@
+name: Enforce Branching Strategy
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  enforce-correct-base-branch:
+    name: Ensure features -> releases -> main or hotfixes -> main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate head/base naming
+        run: |
+          HEAD="${{ github.head_ref }}"
+          BASE="${{ github.base_ref }}"
+
+          # 1) features/* → releases/*
+          if [[ "$HEAD" =~ ^features/ ]] && [[ ! "$BASE" =~ ^releases/ ]]; then
+            echo "::error::Feature branches must target a release branch (got base='$BASE')."
+            exit 1
+          fi
+
+          # 2) only features can target releases/*
+          if [[ ! "$HEAD" =~ ^features/ ]] && [[ "$BASE" =~ ^releases/ ]]; then
+            echo "::error::Only feature branches can target release branches (head='$HEAD')."
+            exit 1
+          fi
+
+          # 3) releases/* → main
+          if [[ "$HEAD" =~ ^releases/ ]] && [[ "$BASE" != "main" ]]; then
+            echo "::error::Release branches must target main (got base='$BASE')."
+            exit 1
+          fi
+
+          # 4) hotfixes/* → main
+          if [[ "$HEAD" =~ ^hotfixes/ ]] && [[ "$BASE" != "main" ]]; then
+            echo "::error::Hotfix branches must target main (got base='$BASE')."
+            exit 1
+          fi
+
+          echo "✅ Branch strategy OK: $HEAD → $BASE"
+
+  enforce-features-targe-latest-release-branch:
+    name: Ensure feature branches target the latest release branch
+    if: startsWith(github.head_ref, 'features/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0      # get all branches & tags
+          
+      - name: Get latest release branch
+        id: branches
+        run: |
+          RELEASE_BRANCH=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ | sort -V | tail -n1)
+          echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Check PR base matches release branch
+        run: |
+          PR_BRANCH="${{ github.head_ref }}"
+          BASE_BRANCH="${{ github.base_ref }}"
+          RELEASE_BRANCH="${{ steps.branches.outputs.release-branch }}"
+
+          echo "PR branch: $PR_BRANCH"
+          echo "PR base: $BASE_BRANCH"
+          echo "Latest release branch: $RELEASE_BRANCH"
+
+          # Only enforce for feature branches
+          if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
+            echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
+            exit 1
+          else
+            echo "✅ Feature branch correctly targeting latest $RELEASE_BRANCH."
+          fi
+
