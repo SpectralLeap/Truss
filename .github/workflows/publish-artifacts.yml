@@ -33,11 +33,10 @@ jobs:
               - 'src/**/*.vb'
 
   publish:
-    runs-on: ubuntu-latest
     needs: 
       - detect-changes
     if: steps.filter.outputs.src == 'true'
-    
+    runs-on: ubuntu-latest
     defaults: 
       run: 
         shell: bash
