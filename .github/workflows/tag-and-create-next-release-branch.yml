@@ -44,8 +44,9 @@ jobs:
         run: |
           MAJOR=${{ steps.gitversion.outputs.major }}
           MINOR=${{ steps.gitversion.outputs.minor }}
-          NEXT_MINOR=$((MINOR + 1))
-          NEXT_RELEASE="$MAJOR.$NEXT_MINOR"
+          PATCH=${{ steps.gitversion.outputs.patch }}
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_RELEASE="$MAJOR.$MINOR.$NEXT_PATCH"
           echo "next-release=$NEXT_RELEASE" >> $GITHUB_OUTPUT
 
       - name: Create releases/$NEXT branch
