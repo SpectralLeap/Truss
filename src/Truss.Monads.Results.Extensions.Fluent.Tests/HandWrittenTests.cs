@@ -1,3 +1,4 @@
+using Truss.Monads.Results.Extensions.Fluent.Tests.SourceGenerator;
 using Xunit;
 
 namespace Truss.Monads.Results.Extensions.Fluent.Tests;
@@ -90,7 +91,49 @@ public sealed class HandWrittenTests
             
         Assert.True(result.SuccessValue.IsDisposed);
     }
+    
+    [Fact]
+    public void ResolutionStepConvertsToResult()
+    {
+        Result<string> result = 9.AsResult()
+                .Then(n => n + 1)
+                .Then(n =>
+                {
+                    if (n > 9) return Result.Fail("no");
 
+                    return Result.Success();
+                })
+                .Then(_ => "Done")
+            ;
+        
+        Assert.True(result.Failed);
+    }
+
+       
+    [Fact]
+    public async Task AndFailThen1Async()
+    {
+        var result = await new DummyClass()
+                .AsResult()
+                .And(async (a) =>
+                {
+                    if (1 > 0) return Result.Fail("fail");
+                    return Result.Success(await new DummyClass().DoAsync(a));
+                })
+                .Then((a, b) => new DummyClass().DoAsync(a, b))
+            ;
+        Assert.True(result.Failed);
+    }
+
+    [Fact]
+    public void ResultOfTypeCastsToResultOfNil()
+    {
+        Result<Nil> result = 9.AsResult()
+            .Then(x => x +1);
+        
+        Assert.True(result.Succeeded);
+    }
+    
     private Result<DisposableThing> GetThingAsResult()
     {
         return Result.Success(new DisposableThing());

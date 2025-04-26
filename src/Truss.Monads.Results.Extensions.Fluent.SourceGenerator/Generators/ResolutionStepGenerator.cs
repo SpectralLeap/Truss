@@ -68,6 +68,19 @@ public sealed class ResolutionStepGenerator : IGenerator
                         {{Name}}<{{_typingContext.InTypes}}> {{Name.ToLower()}})
                             => {{Name.ToLower()}}.AsResult();
                     
+                    /// <summary>
+                    /// Narrowing conversion from {{Name}} to Result<Nil>
+                    /// </summary>
+                    public static implicit operator Result<Nil>(
+                        {{Name}}<{{_typingContext.InTypes}}> {{Name.ToLower()}})
+                    {
+                        if ({{Name.ToLower()}}.Failed)
+                        {
+                            return Result.Fail({{Name.ToLower()}}.FailureDetails);
+                        }
+                        return Result.Success();
+                    }
+                      
                     public void Dispose()
                     {
                         if (_disposed[0]) return;
@@ -265,7 +278,7 @@ public sealed class ResolutionStepGenerator : IGenerator
         
         return lastResultObject + ";" +
                """
-               
+
                if (lastResultObject is IDisposable disposable)
                {{
                    _disposables.Add(disposable);

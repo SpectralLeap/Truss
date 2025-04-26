@@ -1,0 +1,96 @@
+mode: ContinuousDelivery
+
+prevent-increment:
+  of-merged-branch: true
+  when-branch-merged: false
+  when-current-commit-tagged: false
+  
+# The tag from history should be v1.2.3 format
+tag-prefix: '[vV]?'
+
+# The meat and potatoes
+branches:
+  # Committing to main should be a release and should increment the patch
+  main:
+    mode: ContinuousDelivery
+    label: ''
+    increment: Patch
+    regex: ^master$|^main$
+    is-main-branch: true
+    pre-release-weight: 55000
+    
+  # Committing to release should populate a release candidate
+  release:
+    mode: ContinuousDelivery
+    label: 'rc.{CommitsSinceVersionSource}'
+    increment: Minor
+    regex: ^releases?[\/-](?<BranchName>.+)
+    source-branches:
+      - main
+      - feature
+      - hotfix
+    pre-release-weight: 40000
+  
+  # Committing to features should support staging
+  feature:
+    mode: ContinuousDelivery
+    label: 'beta.{CommitsSinceVersionSource}'
+    # Don't increment, just tag with beta + time
+    increment: Patch
+    regex: ^features?[\/-](?<BranchName>.+)
+    source-branches:
+      - main
+      - release
+    pre-release-weight: 30000
+  
+  # Hotfixes should be available asap
+  hotfix:
+    mode: ContinuousDelivery
+    label: 'hf-{Date:yyyyMMddHHmmss}'
+    increment: None
+    regex: ^hotfixes?[\/-](?<BranchName>.+)
+    source-branches:
+      - main
+      - release
+    pre-release-weight: 30000
+
+version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
+
+# Allows for bumping the major or minor version in the commit message
+major-version-bump-message: \+semver:\s?(breaking|major)
+minor-version-bump-message: \+semver:\s?(feature|minor)
+
+# Allows for skipping the version bump in the commit message if required
+no-bump-message: \+semver:\s?(none|skip)
+tag-pre-release-weight: 60000
+
+commit-date-format: yyyy-MM-dd
+
+merge-message-formats: {}
+
+update-build-number: true
+semantic-version-format: Strict
+
+strategies:
+  # This can be overriden in the version step
+  # This is an escape hatch
+  - ConfiguredNextVersion
+  # The merge message may specify a version
+  # This is an escape hatch
+  - MergeMessage
+  # Uses the exact tag
+  # This allows building artifacts against the tag event
+  # since the tag event applies to a commit and won't cause
+  # the version to increment
+  - TaggedCommit
+  # This uses the git tag history and should be
+  # the primary strategy
+  - Fallback
+
+# In case the history gets mangled  
+ignore:
+  sha: []
+
+# Add the tag to the file version for tracking
+assembly-versioning-scheme: MajorMinorPatchTag
+assembly-file-versioning-scheme: MajorMinorPatchTag
