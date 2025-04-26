@@ -79,7 +79,6 @@
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'ExampleApplication'">
         <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
