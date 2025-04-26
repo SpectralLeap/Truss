@@ -1,19 +1,25 @@
-name: Publish NuGets
+name: Publish Artifacts
 
 on:
   push:
     branches:
       - main
       - master
+      - releases/*
+      - features/*
+      - hotfixes/*
+    paths:
+      - 'src/**/*.cs'
+      - 'src/**/*.fs'
+      - 'src/**/*.vb'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  pack:
+  publish:
     runs-on: ubuntu-latest
-    
     defaults: 
       run: 
         shell: bash
@@ -47,14 +53,14 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release --no-restore -p:Version=${{ steps.version_step.outputs.semVer }}
-        
+
       - name: Run Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
       - name: Pack Release
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:Version=${{ steps.version_step.outputs.majorMinorPatch }} 
-        
+
       - name: Pack Pre-Release
         if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
         run: dotnet pack --configuration Release --no-build --output ./nupkgs -p:PackageVersion=${{ steps.version_step.outputs.SemVer }}
@@ -80,15 +86,3 @@ jobs:
               --api-key "${{ secrets.PRERELEASE_NUGET_API_KEY }}"  \
               --skip-duplicate
           done
-
-
-      - name: Create Git Tag when Release
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          TAG=${{ steps.version_step.outputs.majorMinorPatch }}
-          echo "Tagging commit with $TAG"
-          git tag $TAG
-          git push origin $TAG

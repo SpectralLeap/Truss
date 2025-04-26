@@ -22,7 +22,7 @@ branches:
   # Committing to release should populate a release candidate
   release:
     mode: ContinuousDelivery
-    label: 'rc.{CommitsSinceVersionSource}'
+    label: rc
     increment: Minor
     regex: ^releases?[\/-](?<BranchName>.+)
     source-branches:
@@ -34,7 +34,7 @@ branches:
   # Committing to features should support staging
   feature:
     mode: ContinuousDelivery
-    label: 'beta.{CommitsSinceVersionSource}'
+    label: beta
     # Don't increment, just tag with beta + time
     increment: Patch
     regex: ^features?[\/-](?<BranchName>.+)
@@ -61,7 +61,7 @@ major-version-bump-message: \+semver:\s?(breaking|major)
 minor-version-bump-message: \+semver:\s?(feature|minor)
 
 # Allows for skipping the version bump in the commit message if required
-no-bump-message: \+semver:\s?(none|skip)
+no-bump-message: \+semver:\s?(none|skip|ignore)
 tag-pre-release-weight: 60000
 
 commit-date-format: yyyy-MM-dd
