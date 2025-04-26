@@ -1,0 +1,59 @@
+name: Tag and Create Next Release Branch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write    # for creating the branch
+
+jobs:
+  bump-and-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.2.0
+        with:
+          versionSpec: '6.3.x'
+
+      - name: Determine Version
+        id: gitversion # step id used as a reference for output values
+        uses: gittools/actions/gitversion/execute@v3.2.0
+        with:
+          useConfigFile: true
+          configFilePath: './.github/config/GitVersion.yml'
+     
+      - name: Tag this commit
+        run: |
+          TAG=${{ steps.gitversion.outputs.majorMinorPatch }}
+          echo "Tagging main with $TAG"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Determine next minor version
+        id: next
+        run: |
+          MAJOR=${{ steps.gitversion.outputs.major }}
+          MINOR=${{ steps.gitversion.outputs.minor }}
+          NEXT_MINOR=$((MINOR + 1))
+          NEXT_RELEASE="$MAJOR.$NEXT_MINOR"
+          echo "next-release=$NEXT_RELEASE" >> $GITHUB_OUTPUT
+
+      - name: Create releases/$NEXT branch
+        env:
+          NEXT_RELEASE: ${{ steps.next.outputs.next-release }}
+        run: |
+          echo "Creating branch: releases/$NEXT_RELEASE"
+          gh api \
+            -X POST /repos/${{ github.repository }}/git/refs \
+            -f ref="refs/heads/releases/$NEXT_RELEASE" \
+            -f sha="${{ github.sha }}"
