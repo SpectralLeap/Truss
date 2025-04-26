@@ -50,6 +50,7 @@ jobs:
 
       - name: Create releases/$NEXT branch
         env:
+          GH_TOKEN: ${{ github.token }}
           NEXT_RELEASE: ${{ steps.next.outputs.next-release }}
         run: |
           echo "Creating branch: releases/$NEXT_RELEASE"
