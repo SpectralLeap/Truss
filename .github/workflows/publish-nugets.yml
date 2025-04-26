@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: ./nupkgs
+          path: ./src/nupkgs/**/*.nupkg
 
       - name: Create Git Tag when Release
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
