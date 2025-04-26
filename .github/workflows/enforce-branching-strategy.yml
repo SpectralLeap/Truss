@@ -49,15 +49,14 @@ jobs:
         with:
           fetch-depth: 0      # get all branches & tags
 
-      - name: Get latest release branch
+      - name: Determine latest release branch
         id: branches
         run: |
-          # List all remote release branches, pick the highest
-          REMOTE_REF=$(git branch -r \
-          | grep '^  origin/releases/' \
-          | sort -V \
-          | tail -n1)
-          # Strip off the "origin/" prefix
+          # List all remote release branches, sorted semver, pick highest
+          REMOTE_REF=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ \
+            | sort -V \
+            | tail -n1)
+          # Strip "origin/" → yields "releases/X.Y"
           RELEASE_BRANCH=${REMOTE_REF#origin/}
           echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
 
