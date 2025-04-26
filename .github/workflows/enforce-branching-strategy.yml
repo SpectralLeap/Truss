@@ -1,0 +1,33 @@
+name: Enforce Branching Strategy
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate head/base naming
+        run: |
+          HEAD="${{ github.head_ref }}"
+          BASE="${{ github.base_ref }}"
+
+          # 1) features/* → releases/*
+          if [[ "$HEAD" =~ ^features/ ]] && [[ ! "$BASE" =~ ^releases/ ]]; then
+            echo "::error::Feature branches must target a release branch (got base='$BASE')."
+            exit 1
+          fi
+
+          # 2) only features can target releases/*
+          if [[ ! "$HEAD" =~ ^features/ ]] && [[ "$BASE" =~ ^releases/ ]]; then
+            echo "::error::Only feature branches can target release branches (head='$HEAD')."
+            exit 1
+          fi
+
+          # 3) releases/* → main
+          if [[ "$HEAD" =~ ^releases/ ]] && [[ "$BASE" != "main" ]]; then
+            echo "::error::Release branches must target main (got base='$BASE')."
+            exit 1
+          fi
+
+          echo "✅ Branch strategy OK: $HEAD → $BASE"
