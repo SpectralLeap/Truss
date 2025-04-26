@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write    # for creating the branch
+  actions: write
 
 jobs:
   bump-and-branch:
