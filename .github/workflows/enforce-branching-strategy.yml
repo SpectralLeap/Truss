@@ -5,7 +5,7 @@ on:
 
 jobs:
   enforce:
-    name: Ensure PR base/head branches follow the branching strategy feature -> release -> main
+    name: Ensure features -> releases -> main or hotfixes -> main
     runs-on: ubuntu-latest
     steps:
       - name: Validate head/base naming
@@ -28,6 +28,12 @@ jobs:
           # 3) releases/* → main
           if [[ "$HEAD" =~ ^releases/ ]] && [[ "$BASE" != "main" ]]; then
             echo "::error::Release branches must target main (got base='$BASE')."
+            exit 1
+          fi
+
+          # 4) hotfixes/* → main
+          if [[ "$HEAD" =~ ^hotfixes/ ]] && [[ "$BASE" != "main" ]]; then
+            echo "::error::Hotfix branches must target main (got base='$BASE')."
             exit 1
           fi
 
