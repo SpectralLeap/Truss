@@ -68,14 +68,10 @@ jobs:
           echo "Latest release branch: $RELEASE_BRANCH"
 
           # Only enforce for feature branches
-          if [[ "$PR_BRANCH" == feature/* ]]; then
-            if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
-              echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
-              exit 1
-            else
-              echo "✅ Feature branch correctly targeting $RELEASE_BRANCH."
-            fi
+          if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
+            echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
+            exit 1
           else
-            echo "✅ Not a feature branch. Skipping check."
+            echo "✅ Feature branch correctly targeting latest $RELEASE_BRANCH."
           fi
 
