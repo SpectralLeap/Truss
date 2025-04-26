@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write    # for creating the branch
-  actions: write
 
 jobs:
   bump-and-branch:
@@ -61,7 +60,7 @@ jobs:
             -f ref="refs/heads/releases/$NEXT_RELEASE" \
             -f sha="${{ github.sha }}"
           
-      - name: Re-run all workflow runs for open feature PRs
+      - name: Re-dispatch enforce workflow for feature branches
         uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
@@ -69,33 +68,25 @@ jobs:
             const owner = context.repo.owner;
             const repo  = context.repo.repo;
             
-            // 1) List all open feature PRs
+            // 1) list open PRs
             const { data: prs } = await github.rest.pulls.list({
-              owner, repo, state: "open", per_page: 100
+              owner,
+              repo,
+              state: "open",
+              per_page: 100
             });
             
             for (const pr of prs) {
               const head = pr.head.ref;
               if (!head.startsWith("features/")) continue;
             
-              console.log(`\n🔄 Revalidating workflows on branch: ${head}`);
+              console.log(`↻ Re-dispatching enforce-workflow on ${head}`);
             
-              // 2) List completed workflow runs for that branch
-              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+              // 2) dispatch the enforce workflow on that branch
+              await github.rest.actions.createWorkflowDispatch({
                 owner,
                 repo,
-                branch: head,
-                status: "completed",
-                per_page: 100,
+                workflow_id: "enforce-branching-strategy.yml",
+                ref: head
               });
-            
-              // 3) Re-run each one
-              for (const run of runs.workflow_runs) {
-                console.log(`  ↻ Re-running '${run.name}' (#${run.id})`);
-                await github.rest.actions.reRunWorkflow({
-                  owner,
-                  repo,
-                  run_id: run.id
-                });
-              }
-            } 
+            }
