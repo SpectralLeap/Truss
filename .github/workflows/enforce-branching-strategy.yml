@@ -67,7 +67,7 @@ jobs:
 
           # Only enforce for feature branches
           if [[ "$BASE_BRANCH" != "$RELEASE_BRANCH" ]]; then
-            echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH}), not ${BASE_BRANCH}."
+            echo "::error ::🚨 Feature branches must target the latest release branch (${RELEASE_BRANCH})"
             exit 1
           else
             echo "✅ Feature branch correctly targeting latest $RELEASE_BRANCH."
