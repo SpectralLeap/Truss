@@ -43,20 +43,17 @@ jobs:
     name: Ensure feature branches target the latest release branch
     if: startsWith(github.head_ref, 'features/')
     runs-on: ubuntu-latest
+    steps:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0      # get all branches & tags
           
-    steps:
       - name: Get latest release branch
         id: branches
         run: |
-          # Fetch all branches
           git fetch --all
-
-          # (checkout@v3 with fetch-depth:0 will already have remotes/origin/*)
-          # Find highest release/x.y branch
+          
           RELEASE_BRANCH=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/releases/ | sort -V | tail -n1)
           echo "release-branch=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
 
