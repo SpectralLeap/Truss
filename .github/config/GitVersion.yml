@@ -92,5 +92,5 @@ ignore:
   sha: []
 
 # Add the tag to the file version for tracking
-assembly-versioning-scheme: MajorMinorPatchTag
-assembly-file-versioning-scheme: MajorMinorPatchTag
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch
