@@ -36,6 +36,10 @@
         <TargetLayer>Modeling</TargetLayer>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`.Testing`))' == 'true'">
+        <TargetLayer>Testing</TargetLayer>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$([System.String]::new($(MSBuildProjectName)).Contains(`Tests`))' == 'true'">
         <TargetLayer>Tests</TargetLayer>
     </PropertyGroup>
@@ -86,6 +90,12 @@
 
     <PropertyGroup Condition="'$(TargetLayer)' == 'SourceGenerator'">
         <TargetFramework>netstandard2.0</TargetFramework>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetLayer)' == 'Testing'">
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IsRoslynComponent>true</IsRoslynComponent>
         <IsPackable>false</IsPackable>

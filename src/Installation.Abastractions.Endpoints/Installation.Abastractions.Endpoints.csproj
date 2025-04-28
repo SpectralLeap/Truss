@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.App" Version="[1, )" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-    
+
 </Project>
